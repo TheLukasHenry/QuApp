@@ -2,6 +2,59 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input CreateFeatureInput {
+  """Example field (placeholder)"""
+  name: String!
+}
+
+input CreateTestCaseInput {
+  """Example field (placeholder)"""
+  featureId: Int!
+
+  """Example field (placeholder)"""
+  name: String!
+}
+
+type Feature {
+  id: Int!
+  name: String!
+  testCases: [TestCase!]!
+}
+
+type Mutation {
+  createFeature(createFeatureInput: CreateFeatureInput!): Feature!
+  createTestCase(createTestCasesInput: CreateTestCaseInput!): TestCase!
+  removeFeature(featureId: String!): Feature!
+  removeTestCase(testCaseId: String!): TestCase!
+  updateFeature(updateFeatureInput: UpdateFeatureInput!): Feature!
+  updateTestCases(updateTestCaseInput: UpdateTestCaseInput!): TestCase!
+}
+
 type Query {
+  feature(featureId: String!): Feature!
+  features: [Feature!]!
   sayHello: String!
+  testCases(testCaseId: String!): TestCase!
+}
+
+type TestCase {
+  feature: Feature!
+  id: Int!
+  name: String!
+}
+
+input UpdateFeatureInput {
+  id: Int!
+
+  """Example field (placeholder)"""
+  name: String
+}
+
+input UpdateTestCaseInput {
+  """Example field (placeholder)"""
+  featureId: Int
+  id: Int!
+
+  """Example field (placeholder)"""
+  name: String
 }
