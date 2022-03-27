@@ -1,0 +1,11 @@
+{
+  "type": "mssql",
+  "host": "mssql",
+  "port": 1433,
+  "username": "sa",
+  "password": "mssql1Ipw",
+  "database": "",
+  "entities": ["dist/**/*.entity{.ts,.js}"],
+  "synchronize": true,
+  "options": { "trustServerCertificate": true }
+}
