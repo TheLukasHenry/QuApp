@@ -7,6 +7,8 @@ services:
       dockerfile: ./docker/client.Dockerfile.dev
     image: qaproject-ui:development
     platform: linux/x86_64
+    depends_on:
+      - mssql
     volumes:
       - ./ui:/app/ui:delegated
       - /app/ui/node_modules/
@@ -34,3 +36,16 @@ services:
       - SERVE_CLIENT=false
       - FORCE_COLOR=1
     command: npm run --prefix server start:dev
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    ports:
+      - 1433:1433
+    volumes:
+      - mssql:/var/lib/mssqlql/data
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=mssql1Ipw
+
+volumes:
+  mssql:
