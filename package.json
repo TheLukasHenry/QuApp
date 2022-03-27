@@ -1,0 +1,12 @@
+{
+  "name": "qaproject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "prebuild:ui": "npm --prefix ui install",
+    "build:ui": "NODE_ENV=production npm --prefix ui run build"
+  },
+  "author": "",
+  "license": "ISC"
+}

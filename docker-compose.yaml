@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  ui:
+    build:
+      context: ./
+      dockerfile: ./docker/client.Dockerfile.dev
+    image: qaproject-ui:development
+    platform: linux/x86_64
+    volumes:
+      - ./ui:/app/ui:delegated
+      - /app/ui/node_modules/
+    ports:
+      - 8085:8085
+    environment:
+      - PORT=8085
+      - HOST=0.0.0.0
+      - NODE_ENV=development
+    command: npm run --prefix ui start
