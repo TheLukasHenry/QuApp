@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "prebuild:ui": "npm --prefix ui install",
-    "build:ui": "NODE_ENV=production npm --prefix ui run build"
+    "prebuild:server": "npm --prefix server install",
+    "server:migration": "docker-compose run server npm run --prefix server db:migrate",
+    "build:ui": "NODE_ENV=production npm --prefix ui run build",
+    "build:server": "NODE_ENV=production npm --prefix server run build",
+    "rebuild": "docker compose build --no-cache"
   },
   "author": "",
   "license": "ISC"

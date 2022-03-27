@@ -7,8 +7,6 @@ services:
       dockerfile: ./docker/client.Dockerfile.dev
     image: qaproject-ui:development
     platform: linux/x86_64
-    depends_on:
-      - mssql
     volumes:
       - ./ui:/app/ui:delegated
       - /app/ui/node_modules/
@@ -26,6 +24,8 @@ services:
       dockerfile: ./docker/server.Dockerfile.dev
     image: qaproject-server:development
     platform: linux/x86_64
+    depends_on:
+      - mssql
     volumes:
       - ./server:/app/server:delegated
       - /app/server/node_modules/
@@ -42,10 +42,7 @@ services:
     ports:
       - 1433:1433
     volumes:
-      - mssql:/var/lib/mssqlql/data
+      - /mnt/c/appdata/mssql:/var/opt/mssql/data
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=mssql1Ipw
-
-volumes:
-  mssql:

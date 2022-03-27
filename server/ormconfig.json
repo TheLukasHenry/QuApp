@@ -7,5 +7,6 @@
   "database": "",
   "entities": ["dist/**/*.entity{.ts,.js}"],
   "synchronize": true,
-  "options": { "trustServerCertificate": true }
+  "options": { "trustServerCertificate": true },
+  "migrations": ["dist/db/migrations/*{.ts,.js}"]
 }
