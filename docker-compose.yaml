@@ -42,7 +42,7 @@ services:
     ports:
       - 1433:1433
     volumes:
-      - /mnt/c/appdata/mssql:/var/opt/mssql/data
+      - ~/GitHub/Data/mssql:/var/opt/mssql/data
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=mssql1Ipw
