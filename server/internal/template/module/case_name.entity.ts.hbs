@@ -1,0 +1,19 @@
+import { ObjectType, Field, Int } from '@nestjs/graphql'
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm'
+
+@ObjectType()
+@Entity({
+  name: '{{snakeCase name}}',
+})
+export class {{properCase name}} {
+  @Field(() => Int)
+  @PrimaryGeneratedColumn()
+  id: number
+
+  @Field(() => String, { description: 'name' })
+  @Column()
+  name: string
+
+  @Field(() => Date, { description: 'created date' })
+  createdAt: Date
+}

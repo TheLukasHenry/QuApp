@@ -1,13 +1,13 @@
-import { Module } from '@nestjs/common';
-import { GraphQLModule } from '@nestjs/graphql';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { join } from 'path';
-import { FooResolver } from './app.resolver';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import FeaturesService from './features/features.service';
-import { Feature } from './features/features.entity';
-import { FeaturesModule } from './features/features.module';
-import { TestCasesModule } from './test_cases/test_cases.module';
+import { Module } from '@nestjs/common'
+import { GraphQLModule } from '@nestjs/graphql'
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'
+import { join } from 'path'
+import { FooResolver } from './app.resolver'
+import { TypeOrmModule } from '@nestjs/typeorm'
+import { Feature } from './features/features.entity'
+import { FeaturesModule } from './features/features.module'
+import { TestCasesModule } from './test_cases/test_cases.module'
+import { TestStepModule } from './test_step/test_step.module'
 
 @Module({
   imports: [
@@ -20,6 +20,7 @@ import { TestCasesModule } from './test_cases/test_cases.module';
     }),
     FeaturesModule,
     TestCasesModule,
+    TestStepModule,
   ],
   providers: [FooResolver],
 })

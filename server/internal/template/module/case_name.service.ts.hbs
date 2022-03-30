@@ -1,0 +1,59 @@
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { {{properCase name}} } from './{{snakeCase name}}.entity';
+import { Create{{properCase name}}Input, Update{{properCase name}}Input } from './input';
+
+@Injectable()
+class {{properCase name}}Service {
+  public constructor(
+    @InjectRepository({{properCase name}})
+    public readonly {{camelCase name}}Repo: Repository<{{properCase name}}>,
+  ) {}
+
+  async create(create{{properCase name}}Input: Create{{properCase name}}Input): Promise<{{properCase name}}> {
+    const { name } = create{{properCase name}}Input;
+    const {{camelCase name}} = this.{{camelCase name}}Repo.create({
+      name,
+    });
+    return this.{{camelCase name}}Repo.save({{camelCase name}});
+  }
+
+  async findOne({{camelCase name}}Id: number): Promise<{{properCase name}}> {
+    const {{camelCase name}} = await this.{{camelCase name}}Repo.findOne({{camelCase name}}Id);
+    if (!{{camelCase name}}) {
+      throw new NotFoundException(`{{camelCase name}} not found`);
+    }
+    return {{camelCase name}};
+  }
+
+  async findAll(): Promise<Array<{{properCase name}}>> {
+    return await this.{{camelCase name}}Repo.find();
+  }
+
+  async update(
+    {{camelCase name}}Id: number,
+    update{{properCase name}}Input: Update{{properCase name}}Input,
+  ): Promise<{{properCase name}}> {
+    const {{camelCase name}} = await this.{{camelCase name}}Repo.preload({
+      id: {{camelCase name}}Id,
+      ...update{{properCase name}}Input,
+    });
+    if (!{{camelCase name}}) {
+      throw new NotFoundException(`{{camelCase name}} not found`);
+    }
+    return this.{{camelCase name}}Repo.save({{camelCase name}});
+  }
+
+  async remove({{camelCase name}}Id: number): Promise<{{properCase name}}> {
+    const {{camelCase name}} = await this.findOne({{camelCase name}}Id);
+    await this.{{camelCase name}}Repo.remove({{camelCase name}});
+    return {
+      id: {{camelCase name}}Id,
+      name: '',
+      createdAt: null,
+    };
+  }
+}
+
+export default {{properCase name}}Service;

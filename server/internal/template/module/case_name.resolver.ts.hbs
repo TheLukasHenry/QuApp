@@ -1,0 +1,34 @@
+import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql'
+import { {{properCase name}} } from './test_step.entity'
+import { Create{{properCase name}}Input, Update{{properCase name}}Input } from './input'
+import {{properCase name}}Service from './test_step.service'
+
+@Resolver()
+export default class {{properCase name}}Resolver {
+constructor(private readonly {{camelCase name}}Service: {{properCase name}}Service) {}
+
+@Mutation(() => {{properCase name}})
+create{{properCase name}}(@Args('create{{properCase name}}sInput') create{{properCase name}}sInput: Create{{properCase name}}Input) {
+return this.{{camelCase name}}Service.create(create{{properCase name}}sInput)
+}
+
+@Query(() => [{{properCase name}}], { name: '{{camelCase name}}s' })
+findAll() {
+return this.{{camelCase name}}Service.findAll()
+}
+
+@Query(() => {{properCase name}}, { name: '{{camelCase name}}' })
+findOne(@Args('{{camelCase name}}Id', { type: () => String }) {{camelCase name}}Id: number) {
+return this.{{camelCase name}}Service.findOne({{camelCase name}}Id)
+}
+
+@Mutation(() => {{properCase name}})
+update{{properCase name}}s(@Args('update{{properCase name}}Input') update{{properCase name}}Input: Update{{properCase name}}Input) {
+return this.{{camelCase name}}Service.update(update{{properCase name}}Input.id, update{{properCase name}}Input)
+}
+
+@Mutation(() => {{properCase name}})
+remove{{properCase name}}(@Args('{{camelCase name}}Id', { type: () => String }) {{camelCase name}}Id: number) {
+return this.{{camelCase name}}Service.remove({{camelCase name}}Id)
+}
+}

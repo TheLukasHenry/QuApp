@@ -9,11 +9,24 @@ input CreateFeatureInput {
 
 input CreateTestCaseInput {
   """Example field (placeholder)"""
-  featureId: Int!
+  feature: Int!
 
   """Example field (placeholder)"""
   name: String!
 }
+
+input CreateTestStepInput {
+  """name"""
+  name: String!
+
+  """Example field (placeholder)"""
+  testCase: Int!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type Feature {
   id: Int!
@@ -24,23 +37,40 @@ type Feature {
 type Mutation {
   createFeature(createFeatureInput: CreateFeatureInput!): Feature!
   createTestCase(createTestCasesInput: CreateTestCaseInput!): TestCase!
-  removeFeature(featureId: String!): Feature!
+  createTestStep(createTestStepsInput: CreateTestStepInput!): TestStep!
+  removeFeature(feature: String!): Feature!
   removeTestCase(testCaseId: String!): TestCase!
+  removeTestStep(testStepId: String!): TestStep!
   updateFeature(updateFeatureInput: UpdateFeatureInput!): Feature!
   updateTestCases(updateTestCaseInput: UpdateTestCaseInput!): TestCase!
+  updateTestSteps(updateTestStepInput: UpdateTestStepInput!): TestStep!
 }
 
 type Query {
-  feature(featureId: String!): Feature!
+  feature(feature: String!): Feature!
   features: [Feature!]!
   sayHello: String!
-  testCases(testCaseId: String!): TestCase!
+  testCase(testCaseId: String!): TestCase!
+  testCases: [TestCase!]!
+  testStep(testStepId: String!): TestStep!
+  testSteps: [TestStep!]!
 }
 
 type TestCase {
   feature: Feature!
   id: Int!
   name: String!
+  testSteps: [TestStep!]!
+}
+
+type TestStep {
+  """created date"""
+  createdAt: DateTime!
+  id: Int!
+
+  """name"""
+  name: String!
+  testCase: TestCase!
 }
 
 input UpdateFeatureInput {
@@ -51,10 +81,18 @@ input UpdateFeatureInput {
 }
 
 input UpdateTestCaseInput {
-  """Example field (placeholder)"""
-  featureId: Int
   id: Int!
 
   """Example field (placeholder)"""
   name: String
+}
+
+input UpdateTestStepInput {
+  id: Int!
+
+  """name"""
+  name: String
+
+  """Example field (placeholder)"""
+  testCase: Int
 }

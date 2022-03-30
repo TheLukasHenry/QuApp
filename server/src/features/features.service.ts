@@ -1,55 +1,54 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Feature } from './features.entity';
-import { CreateFeatureInput, UpdateFeatureInput } from './features.input';
+import { Injectable, NotFoundException } from '@nestjs/common'
+import { Repository } from 'typeorm'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Feature } from './features.entity'
+import { CreateFeatureInput, UpdateFeatureInput } from './features.input'
 
 @Injectable()
 class FeaturesService {
-  public constructor(
-    @InjectRepository(Feature) public readonly featureRepo: Repository<Feature>,
-  ) {}
+  public constructor(@InjectRepository(Feature) public readonly featureRepo: Repository<Feature>) {}
 
   async create(createFeatureInput: CreateFeatureInput): Promise<Feature> {
-    const feature = this.featureRepo.create(createFeatureInput);
-    return await this.featureRepo.save(feature);
+    const feature = this.featureRepo.create(createFeatureInput)
+    return await this.featureRepo.save(feature)
   }
 
-  async findOne(featureId: number): Promise<Feature> {
-    const feature = await this.featureRepo.findOne(featureId);
+  async findOne(id: number): Promise<Feature> {
+    const feature = await this.featureRepo.findOne(id, {
+      relations: ['testCase'],
+    })
     if (!feature) {
-      throw new NotFoundException(`feature #${featureId} not found`);
+      throw new NotFoundException(`feature #${id} not found`)
     }
-    return feature;
+    return feature
   }
 
   async findAll(): Promise<Array<Feature>> {
-    return await this.featureRepo.find();
+    return await this.featureRepo.find({
+      relations: ['testCases', 'testCases.testSteps'],
+    })
   }
 
-  async update(
-    featureId: number,
-    updateFeatureInput: UpdateFeatureInput,
-  ): Promise<Feature> {
+  async update(id: number, updateFeatureInput: UpdateFeatureInput): Promise<Feature> {
     const feature = await this.featureRepo.preload({
-      id: featureId,
+      id,
       ...updateFeatureInput,
-    });
+    })
     if (!feature) {
-      throw new NotFoundException(`User #${featureId} not found`);
+      throw new NotFoundException(`User #${id} not found`)
     }
-    return this.featureRepo.save(feature);
+    return this.featureRepo.save(feature)
   }
 
-  async remove(featureId: number): Promise<Feature> {
-    const feature = await this.findOne(featureId);
-    await this.featureRepo.remove(feature);
+  async remove(id: number): Promise<Feature> {
+    const feature = await this.findOne(id)
+    await this.featureRepo.remove(feature)
     return {
-      id: featureId,
+      id,
       name: '',
       testCases: [],
-    };
+    }
   }
 }
 
-export default FeaturesService;
+export default FeaturesService

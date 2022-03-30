@@ -1,4 +1,12 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
+import { Feature } from 'src/features/features.entity';
 import { TestCase } from './test_cases.entity';
 import { CreateTestCaseInput, UpdateTestCaseInput } from './test_cases.input';
 import TestCaseService from './test_cases.service';
@@ -19,7 +27,7 @@ export class TestCasesResolver {
     return this.testCaseService.findAll();
   }
 
-  @Query(() => TestCase, { name: 'testCases' })
+  @Query(() => TestCase, { name: 'testCase' })
   findOne(@Args('testCaseId', { type: () => String }) testCaseId: number) {
     return this.testCaseService.findOne(testCaseId);
   }

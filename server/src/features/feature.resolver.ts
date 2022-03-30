@@ -14,9 +14,9 @@ export class FeatureResolver {
 
   @Mutation(() => Feature)
   createFeature(
-    @Args('createFeatureInput') createFeaturesInput: CreateFeatureInput,
+    @Args('createFeatureInput') createFeatureInput: CreateFeatureInput,
   ) {
-    return this.featuresService.create(createFeaturesInput);
+    return this.featuresService.create(createFeatureInput);
   }
 
   @Query(() => [Feature], { name: 'features' })
@@ -25,8 +25,8 @@ export class FeatureResolver {
   }
 
   @Query(() => Feature, { name: 'feature' })
-  findOne(@Args('featureId', { type: () => String }) featureId: number) {
-    return this.featuresService.findOne(featureId);
+  findOne(@Args('feature', { type: () => String }) feature: number) {
+    return this.featuresService.findOne(feature);
   }
 
   @Mutation(() => Feature)
@@ -40,7 +40,7 @@ export class FeatureResolver {
   }
 
   @Mutation(() => Feature)
-  removeFeature(@Args('featureId', { type: () => String }) featureId: number) {
-    return this.featuresService.remove(featureId);
+  removeFeature(@Args('feature', { type: () => String }) feature: number) {
+    return this.featuresService.remove(feature);
   }
 }
