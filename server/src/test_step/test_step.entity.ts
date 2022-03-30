@@ -15,6 +15,10 @@ export class TestStep {
   @Column()
   name: string
 
+  @Field(() => String)
+  @Column({ default: '' })
+  expectedResult: string
+
   @Field(() => TestCase)
   @ManyToOne((type) => TestCase, (testCase) => testCase.id)
   @JoinColumn({ name: 'test_case', referencedColumnName: 'id' })

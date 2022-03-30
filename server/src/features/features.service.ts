@@ -47,6 +47,8 @@ class FeaturesService {
       id,
       name: '',
       testCases: [],
+      description: '',
+      createdAt: null,
     }
   }
 }

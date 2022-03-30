@@ -1,6 +1,6 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql'
 import { TestCase } from 'src/test_cases/test_cases.entity'
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany,JoinColumn } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn } from 'typeorm'
 
 @ObjectType()
 @Entity()
@@ -13,9 +13,17 @@ export class Feature {
   @Column()
   name: string
 
+  @Field(() => String)
+  @Column({ default: '' })
+  description: string
+
   @Field((type) => [TestCase])
   @OneToMany((type) => TestCase, (testCase) => testCase.feature, {
     nullable: true,
   })
   testCases: Promise<TestCase[]> | TestCase[] | undefined
+
+  @Field(() => Date, { description: 'created date' })
+  @Column({ default: null })
+  createdAt: Date
 }

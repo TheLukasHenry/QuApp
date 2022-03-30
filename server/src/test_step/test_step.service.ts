@@ -53,6 +53,7 @@ class TestStepService {
       name: '',
       createdAt: null,
       testCase: null,
+      expectedResult: '',
     }
   }
 }

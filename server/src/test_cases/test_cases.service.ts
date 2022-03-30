@@ -36,7 +36,6 @@ class TestCaseService {
   }
 
   async findAll(): Promise<Array<TestCase>> {
-    console.log('test case service')
     return await this.testCaseRepo.find({
       relations: ['feature', 'testSteps'],
     })
@@ -61,6 +60,12 @@ class TestCaseService {
       name: '',
       feature: null,
       testSteps: [],
+      description: '',
+      createdAt: null,
+      prerequisites: '',
+      operatingSystems: '',
+      duration: 0,
+      expectedResult: '',
     }
   }
 }

@@ -4,15 +4,33 @@
 
 input CreateFeatureInput {
   """Example field (placeholder)"""
+  description: String!
+
+  """Example field (placeholder)"""
   name: String!
 }
 
 input CreateTestCaseInput {
   """Example field (placeholder)"""
+  description: String!
+
+  """Example field (placeholder)"""
+  duration: Int!
+
+  """Example field (placeholder)"""
+  expectedResult: String!
+
+  """Example field (placeholder)"""
   feature: Int!
 
   """Example field (placeholder)"""
   name: String!
+
+  """Example field (placeholder)"""
+  operatingSystems: String!
+
+  """Example field (placeholder)"""
+  prerequisites: String!
 }
 
 input CreateTestStepInput {
@@ -29,6 +47,9 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type Feature {
+  """created date"""
+  createdAt: DateTime!
+  description: String!
   id: Int!
   name: String!
   testCases: [TestCase!]!
@@ -57,15 +78,24 @@ type Query {
 }
 
 type TestCase {
+  createdAt: DateTime
+  description: String!
+
+  """duration in minutes"""
+  duration: Int!
+  expectedResult: String!
   feature: Feature!
   id: Int!
   name: String!
+  operatingSystems: String!
+  prerequisites: String!
   testSteps: [TestStep!]!
 }
 
 type TestStep {
   """created date"""
   createdAt: DateTime!
+  expectedResult: String!
   id: Int!
 
   """name"""
@@ -74,6 +104,8 @@ type TestStep {
 }
 
 input UpdateFeatureInput {
+  """Example field (placeholder)"""
+  description: String
   id: Int!
 
   """Example field (placeholder)"""
@@ -81,10 +113,24 @@ input UpdateFeatureInput {
 }
 
 input UpdateTestCaseInput {
+  """Example field (placeholder)"""
+  description: String
+
+  """Example field (placeholder)"""
+  duration: Int
+
+  """Example field (placeholder)"""
+  expectedResult: String
   id: Int!
 
   """Example field (placeholder)"""
   name: String
+
+  """Example field (placeholder)"""
+  operatingSystems: String
+
+  """Example field (placeholder)"""
+  prerequisites: String
 }
 
 input UpdateTestStepInput {

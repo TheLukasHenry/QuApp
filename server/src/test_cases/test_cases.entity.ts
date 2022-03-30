@@ -14,6 +14,26 @@ export class TestCase {
   @Column()
   name: string
 
+  @Field(() => String)
+  @Column({ default: '' })
+  prerequisites: string
+
+  @Field(() => Int, { description: 'duration in minutes' })
+  @Column({ default: 0 })
+  duration: number
+
+  @Field(() => String)
+  @Column({ default: '' })
+  description: string
+
+  @Field(() => String)
+  @Column({ default: '' })
+  expectedResult: string
+
+  @Field(() => String)
+  @Column({ default: '' })
+  operatingSystems: string
+
   @Field(() => Feature)
   @ManyToOne((type) => Feature, (feature) => feature.id)
   @JoinColumn({ name: 'feature', referencedColumnName: 'id' })
@@ -24,4 +44,8 @@ export class TestCase {
     nullable: true,
   })
   testSteps: Promise<TestStep[]> | TestStep[] | undefined
+
+  @Field(() => Date, { nullable: true })
+  @Column({ default: null })
+  createdAt: Date
 }
