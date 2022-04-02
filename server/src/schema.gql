@@ -59,7 +59,7 @@ type Mutation {
   createFeature(createFeatureInput: CreateFeatureInput!): Feature!
   createTestCase(createTestCasesInput: CreateTestCaseInput!): TestCase!
   createTestStep(createTestStepsInput: CreateTestStepInput!): TestStep!
-  removeFeature(feature: String!): Feature!
+  removeFeature(id: String!): Feature!
   removeTestCase(testCaseId: String!): TestCase!
   removeTestStep(testStepId: String!): TestStep!
   updateFeature(updateFeatureInput: UpdateFeatureInput!): Feature!

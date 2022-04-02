@@ -1,7 +1,7 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { Feature } from './features.entity';
-import { CreateFeatureInput, UpdateFeatureInput } from './features.input';
-import FeaturesService from './features.service';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
+import { Feature } from './features.entity'
+import { CreateFeatureInput, UpdateFeatureInput } from './features.input'
+import FeaturesService from './features.service'
 
 @Resolver()
 export class FeatureResolver {
@@ -9,38 +9,31 @@ export class FeatureResolver {
 
   @Query(() => String)
   async sayHello(): Promise<string> {
-    return `Hello World! ${await this.featuresService.featureRepo.count()}`;
+    return `Hello World! ${await this.featuresService.featureRepo.count()}`
   }
 
   @Mutation(() => Feature)
-  createFeature(
-    @Args('createFeatureInput') createFeatureInput: CreateFeatureInput,
-  ) {
-    return this.featuresService.create(createFeatureInput);
+  createFeature(@Args('createFeatureInput') createFeatureInput: CreateFeatureInput) {
+    return this.featuresService.create(createFeatureInput)
   }
 
   @Query(() => [Feature], { name: 'features' })
   findAll() {
-    return this.featuresService.findAll();
+    return this.featuresService.findAll()
   }
 
   @Query(() => Feature, { name: 'feature' })
   findOne(@Args('feature', { type: () => String }) feature: number) {
-    return this.featuresService.findOne(feature);
+    return this.featuresService.findOne(feature, ['testCase'])
   }
 
   @Mutation(() => Feature)
-  updateFeature(
-    @Args('updateFeatureInput') updateFeatureInput: UpdateFeatureInput,
-  ) {
-    return this.featuresService.update(
-      updateFeatureInput.id,
-      updateFeatureInput,
-    );
+  updateFeature(@Args('updateFeatureInput') updateFeatureInput: UpdateFeatureInput) {
+    return this.featuresService.update(updateFeatureInput.id, updateFeatureInput)
   }
 
   @Mutation(() => Feature)
-  removeFeature(@Args('feature', { type: () => String }) feature: number) {
-    return this.featuresService.remove(feature);
+  removeFeature(@Args('id', { type: () => String }) feature: number) {
+    return this.featuresService.remove(feature)
   }
 }

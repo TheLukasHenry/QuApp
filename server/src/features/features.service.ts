@@ -13,9 +13,9 @@ class FeaturesService {
     return await this.featureRepo.save(feature)
   }
 
-  async findOne(id: number): Promise<Feature> {
+  async findOne(id: number, relations: string[] | null = null): Promise<Feature> {
     const feature = await this.featureRepo.findOne(id, {
-      relations: ['testCase'],
+      relations,
     })
     if (!feature) {
       throw new NotFoundException(`feature #${id} not found`)

@@ -15,12 +15,13 @@ class TestCaseService {
   ) {}
 
   async create(createTestCaseInput: CreateTestCaseInput): Promise<TestCase> {
-    const { name, feature } = createTestCaseInput
+    const { name, feature, ...restOfInputs } = createTestCaseInput
     const testCase = this.testCaseRepo.create({
       name,
       feature: {
         id: feature,
       },
+      ...restOfInputs,
     })
     return this.testCaseRepo.save(testCase)
   }
@@ -47,7 +48,7 @@ class TestCaseService {
       ...updateTestCaseInput,
     })
     if (!testCase) {
-      throw new NotFoundException(`User #${testCaseId} not found`)
+      throw new NotFoundException(`Test Case #${updateTestCaseInput.id} not found`)
     }
     return this.testCaseRepo.save(testCase)
   }
