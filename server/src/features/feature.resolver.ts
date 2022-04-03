@@ -23,8 +23,8 @@ export class FeatureResolver {
   }
 
   @Query(() => Feature, { name: 'feature' })
-  findOne(@Args('feature', { type: () => String }) feature: number) {
-    return this.featuresService.findOne(feature, ['testCase'])
+  findOne(@Args('id', { type: () => String }) id: number) {
+    return this.featuresService.findOne(id, ['testCases'])
   }
 
   @Mutation(() => Feature)
