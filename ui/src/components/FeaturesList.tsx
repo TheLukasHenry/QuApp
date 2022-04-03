@@ -3,15 +3,60 @@ import Feature from './Feature'
 import AddFeatureModal  from './AddFeatureModal'
 import { Button } from 'react-bootstrap'
 import { FeatureType } from './Types'
+import { useFeatures } from '../features/features/useFeatures'
+
+export type Feature = {
+  id: string
+  name: string
+  description: string
+}
+
+export type FeatureInput = Partial<Feature>
+
+type FeatureData = {
+  features: Feature[]
+}
 
 export const FeaturesList: React.FC = () => {
-  const [featuresArray, setFeaturesArray] = useState(defaultFeatures)
+
 
   const [show, setShow] = useState(false)
 
   const modalToggle = () => setShow(!show)
 
+  const {
+    loading,
+        error,
+        features,
+        addFeature,
+        updateFeature,
+        removeFeature,
+  } = useFeatures()
 
+  const [feature, setFeature] = React.useReducer(
+    (state: FeatureInput, update: FeatureInput) => ({ ...state, ...update }),
+    {},
+  )
+
+  const saveFeature = () => {
+    if (feature.id) {
+      updateFeature({
+        variables: {
+          id: feature.id,
+          feature,
+        },
+      })
+    } else {
+      addFeature({
+        variables: {
+          feature,
+        },
+      })
+    }
+  }
+
+  if (loading) return <p>Loading...</p>
+  if (error) return <p>Error :(</p>
 
   return (
     <div className='container mt-5'>
@@ -24,16 +69,15 @@ export const FeaturesList: React.FC = () => {
 
 
       <div className={'row'}>
-        {featuresArray.map((feature) => (
-          <Feature key={feature.id} {...feature} />
+        {features.map((feature) => (
+          <Feature key={feature.id} feature={feature} />
         ))}
       </div>
 
           <AddFeatureModal 
             modalToggle={modalToggle}
             show={show}
-            setFeaturesArray={setFeaturesArray}
-            featuresArray={featuresArray}
+
           />
     </div>
   )

@@ -12,7 +12,7 @@ export default function MainComponent() {
         <Route path='/' element={<FeaturesList />} />
       </Routes>
 
-      <GraphqlExample />
+      {/* <GraphqlExample /> */}
     </BrowserRouter>
   )
 }

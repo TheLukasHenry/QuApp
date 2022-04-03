@@ -1,10 +1,11 @@
 export interface FeatureType {
   id: number
   name: string
-  testCases: testCases[]
+  description?: string
+  testCases: TestCase[]
 }
 
-export interface testCases {
+export interface TestCase {
   id: number
   name: string
   description: string
