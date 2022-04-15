@@ -1,46 +1,46 @@
 import React from 'react'
-import { Card, Button } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
-import { FeatureType } from './Types'
+import { Button } from 'react-bootstrap'
+import { useParams } from 'react-router-dom'
 import { useFeatures } from '../features/features/useFeatures'
 
-type FeatureCardProps = {
-  feature: FeatureType
-}
 
-export const Feature: React.FC<FeatureCardProps> = (props) => {
-  const { feature } = props
+export const Feature: React.FC = () => {
 
-  const {
-        removeFeature,
-  } = useFeatures()
+  const { id } = useParams()
+
+  const { feature } = useFeatures(id)
+
+  const name = feature?.name
+  const description = feature?.description
+  const testCases = feature?.testCases
 
   return (
-      <Card style={{ width: '18rem' }} className={'col-md-4 col-sm-6 col-xs-12'}>
-        <Card.Body>
-          <Card.Title>
-            {feature.name}
-          </Card.Title>
-          <Card.Text>
-            {feature.description}
-          </Card.Text>
+    <>
+      <div>
+        {id}
+      </div>
+      <h1>{name}</h1>
+      <h3>{description}</h3>
+      <Button>
+        Add test case
+      </Button>
+      <p>
+        {testCases?.map((testCase) => (
+          <div key={testCase.id}>
+            <h4>{testCase.name}</h4>
+            <p>{testCase.description}</p>
+            <p>{testCase.duration}</p>
+            <p>{testCase.expectedResult}</p>
+            <p>{testCase.operatingSystems}</p>
+            <p>{testCase.prerequisites}</p>
+          </div>
+            ))}
+      </p>
 
-          <Button variant='primary'>
-            <Link className='text-light text-decoration-none' to='/features'>
-              Open
-            </Link>{' '}
-          </Button>
-          <Button
-            onClick={() => {
-              console.log('id', feature.id)
-              removeFeature({ variables: { id: `${feature.id}` } })
-            }}
-          >
-            delete feature
-          </Button>
-        </Card.Body>
-      </Card>
+      
+    </>
   )
 }
 
 export default Feature
+

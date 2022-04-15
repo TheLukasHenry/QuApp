@@ -15,6 +15,22 @@ export const FEATURES = gql`
   }
 `
 
+export const FEATURE = gql`
+  query ($id: String!){
+  feature(feature: $id) {
+    id
+    name
+    description
+   	testCases {
+       id
+       description
+        name
+     }
+  }
+}
+
+`
+
 export const ADD_FEATURE = gql`
   mutation createFeature($feature: CreateFeatureInput!) {
     createFeature(createFeatureInput: $feature) {

@@ -1,8 +1,9 @@
 import React from 'react'
 import MainNavbar from './MainNavbar'
 import FeaturesList from './FeaturesList'
+import Feature from './Feature'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import GraphqlExample from './graphqlExample'
+
 
 export default function MainComponent() {
   return (
@@ -10,9 +11,9 @@ export default function MainComponent() {
       <MainNavbar />
       <Routes>
         <Route path='/' element={<FeaturesList />} />
-      </Routes>
+        <Route path='/features/:id' element={<Feature />} />
 
-      {/* <GraphqlExample /> */}
+      </Routes>
     </BrowserRouter>
   )
 }
