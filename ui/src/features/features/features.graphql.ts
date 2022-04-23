@@ -28,7 +28,6 @@ export const FEATURE = gql`
      }
   }
 }
-
 `
 
 export const ADD_FEATURE = gql`
@@ -41,9 +40,21 @@ export const ADD_FEATURE = gql`
   }
 `
 
+// working code
+// export const UPDATE_FEATURE = gql`
+//   mutation updateFeature($id: String!, $feature: FeatureInput!) {
+//     updateFeature(feature: $feature) {
+//       id
+//       name
+//       description
+//     }
+//   }
+// `
+
+//  Lukas attempt
 export const UPDATE_FEATURE = gql`
-  mutation updateFeature($id: String!, $feature: FeatureInput!) {
-    updateFeature(feature: $feature) {
+  mutation updateFeature($feature: UpdateFeatureInput!) {
+    updateFeature(updateFeatureInput: $feature) {
       id
       name
       description
