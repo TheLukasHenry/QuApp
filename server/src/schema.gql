@@ -68,7 +68,7 @@ type Mutation {
 }
 
 type Query {
-  feature(feature: String!): Feature!
+  feature(id: String!): Feature!
   features: [Feature!]!
   sayHello: String!
   testCase(testCaseId: String!): TestCase!

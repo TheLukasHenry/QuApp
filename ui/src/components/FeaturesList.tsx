@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import FeatureCard from './FeatureCard'
-import AddFeatureModal from './AddFeatureModal'
+import AddFeatureModal  from './AddFeatureModal'
 import { Button } from 'react-bootstrap'
 import { useFeatures } from '../features/features/useFeatures'
 
@@ -29,27 +29,14 @@ export const FeaturesList: React.FC = () => {
 
       <div className={'row'}>
         {features.map((feature) => (
-          <>
-            <FeatureCard
-              key={feature.id}
-              feature={feature}
-              onClickUpdate={() => {
-                setSelectedFeatureId(feature.id)
-                modalToggle()
-              }}
-              //  Update Feature
-            />
-          </>
+          <FeatureCard key={feature.id} feature={feature} setShow={setShow}/>
         ))}
       </div>
 
-      <AddFeatureModal
-        modalToggle={modalToggle}
-        show={show}
-        // Update Feature
-        id={selectedFeatureId}
-        passedFeature={features.find((feature) => feature.id === selectedFeatureId)}
-      />
+          <AddFeatureModal 
+            modalToggle={modalToggle}
+            show={show}
+          />
     </div>
   )
 }

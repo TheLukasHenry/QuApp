@@ -6,10 +6,11 @@ import { useFeatures } from '../features/features/useFeatures'
 
 type FeatureCardProps = {
   feature: FeatureType
+  setShow: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const FeatureCard: React.FC<FeatureCardProps> = (props) => {
-  const { feature } = props
+  const { feature, setShow } = props
 
   const {
         removeFeature,
@@ -19,7 +20,8 @@ export const FeatureCard: React.FC<FeatureCardProps> = (props) => {
       <Card style={{ width: '18rem' }} className={'col-md-4 col-sm-6 col-xs-12'}>
         <Card.Body>
           <Card.Title>
-            {feature.name}
+            {feature.name}, 
+            id: {feature.id}
           </Card.Title>
           <Card.Text>
             {feature.description}
@@ -39,8 +41,16 @@ export const FeatureCard: React.FC<FeatureCardProps> = (props) => {
               removeFeature({ variables: { id: `${feature.id}` } })
             }}
           >
-            delete feature
+            Delete
           </Button>
+          <Button onClick={() => {
+        setShow(true)
+      }}
+      
+      >
+        
+        Edit</Button>
+
         </Card.Body>
       </Card>
   )

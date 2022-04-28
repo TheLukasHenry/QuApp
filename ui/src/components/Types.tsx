@@ -14,6 +14,7 @@ export interface TestCase {
   operatingSystems: string
   prerequisites: string
   testSteps: testSteps[]
+  feature: number
 }
 
 export interface testSteps {
