@@ -9,44 +9,40 @@ interface Props {
   modalToggle: () => void
   show: boolean
   id?: number
-  passedFeature?: FeatureType
 }
 
 export const AddFeatureModal: React.FC<Props> = (props) => {
-  const { modalToggle, show, id, passedFeature } = props
+  const { modalToggle, show, id } = props
 
+  const { loading, error, addFeature, updateFeature, feature: passedFeature } = useFeatures(id?.toString())
   const [feature, setFeature] = React.useReducer(
     (state: FeatureInput, update: FeatureInput) => ({ ...state, ...update }),
     {},
   )
 
-  const { loading, error, addFeature, updateFeature } = useFeatures()
-
- useEffect(() => {
-   if(passedFeature?.id) {
-      setFeature(passedFeature)
-   }
-   else {
-     setFeature({id: undefined, name: undefined, description: undefined, testCases: undefined})
-   }
-  }, [passedFeature?.id])
-
+  useEffect(() => {
+    if (id) {
+      setFeature({ ...passedFeature })
+    } else {
+      setFeature({ name: '', description: '', id: undefined, testCases: [] })
+    }
+  }, [id, passedFeature])
 
   const saveFeature = () => {
-    if (feature.id) {
+    if (id) {
       updateFeature({
         variables: {
-          feature:{
-            id: feature.id,
-            name: feature.name,
+          feature: {
+            id: id,
             description: feature.description,
+            name: feature.name,
           },
         },
       })
     } else {
       addFeature({
         variables: {
-          feature:{
+          feature: {
             name: feature.name,
             description: feature.description,
           },
@@ -58,7 +54,6 @@ export const AddFeatureModal: React.FC<Props> = (props) => {
   if (loading) return <p>Loading...</p>
   if (error) return <p>Error :(</p>
 
- 
   return (
     <Modal show={show} onHide={modalToggle}>
       <Modal.Header closeButton>
