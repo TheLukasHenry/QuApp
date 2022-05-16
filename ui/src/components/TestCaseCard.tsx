@@ -16,22 +16,23 @@ export const TestCaseCard: React.FC<TestCaseCardProps> = (props) => {
   const { removeTestCase } = useTestCases()
 
   return (
-    <Card style={{ width: '18rem' }} className={'col-md-4 col-sm-6 col-xs-12'}>
+    <Card className={'col-lg-4 col-md-6 col-xs-12 testCaseCard shadow'}>
       <Card.Body>
-        <Card.Title>{testCase.name}</Card.Title>
+        <Card.Title className="text-center mb-4">{testCase.name}</Card.Title>
         <Card.Text>description: {testCase.description}</Card.Text>
 
-        <Button variant='primary'>
+        <Button variant='primary' className="m-1">
           Open
         </Button>
         <Button
           onClick={() => {
             removeTestCase({ variables: { testCaseId: `${testCase.id}` } })
           }}
+          className="m-1"
         >
           Delete
         </Button>
-        <Button variant='primary'>
+        <Button variant='primary' className="m-1">
           <Link className='text-light text-decoration-none' to={`/features/${featureId}/addTestCase/${testCase?.id}`}>
             Edit
           </Link>{' '}

@@ -7,12 +7,12 @@ export type FeatureInput = Partial<FeatureType>
 
 interface Props {
   modalToggle: () => void
-  show: boolean
   id?: number
+  show: boolean
 }
 
 export const AddFeatureModal: React.FC<Props> = (props) => {
-  const { modalToggle, show, id } = props
+  const { modalToggle, id, show } = props
 
   const { loading, error, addFeature, updateFeature, feature: passedFeature } = useFeatures(id?.toString())
   const [feature, setFeature] = React.useReducer(
@@ -51,11 +51,11 @@ export const AddFeatureModal: React.FC<Props> = (props) => {
     }
   }
 
-  if (loading) return <p>Loading...</p>
-  if (error) return <p>Error :(</p>
-
   return (
-    <Modal show={show} onHide={modalToggle}>
+    <Modal
+      onHide={modalToggle}
+      show={show}
+    >
       <Modal.Header closeButton>
         <Modal.Title>{id ? 'Update' : 'Add'} Feature</Modal.Title>
       </Modal.Header>
@@ -89,6 +89,8 @@ export const AddFeatureModal: React.FC<Props> = (props) => {
         >
           {id ? 'Update' : 'Add'}
         </Button>
+        <p className='text-danger'>{loading ? 'Feature loading' : ''}</p>
+        <p className='text-danger'>{error ? 'Feature error' : ''}</p>
       </Modal.Footer>
     </Modal>
   )

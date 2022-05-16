@@ -12,9 +12,6 @@ export const FeaturesList: React.FC = () => {
 
   const { loading, error, features } = useFeatures()
 
-  if (loading) return <p>Loading...</p>
-  if (error) return <p>Error :( {JSON.stringify(error)}</p>
-
   return (
     <div className='container mt-5'>
       <h1 className='text-center m-5'>Features</h1>
@@ -23,6 +20,7 @@ export const FeaturesList: React.FC = () => {
           setSelectedFeatureId(undefined)
           setShow(true)
         }}
+        className='p-3 my-4 shadow'
       >
         Add Feature
       </Button>
@@ -37,8 +35,14 @@ export const FeaturesList: React.FC = () => {
           />
         ))}
       </div>
+      <p className="text-danger">{loading ? 'Loading' : ''}</p>
+       <p className="text-danger">{error ? 'Error' : ''}</p>
 
-      { show ? <AddFeatureModal modalToggle={modalToggle} show={show} id={selectedFeatureId} /> : null }
+     <AddFeatureModal 
+     modalToggle={modalToggle} 
+     id={selectedFeatureId}
+     show={show}
+      /> 
     </div>
   )
 }
