@@ -65,7 +65,7 @@ export const AddFeatureModal: React.FC<Props> = (props) => {
           <FormControl
             aria-label='Small'
             aria-describedby='inputGroup-sizing-sm'
-            value={feature?.name}
+            value={feature?.name || ''}
             onChange={(e) => setFeature({ name: e.currentTarget.value })}
           />
         </InputGroup>
@@ -74,7 +74,7 @@ export const AddFeatureModal: React.FC<Props> = (props) => {
           <FormControl
             aria-label='Small'
             aria-describedby='inputGroup-sizing-sm'
-            value={feature?.description}
+            value={feature?.description || ''}
             onChange={(e) => setFeature({ description: e.currentTarget.value })}
           />
         </InputGroup>
