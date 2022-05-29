@@ -1,39 +1,47 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Button, Modal, InputGroup, FormControl } from 'react-bootstrap'
 import { useFeatures } from '../features/features/useFeatures'
 import { FeatureType } from './Types'
+import { Error } from './Error'
+import { Loading } from './Loading'
+import { FeatureContext } from '../App'
 
 export type FeatureInput = Partial<FeatureType>
 
 interface Props {
-  modalToggle: () => void
-  id?: number
-  show: boolean
+  // id?: number
 }
 
-export const AddFeatureModal: React.FC<Props> = (props) => {
-  const { modalToggle, id, show } = props
+export const AddFeatureModal: React.FC<Props> = () => {
+  const { modalToggle, show, selectedId } = useContext(FeatureContext)
 
-  const { loading, error, addFeature, updateFeature, feature: passedFeature } = useFeatures(id?.toString())
+
+  const {
+    addFeature,
+    updateFeature,
+    feature: passedFeature,
+    featureError,
+    featureLoading,
+  } = useFeatures(selectedId)
   const [feature, setFeature] = React.useReducer(
     (state: FeatureInput, update: FeatureInput) => ({ ...state, ...update }),
     {},
   )
 
   useEffect(() => {
-    if (id) {
+    if (selectedId) {
       setFeature({ ...passedFeature })
     } else {
       setFeature({ name: '', description: '', id: undefined, testCases: [] })
     }
-  }, [id, passedFeature])
+  }, [selectedId, passedFeature])
 
   const saveFeature = () => {
-    if (id) {
+    if (selectedId) {
       updateFeature({
         variables: {
           feature: {
-            id: id,
+            id: selectedId,
             description: feature.description,
             name: feature.name,
           },
@@ -52,12 +60,9 @@ export const AddFeatureModal: React.FC<Props> = (props) => {
   }
 
   return (
-    <Modal
-      onHide={modalToggle}
-      show={show}
-    >
+    <Modal onHide={modalToggle} show={show}>
       <Modal.Header closeButton>
-        <Modal.Title>{id ? 'Update' : 'Add'} Feature</Modal.Title>
+        <Modal.Title>{selectedId ? 'Update' : 'Add'} Feature</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <InputGroup size='sm' className='mb-3'>
@@ -87,11 +92,14 @@ export const AddFeatureModal: React.FC<Props> = (props) => {
             saveFeature()
           }}
         >
-          {id ? 'Update' : 'Add'}
+          {selectedId ? 'Update' : 'Add'}
         </Button>
-        <p className='text-danger'>{loading ? 'Feature loading' : ''}</p>
-        <p className='text-danger'>{error ? 'Feature error' : ''}</p>
       </Modal.Footer>
+
+      {featureError && <Error >
+          {featureError}
+          </Error>}
+      {featureLoading && <Loading />}
     </Modal>
   )
 }

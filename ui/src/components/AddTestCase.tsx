@@ -4,6 +4,8 @@ import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import { useTestCases } from '../testCases/useTestCases'
 import { TestCase } from './Types'
+import { Error } from './Error'
+import { Loading } from './Loading'
 
 export type TestCaseInput = Partial<TestCase>
 
@@ -12,13 +14,11 @@ export const Feature: React.FC = () => {
 
   const navigate = useNavigate()
   const {
-    addTestCaseLoading,
-    addTestCaseError,
     addTestCase,
     testCases,
     updateTestCases,
-    updateTestCaseError,
-    updateTestCaseLoading,
+    testCasesError,
+    testCasesLoading,
   } = useTestCases(id)
 
   let selectedCase: any = testCaseId ? testCases?.find((tc: any) => tc.id === Number(testCaseId)) : {}
@@ -122,10 +122,11 @@ export const Feature: React.FC = () => {
         >
           {testCaseId ? 'Update' : 'Add'}
         </Button>
-        <p className='text-danger'>{updateTestCaseLoading ? 'Loading' : ''}</p>
-        <p className='text-danger'>{updateTestCaseError ? 'Error' : ''}</p>
-        <p className='text-danger'>{addTestCaseLoading ? 'Loading' : ''}</p>
-        <p className='text-danger'>{addTestCaseError ? 'Error' : ''}</p>
+        {testCasesError && <Error >
+          {testCasesError}
+          </Error>}
+      {testCasesLoading && <Loading />}
+
       </Form>
     </div>
   )

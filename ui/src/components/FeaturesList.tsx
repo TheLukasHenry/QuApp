@@ -1,11 +1,13 @@
 import React from 'react'
-import FeatureCard from './FeatureCard'
-import AddFeatureModal from './AddFeatureModal'
 import { Button } from 'react-bootstrap'
 import { useFeatures } from '../features/features/useFeatures'
+import { Error } from './Error'
+import FeatureCard from './FeatureCard'
+import { Loading } from './Loading'
 
 export const FeaturesList: React.FC = () => {
-  const { loading, error, features, modalToggle, show } = useFeatures()
+
+  const { features, featureError, featureLoading, modalToggle } = useFeatures()
 
   return (
     <div className='container mt-5'>
@@ -21,14 +23,15 @@ export const FeaturesList: React.FC = () => {
 
       <div className={'row'}>
         {features.map((feature) => (
-          <FeatureCard
-            key={feature.id}
-            feature={feature}
-          />
+          <FeatureCard key={feature.id} feature={feature} />
         ))}
       </div>
+      {featureError && <Error >
+          {featureError}
+          </Error>}
+      {featureLoading && <Loading />}
+      
 
-      { show ? <AddFeatureModal modalToggle={modalToggle} show={show}/> : null }
     </div>
   )
 }

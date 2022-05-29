@@ -3,6 +3,8 @@ import { Card, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { TestCase } from './Types'
 import { useTestCases } from '../testCases/useTestCases'
+import { Error } from './Error'
+import { Loading } from './Loading'
 
 
 type TestCaseCardProps = {
@@ -13,7 +15,7 @@ type TestCaseCardProps = {
 export const TestCaseCard: React.FC<TestCaseCardProps> = (props) => {
   const { testCase, featureId } = props
 
-  const { removeTestCase } = useTestCases()
+  const { removeTestCase, testCasesError, testCasesLoading } = useTestCases(testCase.id?.toString())
 
   return (
     <Card className={'col-lg-4 col-md-6 col-xs-12 testCaseCard shadow'}>
@@ -38,6 +40,10 @@ export const TestCaseCard: React.FC<TestCaseCardProps> = (props) => {
           </Link>{' '}
         </Button>
       </Card.Body>
+      {testCasesError && <Error >
+          {testCasesError}
+          </Error>}
+      {testCasesLoading && <Loading />}
     </Card>
   )
 }

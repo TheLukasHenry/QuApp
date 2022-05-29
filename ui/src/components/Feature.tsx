@@ -3,11 +3,12 @@ import { Button } from 'react-bootstrap'
 import { useParams, Link } from 'react-router-dom'
 import { useFeatures } from '../features/features/useFeatures'
 import TestCaseCard from './TestCaseCard'
-import AddFeatureModal from './AddFeatureModal'
+import { Error } from './Error'
+import { Loading } from './Loading'
 
 export const Feature: React.FC = () => {
   const { id } = useParams()
-  const { feature, featureLoading, featureError, modalToggle, show } = useFeatures(id)
+  const { feature, featureLoading, featureError, modalToggle } = useFeatures(id)
 
   const name = feature?.name
   const description = feature?.description
@@ -19,7 +20,7 @@ export const Feature: React.FC = () => {
       <h5>Description: {description}</h5>
       <Button
         onClick={() => {
-          modalToggle()
+          modalToggle(feature?.id)
         }}
       >
         Edit Feature
@@ -31,16 +32,16 @@ export const Feature: React.FC = () => {
           Add Test Case
         </Link>{' '}
       </Button>
-      
+
       <div className='row'>
         {testCases?.map((testCase) => (
           <TestCaseCard key={testCase.id} testCase={testCase} featureId={id} />
         ))}
       </div>
-      {show ? <AddFeatureModal modalToggle={modalToggle} show={show} id={feature?.id} /> : null}
-
-      <p className='text-danger'>{featureLoading ? 'Loading' : ''}</p>
-      <p className='text-danger'>{featureError ? 'Error' : ''}</p>
+      {featureError && <Error >
+          {featureError}
+          </Error>}
+      {featureLoading && <Loading />}
     </div>
   )
 }

@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client'
 import { FeatureType } from '../../components/Types'
 import { FEATURES, FEATURE} from './features.graphql'
 import { useAddFeature, useRemoveFeature, useUpdateFeature } from './features.hooks'
-import { FeatureContext } from '../../components/MainComponent'
+import { FeatureContext } from '../../App'
 import { useContext } from 'react'
 
 
@@ -17,39 +17,32 @@ type FeatureData = {
 }
 
 export const useFeatures = (id?: string) => {
-  const { loading, error, data } = useQuery<FeaturesData>(FEATURES)
+  const { loading: featuresLoading, error: featuresError, data } = useQuery<FeaturesData>(FEATURES)
   const {
     loading: featureLoading,
     error: featureError,
     data: featureData,
   } = useQuery<FeatureData>(FEATURE, {
+    skip: !id,
     variables: {
-      id:id||"",
+      id:id?.toString()||"",
     },
   })
 
-  const { modalToggle, show } = useContext(FeatureContext)
+  const { modalToggle } = useContext(FeatureContext)
   const { addFeature, loading: addFeatureLoading, error: addFeatureError } = useAddFeature()
   const { updateFeature, loading: updateFeatureLoading, error: updateFeatureError } = useUpdateFeature()
   const { removeFeature, loading: deleteFeatureLoading, error: deleteFeatureError } = useRemoveFeature()
 
   return {
     modalToggle,
-    show,
-    featureLoading,
-    featureError,
+    featureLoading: featureLoading || addFeatureLoading || updateFeatureLoading || deleteFeatureLoading || featuresLoading,
+    featureError: featureError || addFeatureError || updateFeatureError || deleteFeatureError|| featuresError,
     feature: featureData?.feature,
-    loading,
-    error,
     features: data?.features || [],
     addFeature,
-    addFeatureLoading,
-    addFeatureError,
     updateFeature,
-    updateFeatureLoading,
-    updateFeatureError,
     removeFeature,
-    deleteFeatureLoading,
-    deleteFeatureError,
+  
   }
 }

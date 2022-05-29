@@ -15,16 +15,10 @@ export const useTestCases = (id?: string) => {
 
   return {
     updateTestCases,
-    updateTestCaseLoading,
-    updateTestCaseError,
     testCases: testCasesData?.testCases,
-    testCasesLoading,
-    testCasesError,
+    testCasesLoading: removeTestCaseLoading || addTestCaseLoading || updateTestCaseLoading || testCasesLoading,
+    testCasesError: removeTestCaseError || addTestCaseError || updateTestCaseError || testCasesError,
     removeTestCase,
-    removeTestCaseLoading,
-    removeTestCaseError,
-    addTestCaseLoading,
-    addTestCaseError,
     addTestCase,
   }
 }
