@@ -17,6 +17,20 @@ export const TEST_CASES = gql`
   }
 `
 
+export const TEST_CASE = gql`
+  query TestCase($id: String!) {
+    testCase(testCaseId: $id) {
+      name
+      id
+      description
+      expectedResult
+      operatingSystems
+      prerequisites
+      duration
+    }
+  }
+`
+
 export const ADD_TEST_CASE = gql`
   mutation createTestCase($testCase: CreateTestCaseInput!) {
     createTestCase(createTestCasesInput: $testCase) {
