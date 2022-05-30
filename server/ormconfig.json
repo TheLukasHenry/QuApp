@@ -1,6 +1,6 @@
 {
   "type": "mssql",
-  "host": "mssql",
+  "host": "localhost",
   "port": 1433,
   "username": "sa",
   "password": "mssql1Ipw",

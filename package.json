@@ -10,7 +10,10 @@
     "db:revert": "docker-compose run server bash -c \"cd server && npx typeorm migration:revert\"",
     "build:ui": "NODE_ENV=production npm --prefix ui run build",
     "build:server": "NODE_ENV=production npm --prefix server run build",
-    "rebuild": "docker compose build --no-cache"
+    "rebuild": "docker compose build --no-cache",
+    "ui":"npm --prefix ui start",
+    "server":"npm --prefix server start",
+    "db": "docker compose run mssql"
   },
   "author": "",
   "license": "ISC"
