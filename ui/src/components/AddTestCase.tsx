@@ -16,15 +16,9 @@ export const AddTestCase: React.FC = () => {
   const { id, testCaseId } = useParams()
 
   const navigate = useNavigate()
-  const { addTestCase, testCases, testCase, updateTestCases, testCasesError, testCasesLoading } =
-    useTestCases(testCaseId)
+  const { addTestCase, testCase, updateTestCases, testCasesError, testCasesLoading } = useTestCases(testCaseId)
   const selectedCase = { ...testCase }
-
   const { __typename, ...selectedCaseReady } = selectedCase
-  // if (testCase) {
-
-  //   delete selectedCase.__typename
-  // }
   const validate = Yup.object({
     name: Yup.string().required('Name is required'),
     duration: Yup.number().required('Duration is required'),
@@ -52,26 +46,61 @@ export const AddTestCase: React.FC = () => {
         testCaseId
           ? updateTestCases({ variables: { testCase: values } })
           : addTestCase({ variables: { testCase: { feature: Number(id), ...values } } })
-        navigate(`/features/${id}`)
+        navigate(`/features/accordion/${id}`)
       }}
     >
       {(formik) => (
-        <div className='container'>
+        <Form className='row px-5 mx-3'>
           <h1 className='text-center py-5'>{testCaseId ? 'Update' : 'Add'} test case</h1>
-          <Form className='row'>
-            <InputField label='Name' name='name' type='text' />
-            <InputField label='Duration' name='duration' type='number' />
-            <InputField label='Expected result' name='expectedResult' type='textarea' />
-            <InputField label='Description' name='description' type='textarea' />
-            <InputField label='Operating systems' name='operatingSystems' type='text' />
-            <InputField label='Prerequisites' name='prerequisites' type='text' />
-            <Button type='submit' className='py-2 px-4 my-4 shadow'>
-              Submit
-            </Button>
-          </Form>
+
+          <InputField wrapperClasses='col-md-6 col-lg-4 mb-4' name='name' type='text' label='Name' active='focused' />
+
+          <InputField
+            wrapperClasses='col-md-6 col-lg-4 mb-4'
+            name='expectedResult'
+            label='Expected result'
+            type='text'
+            active='active'
+          />
+
+          <InputField
+            wrapperClasses='col-md-6 col-lg-4 mb-4'
+            name='description'
+            label='Description'
+            type='textarea'
+            active='active'
+          />
+
+          <InputField
+            wrapperClasses='col-md-6 col-lg-4 mb-4'
+            name='operatingSystems'
+            label='Operating systems'
+            type='text'
+            active='active'
+          />
+
+          <InputField
+            wrapperClasses='col-md-6 col-lg-4 mb-4'
+            name='prerequisites'
+            label='Prerequisites'
+            type='text'
+            active='active'
+          />
+
+          <InputField
+            wrapperClasses='col-md-6 col-lg-4 mb-4'
+            name='duration'
+            label='Duration'
+            type='number'
+            active='active'
+          />
+
+          <Button type='submit' className='py-2 px-4 my-4 shadow'>
+            Add
+          </Button>
           {testCasesError && <Error>{testCasesError}</Error>}
           {testCasesLoading && <Loading />}
-        </div>
+        </Form>
       )}
     </Formik>
   )

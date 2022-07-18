@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 export default function MainNavbar() {
   return (
-    <Navbar bg='dark' expand='lg'>
+    <Navbar expand='lg'>
       <Container>
         <Navbar.Brand>
           <Link className='text-light text-decoration-none' to='/'>

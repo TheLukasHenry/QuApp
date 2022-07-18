@@ -24,12 +24,14 @@ export const FEATURE = gql`
         id
         description
         name
+        expectedResult
+        operatingSystems
+        duration
+        prerequisites
       }
     }
   }
 `
-
-
 
 export const ADD_FEATURE = gql`
   mutation createFeature($feature: CreateFeatureInput!) {

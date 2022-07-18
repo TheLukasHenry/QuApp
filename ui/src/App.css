@@ -1,16 +1,141 @@
-* {
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: hsl(243, 63%, 20%);
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,700;1,300&display=swap');
+
+:root {
+    --color-light: #DFF6FF;
+    --color-dark: #06283D;
+    --color-primary: #1363DF;
+    --color-secondary: #47B5FF;
 }
 
 
-.feature-card, .testCaseCard {
-    background: rgb(255,255,255);
-background: linear-gradient(355deg, rgba(255,255,255,1) 0%, rgba(218,241,255,1) 100%);
+* {
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+    color: var(--color-light);
+    background-color: var(--color-dark);
 }
 
 .validate-error-message {
     color: red;
     font-size: 0.8rem;
+}
+
+.h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.input-field {
+    outline: none;
+    width: 100%;
+    border: 0; 
+    padding:0 0 0.1em 1em;
+    font-size: 1.2em;
+    font-weight: 300;
+    font-style: italic;
+    min-height: 1.6em;
+    /* line-height fixes layout for input change */
+    line-height:1.5em;
+    letter-spacing: 1px;
+}
+
+:focus{outline: none;}
+
+.input-field ~ .focus-border{bottom: 0; left: 0; width: 0;  height: 2px; background-color: #3399FF; transition: 0s;}
+
+.input-field:focus ~ .focus-border
+ {width: 100%; transition: 0.4s;}
+
+ .input {
+    border-left: 1px solid #3399FF;
+    padding: 0 0 0 1px;
+ }
+
+ .input:hover {
+    border-left: 2px solid #3399FF;
+    padding: 0;
+    transition: 0.1s ease-in-out;
+ }
+
+.input label {
+    margin-bottom: 0.2rem;
+    font-size: 0.8em;
+    padding-left: 0.5em;
+    text-transform: uppercase;
+    font-weight: bold;
+    opacity: 0.8;
+    letter-spacing: 1px;
+    transform: translateY(-0.5rem);
+}
+
+.input .input-btn {
+    opacity: 0;
+    font-size: 1em;
+    width: 30px;
+    height: 30px;
+    transform: translateX(-32px);
+    cursor: pointer;
+    overflow: show;
+}
+
+.input .input-btn svg {
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+}
+
+.input:hover .input-btn {
+    opacity: 1;
+    transition: 0.4s ease-in-out;
+}
+
+.input:hover .input-btn svg {
+    animation: scale 0.8s  infinite;
+    transition: 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.feature-card {
+    border: none;
+    border-top: 1px solid var(--color-secondary) !important;
+    cursor: pointer;
+    max-width: 900px;
+}
+
+.feature-card:hover {
+    opacity: 0.8;
+}
+
+.accordion-button {
+    display: flex !important;
+    justify-content: space-between !important;
+    background-color: var(--color-dark) !important;
+     color:hsl(0, 0%, 100%)!important;
+     border-top: 1px solid var(--color-secondary) !important;
+}
+
+.accordion-item {
+    border: 0;
+}
+
+.accordion-button::after {
+    display: none !important;
+}
+
+.delete-btn {
+    top: 20%;
+   left: 80%;
+}
+
+
+@keyframes scale {
+    0% {
+        transform: scale(0.9);
+    }
+    50% {
+        transform: scale(1.2) rotate(-15deg);
+    }
+    100% {
+        transform: scale(0.9);
+    }
 }
