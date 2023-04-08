@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "Rs8+Tsq25u2650gulFYHamOQIZVsd57X/GP78pJZc0vf/qyyIIWrh5zl+nY64kSuTnJmfBOq7FUxU7rJqk2cEw==",
+  "success": true,
+  "projectFilePath": "/Users/lukas/GitHub/QA-APP/ServerC/ServerC.csproj",
+  "expectedPackageFiles": [
+    "/Users/lukas/.nuget/packages/microsoft.extensions.apidescription.server/3.0.0/microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "/Users/lukas/.nuget/packages/microsoft.openapi/1.2.3/microsoft.openapi.1.2.3.nupkg.sha512",
+    "/Users/lukas/.nuget/packages/swashbuckle.aspnetcore/6.2.3/swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
+    "/Users/lukas/.nuget/packages/swashbuckle.aspnetcore.swagger/6.2.3/swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
+    "/Users/lukas/.nuget/packages/swashbuckle.aspnetcore.swaggergen/6.2.3/swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",
+    "/Users/lukas/.nuget/packages/swashbuckle.aspnetcore.swaggerui/6.2.3/swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512"
+  ],
+  "logs": []
+}
