@@ -1,11 +1,9 @@
-// Controllers/FeaturesController.cs
-using System.Collections.Generic;
-using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Mvc;
 using ServerC.Helpers;
 using ServerC.Models;
 
-namespace ServerC.Controllers
+namespace ServerC.Controllers.Features
 {
   [ApiController]
   [Route("[controller]")]
