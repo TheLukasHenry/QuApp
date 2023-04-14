@@ -1,7 +1,7 @@
 
 using ServerC.Models;
 
-namespace ServerC.Services
+namespace ServerC.Interfaces
 {
     public interface ICompaniesService
     {

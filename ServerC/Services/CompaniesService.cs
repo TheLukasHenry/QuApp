@@ -1,37 +1,25 @@
-using ServerC.Models;
-using Microsoft.Data.SqlClient;
+
 using Dapper;
+using ServerC.Interfaces;
+using ServerC.Models;
 using System.Data;
 
 
 
 namespace ServerC.Services
 {
-  public class CompaniesService : ICompaniesService
+    public class CompaniesService : ICompaniesService
     {
+        private readonly IDatabaseHelper _databaseHelper;
 
-
-
-          private readonly IConfiguration _configuration;
-
-
-
-    public SqlConnection GetConnection()
-    {
-      string connectionString = _configuration.GetConnectionString("MainDatabase");
-      return new SqlConnection(connectionString);
-    }
-
-        public CompaniesService(IConfiguration configuration)
-    {
-      _configuration = configuration;
-    }
-
-
-public async Task<IEnumerable<Company>> GetAllCompaniesAsync()
+        public CompaniesService(IDatabaseHelper databaseHelper)
         {
-      using (SqlConnection connection = GetConnection())
+            _databaseHelper = databaseHelper;
+        }
 
+        public async Task<IEnumerable<Company>> GetAllCompaniesAsync()
+        {
+            using (var connection = _databaseHelper.GetConnection())
             {
                 const string query = "EXEC GetAllCompanies";
                 IEnumerable<Company> companies = await connection.QueryAsync<Company>(query);
@@ -39,9 +27,11 @@ public async Task<IEnumerable<Company>> GetAllCompaniesAsync()
             }
         }
 
-        public async Task<Company> CreateCompanyAsync(string companyName)
+
+                public async Task<Company> CreateCompanyAsync(string companyName)
 {
-      using (SqlConnection connection = GetConnection())
+            using (var connection = _databaseHelper.GetConnection())
+
 
     {
         DynamicParameters parameters = new DynamicParameters();
@@ -55,7 +45,8 @@ public async Task<IEnumerable<Company>> GetAllCompaniesAsync()
 
 public async Task<Company> GetCompanyByIdAsync(int id)
 {
-      using (SqlConnection connection = GetConnection())
+            using (var connection = _databaseHelper.GetConnection())
+
 
     {
         DynamicParameters parameters = new DynamicParameters();
