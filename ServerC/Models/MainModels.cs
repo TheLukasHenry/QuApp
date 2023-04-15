@@ -1,3 +1,7 @@
+
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace ServerC.Models
 {
 public class Company
@@ -22,13 +26,21 @@ public class CompanyUser
     public User User { get; set; }
 }
 
-public class Feature
-{
-    public int FeatureID { get; set; }
-    public string FeatureName { get; set; }
-    public int CompanyID { get; set; }
-    public Company Company { get; set; }
-}
+    public class Feature
+    {
+        [Key]
+        public int FeatureID { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string FeatureName { get; set; }
+
+        [Required]
+        public int CompanyID { get; set; }
+
+        // [ForeignKey("CompanyID")]
+        // public virtual Company Company { get; set; }
+    }
 
 public class Status
 {

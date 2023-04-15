@@ -51,5 +51,34 @@ namespace ServerC.Controllers
 
             return Ok(createdCompany);
         }
+
+            [HttpPut("{id}")]
+    public async Task<ActionResult<Company>> UpdateCompany(int id, [FromBody] Company company)
+    {
+        if (string.IsNullOrEmpty(company.CompanyName))
+        {
+            return BadRequest("CompanyName cannot be empty.");
+        }
+
+        Company updatedCompany = await _companiesService.UpdateCompanyAsync(id, company.CompanyName);
+        if (updatedCompany == null)
+        {
+            return StatusCode(500, "An error occurred while updating the company.");
+        }
+
+        return Ok(updatedCompany);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteCompany(int id)
+    {
+        bool isDeleted = await _companiesService.DeleteCompanyAsync(id);
+        if (!isDeleted)
+        {
+            return StatusCode(500, "An error occurred while deleting the company.");
+        }
+
+        return NoContent();
+    }
     }
 }

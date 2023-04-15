@@ -55,5 +55,30 @@ public async Task<Company> GetCompanyByIdAsync(int id)
         return company;
     }
 }
+
+    public async Task<Company> UpdateCompanyAsync(int companyId, string companyName)
+    {
+        using (var connection = _databaseHelper.GetConnection())
+        {
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("@CompanyID", companyId, DbType.Int32);
+            parameters.Add("@CompanyName", companyName, DbType.String);
+
+            Company company = await connection.QuerySingleOrDefaultAsync<Company>("dbo.UpdateCompany", parameters, commandType: CommandType.StoredProcedure);
+            return company;
+        }
+    }
+
+    public async Task<bool> DeleteCompanyAsync(int companyId)
+    {
+        using (var connection = _databaseHelper.GetConnection())
+        {
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("@CompanyID", companyId, DbType.Int32);
+
+            int affectedRows = await connection.ExecuteAsync("dbo.DeleteCompany", parameters, commandType: CommandType.StoredProcedure);
+            return affectedRows > 0;
+        }
+    }
     }
 }
