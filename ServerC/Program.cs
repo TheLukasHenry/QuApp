@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Identity;
 using ServerC.Services;
 using ServerC.Interfaces;
+using ServerC.Models;
 
 // stored procedures
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +10,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<ICompaniesService, CompaniesService>();
 builder.Services.AddScoped<IDatabaseHelper, DatabaseHelper>();
 builder.Services.AddScoped<IFeaturesService, FeaturesService>();
+builder.Services.AddScoped<ITestCasesService, TestCasesService>();
+builder.Services.AddScoped<IUserService, UserService>();
+
+// Register the PasswordHasher<User>
+builder.Services.AddSingleton<PasswordHasher<User>>();
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
