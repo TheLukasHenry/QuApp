@@ -14,6 +14,7 @@ builder.Services.AddScoped<ITestCasesService, TestCasesService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITestRunsService, TestRunsService>();
 builder.Services.AddScoped<ICompanyUsersService, CompanyUsersService>();
+builder.Services.AddScoped<ITestRunCasesService, TestRunCasesService>();
 
 
 // Register the PasswordHasher<User>
