@@ -13,6 +13,7 @@ builder.Services.AddScoped<IFeaturesService, FeaturesService>();
 builder.Services.AddScoped<ITestCasesService, TestCasesService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITestRunsService, TestRunsService>();
+builder.Services.AddScoped<ICompanyUsersService, CompanyUsersService>();
 
 
 // Register the PasswordHasher<User>
