@@ -7,11 +7,13 @@ using ServerC.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddScoped<ICompaniesService, CompaniesService>();
 builder.Services.AddScoped<IDatabaseHelper, DatabaseHelper>();
+builder.Services.AddScoped<ICompaniesService, CompaniesService>();
 builder.Services.AddScoped<IFeaturesService, FeaturesService>();
 builder.Services.AddScoped<ITestCasesService, TestCasesService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ITestRunsService, TestRunsService>();
+
 
 // Register the PasswordHasher<User>
 builder.Services.AddSingleton<PasswordHasher<User>>();
@@ -26,8 +28,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+  app.UseSwagger();
+  app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
