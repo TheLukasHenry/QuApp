@@ -15,6 +15,18 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITestRunsService, TestRunsService>();
 builder.Services.AddScoped<ICompanyUsersService, CompanyUsersService>();
 builder.Services.AddScoped<ITestRunCasesService, TestRunCasesService>();
+// add cors
+builder.Services.AddCors(options =>
+{
+  options.AddDefaultPolicy(
+      builder =>
+      {
+        builder.WithOrigins("http://localhost:3000")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+
+      });
+});
 
 
 // Register the PasswordHasher<User>
@@ -33,6 +45,8 @@ if (app.Environment.IsDevelopment())
   app.UseSwagger();
   app.UseSwaggerUI();
 }
+
+app.UseCors();
 
 app.UseHttpsRedirection();
 
