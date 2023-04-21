@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react'
-import { getAllCompanies } from './api/api'
+import * as ApiClient from './generated-client/api'
 
 export default function Main() {
-  const [companies, setCompanies] = useState([])
+  const [companies, setCompanies]: any = useState([])
   const [loading, setLoading] = useState(true)
 
+  const apiClient = new ApiClient.CompaniesApi()
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
-        const data = await getAllCompanies()
-        setCompanies(data)
+        const response = await apiClient.companiesGet()
+        setCompanies(response.data)
       } catch (error) {
         console.error('Error fetching companies:', error)
       } finally {
