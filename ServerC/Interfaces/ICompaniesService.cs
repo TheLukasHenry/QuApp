@@ -8,7 +8,9 @@ namespace ServerC.Interfaces
     Task<Company> CreateCompanyAsync(string companyName);
     Task<IEnumerable<Company>> GetAllCompaniesAsync();
     Task<Company> GetCompanyByIdAsync(int id);
-    Task<Company> UpdateCompanyAsync(int companyId, string companyName);
+    // Task<int> UpdateCompanyAsync(Company company);
+    Task<Company> UpdateCompanyAsync(Company company);
+
     Task<bool> DeleteCompanyAsync(int companyId);
 
 

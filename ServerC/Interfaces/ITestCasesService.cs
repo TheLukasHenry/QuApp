@@ -11,7 +11,8 @@ namespace ServerC.Interfaces
     Task<int> CreateTestCaseAsync(TestCase testCase);
     Task<IEnumerable<TestCase>> GetAllTestCasesAsync();
     Task<TestCase> GetTestCaseByIdAsync(int testCaseId);
-    Task<int> UpdateTestCaseAsync(TestCase testCase);
+    // Task<int> UpdateTestCaseAsync(TestCase testCase);
+    Task<TestCase> UpdateTestCaseAsync(TestCase testCase);
     Task<int> DeleteTestCaseAsync(int testCaseId);
   }
 }
