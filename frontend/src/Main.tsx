@@ -1,35 +1,84 @@
 import React, { useRef } from 'react'
-import { useQuery } from 'react-query'
+import { useQuery, useMutation } from 'react-query'
 import * as ApiClient from './generated-client/api'
 
-export default function Main() {
-  const companyNameRef = useRef<HTMLInputElement>(null)
-  const companyIDRef = useRef<HTMLInputElement>(null)
-
+// Custom hooks for fetching and updating data
+const useCompanies = () => {
   const apiClient = new ApiClient.CompaniesApi()
-  const apiClientFeatures = new ApiClient.FeaturesApi()
-
-  const fetchCompanies = async () => {
-    const response = await apiClient.companiesGet()
-    return response.data
-  }
-
-  const fetchFeatures = async () => {
-    const response = await apiClientFeatures.featuresGet()
-    return response.data
-  }
 
   const {
     data: companies,
     isLoading: loadingCompanies,
     refetch: refetchCompanies,
-  } = useQuery('companies', fetchCompanies)
-  const { data: features, isLoading: loadingFeatures } = useQuery(
-    'features',
-    fetchFeatures
+  } = useQuery('companies', async () => {
+    const response = await apiClient.companiesGet()
+    return response.data
+  })
+
+  const createCompanyMutation = useMutation(
+    async (company: ApiClient.Company) => {
+      await apiClient.companiesPost(company)
+    }
   )
 
-  if (loadingCompanies || loadingFeatures) {
+  const updateCompanyMutation = useMutation(
+    async (company: ApiClient.Company) => {
+      await apiClient.companiesIdPut(company!.companyID!, company)
+    },
+    {
+      onSuccess: () => {
+        refetchCompanies()
+      },
+    }
+  )
+
+  const isError = (error: any): error is Error => error instanceof Error
+
+  const createCompany = (name: string) => {
+    createCompanyMutation.mutate({ companyName: name })
+  }
+
+  const updateCompany = (id: number, name: string) => {
+    const company = companies?.find(
+      (c: ApiClient.Company) => c.companyID === id
+    )
+
+    if (company && company.companyID !== undefined) {
+      updateCompanyMutation.mutate({ ...company, companyName: name })
+    }
+  }
+
+  return {
+    companies,
+    loadingCompanies,
+    createCompany,
+    updateCompany,
+    company: createCompanyMutation.data || updateCompanyMutation.data,
+    companyError: createCompanyMutation.error || updateCompanyMutation.error,
+    companyErrorMessage: isError(createCompanyMutation.error)
+      ? createCompanyMutation.error.message
+      : isError(updateCompanyMutation.error)
+      ? updateCompanyMutation.error.message
+      : '',
+    companyLoading:
+      createCompanyMutation.isLoading || updateCompanyMutation.isLoading,
+    refetchCompanies,
+  }
+}
+
+export default function Main() {
+  const companyNameRef = useRef<HTMLInputElement>(null)
+  const companyIDRef = useRef<HTMLInputElement>(null)
+
+  const {
+    companies,
+    loadingCompanies,
+    updateCompany,
+    companyErrorMessage,
+    companyLoading,
+  } = useCompanies()
+
+  if (loadingCompanies) {
     return <div>Loading...</div>
   }
 
@@ -59,32 +108,20 @@ export default function Main() {
       />
 
       <button
-        onClick={async () => {
+        onClick={() => {
           const companyName = companyNameRef.current
           const companyID = companyIDRef.current
           if (!companyName || !companyID) {
             return
           }
-          const response = await apiClient.companiesIdPut(+companyID.value, {
-            companyID: +companyID.value,
-            companyName: companyName.value.toString(),
-          })
-          console.log(response)
-
-          // Call refetchCompanies after updating the company
-          refetchCompanies()
+          updateCompany(+companyID.value, companyName.value.toString())
         }}
       >
         Update Company
       </button>
-      <h1>Features</h1>
-      <ul>
-        {features?.map((feature: any) => (
-          <li key={feature.featureID}>
-            feature name: {feature.featureName}, feature id: {feature.featureID}
-          </li>
-        ))}
-      </ul>
+      {companyErrorMessage && <div>Error: {companyErrorMessage}</div>}
+
+      {companyLoading && <div>Updating company...</div>}
     </div>
   )
 }

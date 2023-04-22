@@ -70,29 +70,7 @@ namespace ServerC.Controllers
 
       return Ok(updatedCompany);
 
-
-      //   int result = await _companiesService.UpdateCompanyAsync(company);
-
-      //   if (result == 0)
-      //     return StatusCode(500);
-
-      //   return NoContent();
-
     }
-    // public async Task<IActionResult> UpdateTestCase(int id, [FromBody] TestCase testCase)
-    // {
-    //   if (!ModelState.IsValid)
-    //     return BadRequest(ModelState);
-
-    //   if (id != testCase.TestCaseID)
-    //     return BadRequest();
-
-    //   int result = await _testCasesService.UpdateTestCaseAsync(testCase);
-    //   if (result == 0)
-    //     return StatusCode(500);
-
-    //   return NoContent();
-    // }
 
 
 
