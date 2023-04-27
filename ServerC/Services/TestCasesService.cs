@@ -17,14 +17,18 @@ namespace ServerC.Services
       _databaseHelper = databaseHelper;
     }
 
-    public async Task<int> CreateTestCaseAsync(TestCase testCase)
+    public async Task<TestCase> CreateTestCaseAsync(TestCase testCase)
     {
       using (var connection = _databaseHelper.GetConnection())
 
       {
-        return await connection.ExecuteAsync("CreateTestCase",
-            new { FeatureID = testCase.FeatureID, TestCaseName = testCase.TestCaseName, TestCaseOrder = testCase.TestCaseOrder },
-            commandType: CommandType.StoredProcedure);
+        DynamicParameters parameters = new DynamicParameters();
+        parameters.Add("@FeatureID", testCase.FeatureID, DbType.Int32);
+        parameters.Add("@TestCaseName", testCase.TestCaseName, DbType.String);
+        parameters.Add("@TestCaseOrder", testCase.TestCaseOrder, DbType.Int32);
+
+        testCase.TestCaseID = await connection.QuerySingleOrDefaultAsync<int>("CreateTestCase", parameters, commandType: CommandType.StoredProcedure);
+        return testCase;
       }
     }
 

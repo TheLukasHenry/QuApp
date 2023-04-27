@@ -551,7 +551,7 @@ export const CompaniesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async companiesIdPut(id: number, company?: Company, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Company>> {
+        async companiesIdPut(id: number, company?: Company, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.companiesIdPut(id, company, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -608,7 +608,7 @@ export const CompaniesApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        companiesIdPut(id: number, company?: Company, options?: any): AxiosPromise<Company> {
+        companiesIdPut(id: number, company?: Company, options?: any): AxiosPromise<void> {
             return localVarFp.companiesIdPut(id, company, options).then((request) => request(axios, basePath));
         },
         /**

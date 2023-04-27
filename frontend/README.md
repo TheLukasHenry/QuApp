@@ -4,6 +4,13 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Available Scripts
 
+## `npx @openapitools/openapi-generator-cli generate -i api-spec.json -g typescript-axios -o src/generatedClient`
+
+chagnge base.ts to use localhost:5000
+export const BASE_PATH = 'http://localhost:5000'.replace(/\/+$/, '')
+
+GENERATE API
+
 In the project directory, you can run:
 
 ### `npm start`

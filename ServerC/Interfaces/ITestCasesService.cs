@@ -8,7 +8,7 @@ namespace ServerC.Interfaces
 {
   public interface ITestCasesService
   {
-    Task<int> CreateTestCaseAsync(TestCase testCase);
+    Task<TestCase> CreateTestCaseAsync(TestCase testCase);
     Task<IEnumerable<TestCase>> GetAllTestCasesAsync();
     Task<TestCase> GetTestCaseByIdAsync(int testCaseId);
     // Task<int> UpdateTestCaseAsync(TestCase testCase);

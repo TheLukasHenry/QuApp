@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import { useQuery, useMutation } from 'react-query'
-import * as ApiClient from './generated-client/api'
+import * as ApiClient from './generatedClient/api'
 
 const useFeatures = () => {
   const apiClient = new ApiClient.FeaturesApi()
@@ -110,6 +110,8 @@ export default function Features() {
     featureLoading,
   } = useFeatures()
 
+  console.log('features: ', features)
+
   if (loadingFeatures) {
     return <div>Loading...</div>
   }
@@ -118,7 +120,7 @@ export default function Features() {
     <div>
       <h1>Features</h1>
       <ul>
-        {features?.map((feature: any) => (
+        {features?.map((feature: ApiClient.Feature) => (
           <li key={feature.featureID}>
             feature name: {feature.featureName}, feature id: {feature.featureID}
             , company id: {feature.companyID}

@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import { useQuery, useMutation } from 'react-query'
-import * as ApiClient from './generated-client/api'
+import * as ApiClient from './generatedClient/api'
 
 // Custom hooks for fetching and updating data
 const useCompanies = () => {

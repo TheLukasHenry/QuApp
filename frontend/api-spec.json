@@ -7,9 +7,7 @@
   "paths": {
     "/Companies": {
       "get": {
-        "tags": [
-          "Companies"
-        ],
+        "tags": ["Companies"],
         "responses": {
           "200": {
             "description": "Success",
@@ -43,9 +41,7 @@
         }
       },
       "post": {
-        "tags": [
-          "Companies"
-        ],
+        "tags": ["Companies"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -91,9 +87,7 @@
     },
     "/Companies/{id}": {
       "get": {
-        "tags": [
-          "Companies"
-        ],
+        "tags": ["Companies"],
         "parameters": [
           {
             "name": "id",
@@ -129,9 +123,7 @@
         }
       },
       "put": {
-        "tags": [
-          "Companies"
-        ],
+        "tags": ["Companies"],
         "parameters": [
           {
             "name": "id",
@@ -164,31 +156,12 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/Company"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Company"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Company"
-                }
-              }
-            }
+            "description": "Success"
           }
         }
       },
       "delete": {
-        "tags": [
-          "Companies"
-        ],
+        "tags": ["Companies"],
         "parameters": [
           {
             "name": "id",
@@ -209,9 +182,7 @@
     },
     "/CompanyUsers": {
       "post": {
-        "tags": [
-          "CompanyUsers"
-        ],
+        "tags": ["CompanyUsers"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -240,9 +211,7 @@
     },
     "/CompanyUsers/company/{companyId}": {
       "get": {
-        "tags": [
-          "CompanyUsers"
-        ],
+        "tags": ["CompanyUsers"],
         "parameters": [
           {
             "name": "companyId",
@@ -263,9 +232,7 @@
     },
     "/CompanyUsers/user/{userId}": {
       "get": {
-        "tags": [
-          "CompanyUsers"
-        ],
+        "tags": ["CompanyUsers"],
         "parameters": [
           {
             "name": "userId",
@@ -286,9 +253,7 @@
     },
     "/CompanyUsers/{companyId}/{userId}": {
       "delete": {
-        "tags": [
-          "CompanyUsers"
-        ],
+        "tags": ["CompanyUsers"],
         "parameters": [
           {
             "name": "companyId",
@@ -318,9 +283,7 @@
     },
     "/Features": {
       "post": {
-        "tags": [
-          "Features"
-        ],
+        "tags": ["Features"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -364,9 +327,7 @@
         }
       },
       "get": {
-        "tags": [
-          "Features"
-        ],
+        "tags": ["Features"],
         "responses": {
           "200": {
             "description": "Success",
@@ -400,9 +361,7 @@
         }
       },
       "put": {
-        "tags": [
-          "Features"
-        ],
+        "tags": ["Features"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -448,9 +407,7 @@
     },
     "/Features/company/{companyId}": {
       "get": {
-        "tags": [
-          "Features"
-        ],
+        "tags": ["Features"],
         "parameters": [
           {
             "name": "companyId",
@@ -497,9 +454,7 @@
     },
     "/Features/{featureId}": {
       "delete": {
-        "tags": [
-          "Features"
-        ],
+        "tags": ["Features"],
         "parameters": [
           {
             "name": "featureId",
@@ -520,9 +475,7 @@
     },
     "/TestCases": {
       "post": {
-        "tags": [
-          "TestCases"
-        ],
+        "tags": ["TestCases"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -549,9 +502,7 @@
         }
       },
       "get": {
-        "tags": [
-          "TestCases"
-        ],
+        "tags": ["TestCases"],
         "responses": {
           "200": {
             "description": "Success"
@@ -561,9 +512,7 @@
     },
     "/TestCases/{id}": {
       "get": {
-        "tags": [
-          "TestCases"
-        ],
+        "tags": ["TestCases"],
         "parameters": [
           {
             "name": "id",
@@ -582,9 +531,7 @@
         }
       },
       "put": {
-        "tags": [
-          "TestCases"
-        ],
+        "tags": ["TestCases"],
         "parameters": [
           {
             "name": "id",
@@ -622,9 +569,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "TestCases"
-        ],
+        "tags": ["TestCases"],
         "parameters": [
           {
             "name": "id",
@@ -645,9 +590,7 @@
     },
     "/TestRunCases": {
       "post": {
-        "tags": [
-          "TestRunCases"
-        ],
+        "tags": ["TestRunCases"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -676,9 +619,7 @@
     },
     "/TestRunCases/{id}": {
       "get": {
-        "tags": [
-          "TestRunCases"
-        ],
+        "tags": ["TestRunCases"],
         "parameters": [
           {
             "name": "id",
@@ -697,9 +638,7 @@
         }
       },
       "put": {
-        "tags": [
-          "TestRunCases"
-        ],
+        "tags": ["TestRunCases"],
         "parameters": [
           {
             "name": "id",
@@ -737,9 +676,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "TestRunCases"
-        ],
+        "tags": ["TestRunCases"],
         "parameters": [
           {
             "name": "id",
@@ -760,9 +697,7 @@
     },
     "/TestRunCases/testrun/{testRunID}": {
       "get": {
-        "tags": [
-          "TestRunCases"
-        ],
+        "tags": ["TestRunCases"],
         "parameters": [
           {
             "name": "testRunID",
@@ -783,9 +718,7 @@
     },
     "/TestRuns": {
       "post": {
-        "tags": [
-          "TestRuns"
-        ],
+        "tags": ["TestRuns"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -829,9 +762,7 @@
         }
       },
       "get": {
-        "tags": [
-          "TestRuns"
-        ],
+        "tags": ["TestRuns"],
         "responses": {
           "200": {
             "description": "Success",
@@ -867,9 +798,7 @@
     },
     "/TestRuns/{testRunId}": {
       "get": {
-        "tags": [
-          "TestRuns"
-        ],
+        "tags": ["TestRuns"],
         "parameters": [
           {
             "name": "testRunId",
@@ -905,9 +834,7 @@
         }
       },
       "put": {
-        "tags": [
-          "TestRuns"
-        ],
+        "tags": ["TestRuns"],
         "parameters": [
           {
             "name": "testRunId",
@@ -962,9 +889,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "TestRuns"
-        ],
+        "tags": ["TestRuns"],
         "parameters": [
           {
             "name": "testRunId",
@@ -985,9 +910,7 @@
     },
     "/User": {
       "post": {
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1014,9 +937,7 @@
         }
       },
       "get": {
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "responses": {
           "200": {
             "description": "Success"
@@ -1026,9 +947,7 @@
     },
     "/User/{id}": {
       "get": {
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "parameters": [
           {
             "name": "id",
@@ -1047,9 +966,7 @@
         }
       },
       "put": {
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "parameters": [
           {
             "name": "id",
@@ -1087,9 +1004,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "parameters": [
           {
             "name": "id",
@@ -1110,9 +1025,7 @@
     },
     "/User/email/{email}": {
       "get": {
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "parameters": [
           {
             "name": "email",
@@ -1132,9 +1045,7 @@
     },
     "/WeatherForecast": {
       "get": {
-        "tags": [
-          "WeatherForecast"
-        ],
+        "tags": ["WeatherForecast"],
         "operationId": "GetWeatherForecast",
         "responses": {
           "200": {
@@ -1231,11 +1142,7 @@
         "additionalProperties": false
       },
       "CreateUserInput": {
-        "required": [
-          "email",
-          "password",
-          "userName"
-        ],
+        "required": ["email", "password", "userName"],
         "type": "object",
         "properties": {
           "userName": {
@@ -1254,10 +1161,7 @@
         "additionalProperties": false
       },
       "Feature": {
-        "required": [
-          "companyID",
-          "featureName"
-        ],
+        "required": ["companyID", "featureName"],
         "type": "object",
         "properties": {
           "featureID": {

@@ -25,8 +25,8 @@ namespace ServerC.Controllers
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 
-      int result = await _testCasesService.CreateTestCaseAsync(testCase);
-      if (result == 0)
+      TestCase result = await _testCasesService.CreateTestCaseAsync(testCase);
+      if (result == null)
         return StatusCode(500);
 
       return CreatedAtAction(nameof(GetTestCaseById), new { id = testCase.TestCaseID }, testCase);
