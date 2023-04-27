@@ -31,16 +31,15 @@ namespace ServerC.Services
     public async Task<Company> CreateCompanyAsync(string companyName)
     {
       using (var connection = _databaseHelper.GetConnection())
-
-
       {
         DynamicParameters parameters = new DynamicParameters();
         parameters.Add("@CompanyName", companyName, DbType.String);
 
-        Company company = await connection.QuerySingleOrDefaultAsync<Company>("dbo.CreateCompany", parameters, commandType: CommandType.StoredProcedure);
+        Company company = await connection.QueryFirstOrDefaultAsync<Company>("dbo.CreateCompany", parameters, commandType: CommandType.StoredProcedure);
         return company;
       }
     }
+
 
 
     public async Task<Company> GetCompanyByIdAsync(int id)

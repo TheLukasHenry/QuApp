@@ -18,12 +18,29 @@ const useCompanies = () => {
   const createCompanyMutation = useMutation(
     async (company: ApiClient.Company) => {
       await apiClient.companiesPost(company)
+    },
+    {
+      onSuccess: () => {
+        refetchCompanies()
+      },
     }
   )
 
   const updateCompanyMutation = useMutation(
     async (company: ApiClient.Company) => {
       await apiClient.companiesIdPut(company!.companyID!, company)
+    },
+    {
+      onSuccess: () => {
+        refetchCompanies()
+      },
+    }
+  )
+
+  // Delete mutation
+  const deleteCompanyMutation = useMutation(
+    async (companyID: number) => {
+      await apiClient.companiesIdDelete(companyID)
     },
     {
       onSuccess: () => {
@@ -48,20 +65,35 @@ const useCompanies = () => {
     }
   }
 
+  const deleteCompany = (id: number) => {
+    deleteCompanyMutation.mutate(id)
+  }
+
+  const getCompany = (id: number) => {
+    return companies?.find((c: ApiClient.Company) => c.companyID === id)
+  }
+
   return {
     companies,
     loadingCompanies,
     createCompany,
     updateCompany,
+    deleteCompany,
+    getCompany,
     company: createCompanyMutation.data || updateCompanyMutation.data,
-    companyError: createCompanyMutation.error || updateCompanyMutation.error,
+    companyError:
+      createCompanyMutation.error ||
+      updateCompanyMutation.error ||
+      deleteCompanyMutation.error,
     companyErrorMessage: isError(createCompanyMutation.error)
       ? createCompanyMutation.error.message
       : isError(updateCompanyMutation.error)
       ? updateCompanyMutation.error.message
       : '',
     companyLoading:
-      createCompanyMutation.isLoading || updateCompanyMutation.isLoading,
+      createCompanyMutation.isLoading ||
+      updateCompanyMutation.isLoading ||
+      deleteCompanyMutation.isLoading,
     refetchCompanies,
   }
 }
@@ -74,6 +106,9 @@ export default function Main() {
     companies,
     loadingCompanies,
     updateCompany,
+    deleteCompany,
+    createCompany,
+    getCompany,
     companyErrorMessage,
     companyLoading,
   } = useCompanies()
@@ -118,6 +153,42 @@ export default function Main() {
         }}
       >
         Update Company
+      </button>
+      <button
+        onClick={() => {
+          const companyName = companyNameRef.current
+          if (!companyName) {
+            return
+          }
+          createCompany(companyName.value.toString())
+        }}
+      >
+        Create Company
+      </button>
+      <button
+        onClick={() => {
+          const companyID = companyIDRef.current
+          if (!companyID) {
+            return
+          }
+          deleteCompany(+companyID.value)
+        }}
+      >
+        Delete Company
+      </button>
+      <button
+        onClick={() => {
+          const companyID = companyIDRef.current
+          if (!companyID) {
+            return
+          }
+          const company = getCompany(+companyID.value)
+          if (company) {
+            console.log(company)
+          }
+        }}
+      >
+        Get Company
       </button>
       {companyErrorMessage && <div>Error: {companyErrorMessage}</div>}
 
