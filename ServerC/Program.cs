@@ -11,7 +11,7 @@ builder.Services.AddScoped<IDatabaseHelper, DatabaseHelper>();
 builder.Services.AddScoped<ICompaniesService, CompaniesService>();
 builder.Services.AddScoped<IFeaturesService, FeaturesService>();
 builder.Services.AddScoped<ITestCasesService, TestCasesService>();
-builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddScoped<ITestRunsService, TestRunsService>();
 builder.Services.AddScoped<ICompanyUsersService, CompanyUsersService>();
 builder.Services.AddScoped<ITestRunCasesService, TestRunCasesService>();

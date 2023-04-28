@@ -6,14 +6,14 @@ using ServerC.Models;
 
 namespace ServerC.Interfaces
 {
-public interface IUserService
-{
+  public interface IUsersService
+  {
     Task<User> CreateUserAsync(CreateUserInput input);
     Task<User> GetUserByIdAsync(int userId);
     Task<IEnumerable<User>> GetAllUsersAsync();
-    Task<User> UpdateUserAsync(User user);
+    Task<User> UpdateUserAsync(UpdateUserInput input);
     Task<bool> DeleteUserAsync(int userId);
     Task<User> GetUserByEmailAsync(string email);
-    
-}
+
+  }
 }

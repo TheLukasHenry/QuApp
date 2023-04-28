@@ -20,7 +20,7 @@ namespace ServerC.Controllers
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateTestCase([FromBody] TestCase testCase)
+    public async Task<ActionResult<TestCase>> CreateTestCase([FromBody] TestCase testCase)
     {
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
@@ -33,14 +33,14 @@ namespace ServerC.Controllers
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllTestCases()
+    public async Task<ActionResult<IEnumerable<TestCase>>> GetAllTestCases()
     {
       IEnumerable<TestCase> testCases = await _testCasesService.GetAllTestCasesAsync();
       return Ok(testCases);
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetTestCaseById(int id)
+    public async Task<ActionResult<TestCase>> GetTestCaseById(int id)
     {
       TestCase testCase = await _testCasesService.GetTestCaseByIdAsync(id);
       if (testCase == null)
@@ -49,25 +49,9 @@ namespace ServerC.Controllers
       return Ok(testCase);
     }
 
-    // [HttpPut("{id}")]
-    // public async Task<IActionResult> UpdateTestCase(int id, [FromBody] TestCase testCase)
-    // {
-    //     if (!ModelState.IsValid)
-    //         return BadRequest(ModelState);
-
-    //     if (id != testCase.TestCaseID)
-    //         return BadRequest();
-
-    //     int result = await _testCasesService.UpdateTestCaseAsync(testCase);
-    //     if (result == 0)
-    //         return StatusCode(500);
-
-    //     return NoContent();
-    // }
-
     // write a method to update a test case, return 404 if not found, 500 if error, 204 with the testCase if successful
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateTestCase(int id, [FromBody] TestCase testCase)
+    public async Task<ActionResult<TestCase>> UpdateTestCase(int id, [FromBody] TestCase testCase)
     {
       if (!ModelState.IsValid)
         return BadRequest(ModelState);

@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-// using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ServerC.Models
 {
@@ -27,9 +26,13 @@ namespace ServerC.Models
     [Required(ErrorMessage = "The Password field is required.")]
     public string Password { get; set; }
 
-    // [Required(ErrorMessage = "The PasswordHashBase64 field is required.")]
-    // public string PasswordHashBase64 { get; set; }
-    // public string PasswordHash { get; set; }
+  }
+
+  // write UpdateUserInput class here extending CreateUserInput + adding UserID property
+  public class UpdateUserInput : CreateUserInput
+  {
+    public int UserID { get; set; }
 
   }
+
 }
