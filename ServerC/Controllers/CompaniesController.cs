@@ -1,12 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using ServerC.Models;
 using ServerC.Interfaces;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace ServerC.Controllers
 {
   [ApiController]
   [Route("[controller]")]
+
   public class CompaniesController : ControllerBase
   {
     private readonly ICompaniesService _companiesService;
@@ -24,6 +25,7 @@ namespace ServerC.Controllers
     }
 
     [HttpGet("{id}")]
+    [Authorize]
     public async Task<ActionResult<Company>> GetCompany(int id)
     {
       Company company = await _companiesService.GetCompanyByIdAsync(id);
@@ -34,6 +36,7 @@ namespace ServerC.Controllers
 
       return company;
     }
+
 
     [HttpPost]
     public async Task<ActionResult<Company>> CreateCompany([FromBody] Company company)
