@@ -3,6 +3,9 @@ using ServerC.Services;
 using ServerC.Interfaces;
 using ServerC.Models;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 // stored procedures
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +19,10 @@ builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddScoped<ITestRunsService, TestRunsService>();
 builder.Services.AddScoped<ICompanyUsersService, CompanyUsersService>();
 builder.Services.AddScoped<ITestRunCasesService, TestRunCasesService>();
+builder.Services.AddScoped<LoginService>();
+builder.Services.AddSingleton<JwtTokenHelper>();
+builder.Services.AddSingleton(builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>());
+
 // add cors
 builder.Services.AddCors(options =>
 {
@@ -23,27 +30,44 @@ builder.Services.AddCors(options =>
       builder =>
       {
         builder.WithOrigins("http://localhost:3000")
-            .AllowAnyHeader()
-            .AllowAnyMethod();
-
+              .AllowAnyHeader()
+              .AllowAnyMethod();
       });
 });
 
+// Add JwtSettings to the service collection
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+
+var jwtSettings = new JwtSettings();
+builder.Configuration.Bind("JwtSettings", jwtSettings);
+
+builder.Services.AddAuthentication(options =>
+{
+  options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+  options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+  options.TokenValidationParameters = new TokenValidationParameters
+  {
+    ValidateIssuer = true,
+    ValidateAudience = true,
+    ValidateLifetime = true,
+    ValidateIssuerSigningKey = true,
+    ValidIssuer = jwtSettings.Issuer,
+    ValidAudience = jwtSettings.Audience,
+    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret))
+  };
+});
 
 // Register the PasswordHasher<User>
 builder.Services.AddSingleton<PasswordHasher<User>>();
 
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-// builder.Services.AddSwaggerGen(c =>
-// {
-//   c.SwaggerDoc("v1", new OpenApiInfo { Title = "ServerC", Version = "1.0" });
-
-//   // Add this line to enable operationIds based on the method names
-//   c.CustomOperationIds(e => $"{e.ActionDescriptor.RouteValues["controller"]}_{e.HttpMethod}_{e.ActionDescriptor.RouteValues["action"]}");
-// });
 
 var app = builder.Build();
 
@@ -58,6 +82,7 @@ app.UseCors();
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication(); // Add this line
 app.UseAuthorization();
 
 app.MapControllers();

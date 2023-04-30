@@ -8,6 +8,7 @@
 /Users/lukas/GitHub/QA-APP/ServerC/bin/Debug/net6.0/Azure.Core.dll
 /Users/lukas/GitHub/QA-APP/ServerC/bin/Debug/net6.0/Azure.Identity.dll
 /Users/lukas/GitHub/QA-APP/ServerC/bin/Debug/net6.0/Dapper.dll
+/Users/lukas/GitHub/QA-APP/ServerC/bin/Debug/net6.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
 /Users/lukas/GitHub/QA-APP/ServerC/bin/Debug/net6.0/Microsoft.Bcl.AsyncInterfaces.dll
 /Users/lukas/GitHub/QA-APP/ServerC/bin/Debug/net6.0/Microsoft.Data.SqlClient.dll
 /Users/lukas/GitHub/QA-APP/ServerC/bin/Debug/net6.0/Microsoft.Identity.Client.dll

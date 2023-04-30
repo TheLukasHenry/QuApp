@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "z/4qbUryxRVoAoG6bzqK0GyIksZURm8BzlTlqk19jChU4hB1sayGTOiXaVtpzcnPQVh9dI6iEwN5gMFBp2dX3g==",
+  "dgSpecHash": "m7If4Nkhfj+2eakkh/gUfPIQpmKnHgyHJ6hLWgU6E0ooc1XXV7ZNRbAdy6E11dQYzc6trqop7QgY5kXcr+Rn6w==",
   "success": true,
   "projectFilePath": "/Users/lukas/GitHub/QA-APP/ServerC/ServerC.csproj",
   "expectedPackageFiles": [
@@ -11,6 +11,7 @@
     "/Users/lukas/.nuget/packages/microsoft.aspnetcore.authentication.abstractions/2.2.0/microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",
     "/Users/lukas/.nuget/packages/microsoft.aspnetcore.authentication.cookies/2.2.0/microsoft.aspnetcore.authentication.cookies.2.2.0.nupkg.sha512",
     "/Users/lukas/.nuget/packages/microsoft.aspnetcore.authentication.core/2.2.0/microsoft.aspnetcore.authentication.core.2.2.0.nupkg.sha512",
+    "/Users/lukas/.nuget/packages/microsoft.aspnetcore.authentication.jwtbearer/5.0.10/microsoft.aspnetcore.authentication.jwtbearer.5.0.10.nupkg.sha512",
     "/Users/lukas/.nuget/packages/microsoft.aspnetcore.cryptography.internal/2.2.0/microsoft.aspnetcore.cryptography.internal.2.2.0.nupkg.sha512",
     "/Users/lukas/.nuget/packages/microsoft.aspnetcore.cryptography.keyderivation/2.2.0/microsoft.aspnetcore.cryptography.keyderivation.2.2.0.nupkg.sha512",
     "/Users/lukas/.nuget/packages/microsoft.aspnetcore.dataprotection/2.2.0/microsoft.aspnetcore.dataprotection.2.2.0.nupkg.sha512",
