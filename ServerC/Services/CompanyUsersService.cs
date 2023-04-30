@@ -32,8 +32,13 @@ namespace ServerC.Services
     {
       using (IDbConnection connection = _databaseHelper.GetConnection())
       {
+
+        DynamicParameters parameters = new DynamicParameters();
+        parameters.Add("@CompanyID", companyId);
+
         return await connection.QueryAsync<CompanyUser>("[dbo].[GetCompanyUsersByCompanyId]",
-            new { CompanyID = companyId }, commandType: CommandType.StoredProcedure);
+            parameters, commandType: CommandType.StoredProcedure);
+
       }
     }
 
@@ -41,8 +46,11 @@ namespace ServerC.Services
     {
       using (IDbConnection connection = _databaseHelper.GetConnection())
       {
+        DynamicParameters parameters = new DynamicParameters();
+        parameters.Add("@UserID", userId);
+
         return await connection.QueryAsync<CompanyUser>("[dbo].[GetCompanyUsersByUserId]",
-            new { UserID = userId }, commandType: CommandType.StoredProcedure);
+            parameters, commandType: CommandType.StoredProcedure);
       }
     }
 
@@ -50,8 +58,12 @@ namespace ServerC.Services
     {
       using (IDbConnection connection = _databaseHelper.GetConnection())
       {
+        DynamicParameters parameters = new DynamicParameters();
+        parameters.Add("@CompanyID", companyId);
+        parameters.Add("@UserID", userId);
+
         int affectedRows = await connection.ExecuteAsync("[dbo].[RemoveCompanyUser]",
-            new { CompanyID = companyId, UserID = userId }, commandType: CommandType.StoredProcedure);
+            parameters, commandType: CommandType.StoredProcedure);
 
         return affectedRows > 0;
       }

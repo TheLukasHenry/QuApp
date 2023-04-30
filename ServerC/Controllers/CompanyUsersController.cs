@@ -18,7 +18,7 @@ namespace ServerC.Controllers
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddCompanyUser([FromBody] CompanyUser companyUser)
+    public async Task<ActionResult<CompanyUser>> AddCompanyUser([FromBody] CompanyUser companyUser)
     {
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
@@ -31,21 +31,21 @@ namespace ServerC.Controllers
     }
 
     [HttpGet("company/{companyId}")]
-    public async Task<IActionResult> GetCompanyUsersByCompanyId(int companyId)
+    public async Task<ActionResult<IEnumerable<CompanyUser>>> GetCompanyUsersByCompanyId(int companyId)
     {
       IEnumerable<CompanyUser> companyUsers = await _companyUsersService.GetCompanyUsersByCompanyIdAsync(companyId);
       return Ok(companyUsers);
     }
 
     [HttpGet("user/{userId}")]
-    public async Task<IActionResult> GetCompanyUsersByUserId(int userId)
+    public async Task<ActionResult<IEnumerable<CompanyUser>>> GetCompanyUsersByUserId(int userId)
     {
       IEnumerable<CompanyUser> companyUsers = await _companyUsersService.GetCompanyUsersByUserIdAsync(userId);
       return Ok(companyUsers);
     }
 
-    [HttpDelete("{companyId}/{userId}")]
-    public async Task<IActionResult> RemoveCompanyUser(int companyId, int userId)
+    [HttpDelete]
+    public async Task<ActionResult<CompanyUser>> RemoveCompanyUser(int companyId, int userId)
     {
       bool result = await _companyUsersService.RemoveCompanyUserAsync(companyId, userId);
       if (!result)

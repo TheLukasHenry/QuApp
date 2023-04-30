@@ -4,7 +4,11 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Available Scripts
 
+Axios - no hooks generate command
+
 ## `npx @openapitools/openapi-generator-cli generate -i api-spec.json -g typescript-axios -o src/generatedClient`
+
+npx @openapitools/openapi-generator-cli generate -i api-spec.json -g typescript-fetch -o src/generatedClientFetch --additional-properties=useSingleRequestParameter=true,typescriptThreePlus=true,generateReactHooks=true
 
 chagnge base.ts to use localhost:5000
 export const BASE_PATH = 'http://localhost:5000'.replace(/\/+$/, '')

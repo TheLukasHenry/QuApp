@@ -759,19 +759,13 @@ export const CompanyUsersApiAxiosParamCreator = function (configuration?: Config
         },
         /**
          * 
-         * @param {number} companyId 
-         * @param {number} userId 
+         * @param {number} [companyId] 
+         * @param {number} [userId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        companyUsersCompanyIdUserIdDelete: async (companyId: number, userId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'companyId' is not null or undefined
-            assertParamExists('companyUsersCompanyIdUserIdDelete', 'companyId', companyId)
-            // verify required parameter 'userId' is not null or undefined
-            assertParamExists('companyUsersCompanyIdUserIdDelete', 'userId', userId)
-            const localVarPath = `/CompanyUsers/{companyId}/{userId}`
-                .replace(`{${"companyId"}}`, encodeURIComponent(String(companyId)))
-                .replace(`{${"userId"}}`, encodeURIComponent(String(userId)));
+        companyUsersDelete: async (companyId?: number, userId?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/CompanyUsers`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -782,6 +776,14 @@ export const CompanyUsersApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (companyId !== undefined) {
+                localVarQueryParameter['companyId'] = companyId;
+            }
+
+            if (userId !== undefined) {
+                localVarQueryParameter['userId'] = userId;
+            }
 
 
     
@@ -876,19 +878,19 @@ export const CompanyUsersApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async companyUsersCompanyCompanyIdGet(companyId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async companyUsersCompanyCompanyIdGet(companyId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CompanyUser>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.companyUsersCompanyCompanyIdGet(companyId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
-         * @param {number} companyId 
-         * @param {number} userId 
+         * @param {number} [companyId] 
+         * @param {number} [userId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async companyUsersCompanyIdUserIdDelete(companyId: number, userId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.companyUsersCompanyIdUserIdDelete(companyId, userId, options);
+        async companyUsersDelete(companyId?: number, userId?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CompanyUser>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.companyUsersDelete(companyId, userId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -897,7 +899,7 @@ export const CompanyUsersApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async companyUsersPost(companyUser?: CompanyUser, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async companyUsersPost(companyUser?: CompanyUser, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CompanyUser>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.companyUsersPost(companyUser, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -907,7 +909,7 @@ export const CompanyUsersApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async companyUsersUserUserIdGet(userId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async companyUsersUserUserIdGet(userId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CompanyUser>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.companyUsersUserUserIdGet(userId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -927,18 +929,18 @@ export const CompanyUsersApiFactory = function (configuration?: Configuration, b
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        companyUsersCompanyCompanyIdGet(companyId: number, options?: any): AxiosPromise<void> {
+        companyUsersCompanyCompanyIdGet(companyId: number, options?: any): AxiosPromise<Array<CompanyUser>> {
             return localVarFp.companyUsersCompanyCompanyIdGet(companyId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @param {number} companyId 
-         * @param {number} userId 
+         * @param {number} [companyId] 
+         * @param {number} [userId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        companyUsersCompanyIdUserIdDelete(companyId: number, userId: number, options?: any): AxiosPromise<void> {
-            return localVarFp.companyUsersCompanyIdUserIdDelete(companyId, userId, options).then((request) => request(axios, basePath));
+        companyUsersDelete(companyId?: number, userId?: number, options?: any): AxiosPromise<CompanyUser> {
+            return localVarFp.companyUsersDelete(companyId, userId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -946,7 +948,7 @@ export const CompanyUsersApiFactory = function (configuration?: Configuration, b
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        companyUsersPost(companyUser?: CompanyUser, options?: any): AxiosPromise<void> {
+        companyUsersPost(companyUser?: CompanyUser, options?: any): AxiosPromise<CompanyUser> {
             return localVarFp.companyUsersPost(companyUser, options).then((request) => request(axios, basePath));
         },
         /**
@@ -955,7 +957,7 @@ export const CompanyUsersApiFactory = function (configuration?: Configuration, b
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        companyUsersUserUserIdGet(userId: number, options?: any): AxiosPromise<void> {
+        companyUsersUserUserIdGet(userId: number, options?: any): AxiosPromise<Array<CompanyUser>> {
             return localVarFp.companyUsersUserUserIdGet(userId, options).then((request) => request(axios, basePath));
         },
     };
@@ -981,14 +983,14 @@ export class CompanyUsersApi extends BaseAPI {
 
     /**
      * 
-     * @param {number} companyId 
-     * @param {number} userId 
+     * @param {number} [companyId] 
+     * @param {number} [userId] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CompanyUsersApi
      */
-    public companyUsersCompanyIdUserIdDelete(companyId: number, userId: number, options?: AxiosRequestConfig) {
-        return CompanyUsersApiFp(this.configuration).companyUsersCompanyIdUserIdDelete(companyId, userId, options).then((request) => request(this.axios, this.basePath));
+    public companyUsersDelete(companyId?: number, userId?: number, options?: AxiosRequestConfig) {
+        return CompanyUsersApiFp(this.configuration).companyUsersDelete(companyId, userId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2682,7 +2684,7 @@ export const UsersApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async usersPost(createUserInput?: CreateUserInput, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Company>> {
+        async usersPost(createUserInput?: CreateUserInput, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<User>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.usersPost(createUserInput, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -2747,7 +2749,7 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersPost(createUserInput?: CreateUserInput, options?: any): AxiosPromise<Company> {
+        usersPost(createUserInput?: CreateUserInput, options?: any): AxiosPromise<User> {
             return localVarFp.usersPost(createUserInput, options).then((request) => request(axios, basePath));
         },
         /**
