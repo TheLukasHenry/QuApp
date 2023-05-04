@@ -31,11 +31,7 @@ services:
   #     - /app/server/node_modules/
   #     - ./.env:/app/.env
   #   ports:
-  #     - 8086:8086
-  #   environment:
-  #     - SERVE_CLIENT=false
-  #     - FORCE_COLOR=1
-  #   command: npm run --prefix server start:dev
+  #     - 8086:8086 k
 
   mssql:
     image: mcr.microsoft.com/mssql/server:2019-latest

@@ -19,7 +19,8 @@ namespace ServerC.Controllers
     [HttpPost]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
-      var token = await _loginService.LoginAsync(request.Email, request.Password);
+      // var token = await _loginService.LoginAsync(request.Email, request.Password);
+      var token = await _loginService.LoginAsync(request.Email);
 
       if (token == null)
       {

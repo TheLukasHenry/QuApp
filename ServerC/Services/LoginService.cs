@@ -21,7 +21,27 @@ namespace ServerC.Services
       _jwtSettings = jwtSettings;
     }
 
-    public async Task<string> LoginAsync(string email, string password)
+    // public async Task<string> LoginAsync(string email, string password)
+    // {
+    //   var user = await _usersService.GetUserByEmailAsync(email);
+
+    //   if (user == null)
+    //   {
+    //     return null;
+    //   }
+
+    //   var hashedPassword = _passwordHasher.HashPassword(user, password);
+    //   var passwordVerificationResult = _passwordHasher.VerifyHashedPassword(user, hashedPassword, password);
+
+    //   if (passwordVerificationResult == PasswordVerificationResult.Success)
+    //   {
+    //     return _jwtTokenHelper.GenerateJwtToken(email, _jwtSettings);
+    //   }
+
+    //   return null;
+    // }
+
+    public async Task<string> LoginAsync(string email)
     {
       var user = await _usersService.GetUserByEmailAsync(email);
 
@@ -30,13 +50,9 @@ namespace ServerC.Services
         return null;
       }
 
-      var hashedPassword = _passwordHasher.HashPassword(user, password);
-      var passwordVerificationResult = _passwordHasher.VerifyHashedPassword(user, hashedPassword, password);
 
-      if (passwordVerificationResult == PasswordVerificationResult.Success)
-      {
-        return _jwtTokenHelper.GenerateJwtToken(email, _jwtSettings);
-      }
+      return _jwtTokenHelper.GenerateJwtToken(email, _jwtSettings);
+
 
       return null;
     }
