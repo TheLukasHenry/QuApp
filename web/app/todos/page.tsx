@@ -1,8 +1,9 @@
 import Link from 'next/link'
+import CreateTodo from './CreateTodo'
 
 async function getBlob() {
   const res = await fetch(
-    'https://jsonplaceholder.typicode.com/todos',
+    'https://jsonplaceholder.typicode.com/todos?_limit=10',
 
     { cache: 'no-store' }
   )
@@ -15,6 +16,7 @@ export default async function Todos() {
   return (
     <div>
       Todo page
+      <CreateTodo />
       {todos.map((todo) => {
         return <Todo key={todo.id} todo={todo} />
       })}

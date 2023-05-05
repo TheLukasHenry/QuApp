@@ -21,6 +21,7 @@ export default function RootLayout({
           {/* <nav>Navbar in root layout</nav> */}
           <div className="flex flex-col items-center justify-between p-24">
             <Link href="/todos">todos</Link>
+            <Link href="/feature">feature</Link>
             <Link href="/todos/1">todos/1</Link>
             <Link href="/todos/2">todos/2</Link>
           </div>
