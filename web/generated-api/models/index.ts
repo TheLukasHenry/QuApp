@@ -2,6 +2,7 @@
 /* eslint-disable */
 export * from './Company';
 export * from './CompanyUser';
+export * from './CreateFeatureInput';
 export * from './CreateTestRunInput';
 export * from './CreateUserInput';
 export * from './Feature';

@@ -3,14 +3,16 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Feature } from '@/generated-api/models/Feature'
+import { CreateFeatureInput } from '@/generated-api/models/CreateFeatureInput'
 import { FeaturesApi } from '@/generated-api/apis/FeaturesApi'
 
-export default function CreateFeature() {
+export default function CreateFeature({ count = 1 }) {
   const [companyID, setCompanyID] = useState<Feature['companyID'] | undefined>(
     1
   )
-  const [featureName, setFeatureName] =
-    useState<Feature['featureName']>('rrrrr')
+  const [featureName, setFeatureName] = useState<Feature['featureName']>(
+    new Date().toISOString()
+  )
 
   const featuresClient = new FeaturesApi()
 
@@ -19,24 +21,30 @@ export default function CreateFeature() {
   async function createFeature() {
     try {
       const response = await featuresClient.featuresPost({
-        feature: { featureName, companyID: companyID ?? 0 },
+        createFeatureInput: { featureName, companyID: companyID ?? 0 },
       })
+      console.log('response: ', response)
+      setFeatureName(new Date().toISOString())
+      setCompanyID(1)
+      router.refresh()
     } catch (e) {
       console.log('e: ', e)
     }
+    console.log('count: ', count)
     // await featuresClient.featuresPostRaw({
-    //   feature: { featureName, companyID: companyID ?? 0 },
+    //   createFeatureInput: { featureName, companyID: companyID ?? 0 },
     // })
 
-    // setFeatureName('')
-    // setCompanyID(0)
-    // router.refresh()
     // return response
   }
 
   return (
-    <form onSubmit={createFeature}>
+    <form
+
+    // onSubmit={createFeature}
+    >
       <h3>Create a new Feature</h3>
+      <p>count: {count}</p>
       <input
         type="text"
         value={featureName}
@@ -50,7 +58,9 @@ export default function CreateFeature() {
         placeholder="Company id"
       />
 
-      <button type="submit">Create Feature</button>
+      <button type="button" onClick={createFeature}>
+        Create Feature
+      </button>
     </form>
   )
 }

@@ -1,4 +1,3 @@
-.openapi-generator-ignore
 apis/CompaniesApi.ts
 apis/CompanyUsersApi.ts
 apis/FeaturesApi.ts
@@ -12,6 +11,7 @@ apis/index.ts
 index.ts
 models/Company.ts
 models/CompanyUser.ts
+models/CreateFeatureInput.ts
 models/CreateTestRunInput.ts
 models/CreateUserInput.ts
 models/Feature.ts

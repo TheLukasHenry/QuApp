@@ -3,10 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbo --port 3000",
+    "dev": "NODE_OPTIONS='--inspect=0.0.0.0:9988 ' next dev --port 3000 --show-all",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "g": "openapi-generator-cli generate -i api-spec.json -g typescript-fetch -o generated-api"
   },
   "dependencies": {
     "@types/node": "18.16.3",

@@ -19,4 +19,13 @@ namespace ServerC.Models
     // [ForeignKey("CompanyID")]
     // public virtual Company Company { get; set; }
   }
+  public class CreateFeatureInput
+  {
+    // [Required]
+    [StringLength(50)]
+    public string FeatureName { get; set; }
+
+    // [Required]
+    public int CompanyID { get; set; }
+  }
 }

@@ -13,6 +13,7 @@ async function getBlob() {
 
 export default async function Todos() {
   const todos = await getBlob()
+
   return (
     <div>
       Todo page

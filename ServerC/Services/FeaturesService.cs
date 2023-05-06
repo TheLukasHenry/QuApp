@@ -16,13 +16,13 @@ namespace ServerC.Services
       _databaseHelper = databaseHelper;
     }
 
-    public async Task<Feature> CreateFeatureAsync(Feature feature)
+    public async Task<Feature> CreateFeatureAsync(CreateFeatureInput input)
     {
       using (var connection = _databaseHelper.GetConnection())
       {
         DynamicParameters parameters = new DynamicParameters();
-        parameters.Add("@FeatureName", feature.FeatureName);
-        parameters.Add("@CompanyID", feature.CompanyID);
+        parameters.Add("@FeatureName", input.FeatureName);
+        parameters.Add("@CompanyID", input.CompanyID);
 
         Feature createdFeature = await connection.QuerySingleOrDefaultAsync<Feature>("dbo.CreateFeature", parameters, commandType: CommandType.StoredProcedure);
         return createdFeature;

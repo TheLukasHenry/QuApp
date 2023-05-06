@@ -370,17 +370,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Feature"
+                "$ref": "#/components/schemas/CreateFeatureInput"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Feature"
+                "$ref": "#/components/schemas/CreateFeatureInput"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Feature"
+                "$ref": "#/components/schemas/CreateFeatureInput"
               }
             }
           }
@@ -1376,6 +1376,22 @@
             "format": "int32"
           },
           "userID": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateFeatureInput": {
+        "required": ["companyID", "featureName"],
+        "type": "object",
+        "properties": {
+          "featureName": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string"
+          },
+          "companyID": {
             "type": "integer",
             "format": "int32"
           }

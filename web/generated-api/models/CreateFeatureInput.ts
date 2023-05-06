@@ -16,33 +16,27 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface Feature
+ * @interface CreateFeatureInput
  */
-export interface Feature {
-    /**
-     * 
-     * @type {number}
-     * @memberof Feature
-     */
-    featureID?: number;
+export interface CreateFeatureInput {
     /**
      * 
      * @type {string}
-     * @memberof Feature
+     * @memberof CreateFeatureInput
      */
     featureName: string;
     /**
      * 
      * @type {number}
-     * @memberof Feature
+     * @memberof CreateFeatureInput
      */
     companyID: number;
 }
 
 /**
- * Check if a given object implements the Feature interface.
+ * Check if a given object implements the CreateFeatureInput interface.
  */
-export function instanceOfFeature(value: object): boolean {
+export function instanceOfCreateFeatureInput(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "featureName" in value;
     isInstance = isInstance && "companyID" in value;
@@ -50,23 +44,22 @@ export function instanceOfFeature(value: object): boolean {
     return isInstance;
 }
 
-export function FeatureFromJSON(json: any): Feature {
-    return FeatureFromJSONTyped(json, false);
+export function CreateFeatureInputFromJSON(json: any): CreateFeatureInput {
+    return CreateFeatureInputFromJSONTyped(json, false);
 }
 
-export function FeatureFromJSONTyped(json: any, ignoreDiscriminator: boolean): Feature {
+export function CreateFeatureInputFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateFeatureInput {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'featureID': !exists(json, 'featureID') ? undefined : json['featureID'],
         'featureName': json['featureName'],
         'companyID': json['companyID'],
     };
 }
 
-export function FeatureToJSON(value?: Feature | null): any {
+export function CreateFeatureInputToJSON(value?: CreateFeatureInput | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -75,7 +68,6 @@ export function FeatureToJSON(value?: Feature | null): any {
     }
     return {
         
-        'featureID': value.featureID,
         'featureName': value.featureName,
         'companyID': value.companyID,
     };

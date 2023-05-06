@@ -13,8 +13,13 @@
  */
 
 import * as runtime from '../runtime'
-import type { Feature } from '../models'
-import { FeatureFromJSON, FeatureToJSON } from '../models'
+import type { CreateFeatureInput, Feature } from '../models'
+import {
+  CreateFeatureInputFromJSON,
+  CreateFeatureInputToJSON,
+  FeatureFromJSON,
+  FeatureToJSON,
+} from '../models'
 
 export interface FeaturesCompanyCompanyIdGetRequest {
   companyId: number
@@ -25,7 +30,7 @@ export interface FeaturesFeatureIdDeleteRequest {
 }
 
 export interface FeaturesPostRequest {
-  feature?: Feature
+  createFeatureInput?: CreateFeatureInput
 }
 
 export interface FeaturesPutRequest {
@@ -138,7 +143,7 @@ export class FeaturesApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<Array<Feature>>> {
     const queryParameters: any = {}
-
+    console.log('get geeere')
     const headerParameters: runtime.HTTPHeaders = {}
 
     const response = await this.request(
@@ -146,10 +151,15 @@ export class FeaturesApi extends runtime.BaseAPI {
         path: `/Features`,
         method: 'GET',
         headers: headerParameters,
-        query: queryParameters,
+        // query: queryParameters,
       },
-      initOverrides
+
+      { cache: 'no-store' }
+      //   {
+      //     next: { revalidate: 1 },
+      //   }
     )
+    console.log('get geeere after')
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       jsonValue.map(FeatureFromJSON)
@@ -170,45 +180,27 @@ export class FeaturesApi extends runtime.BaseAPI {
   async featuresPostRaw(
     requestParameters: FeaturesPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ) {
+  ): Promise<runtime.ApiResponse<Feature>> {
     const queryParameters: any = {}
 
     const headerParameters: runtime.HTTPHeaders = {}
 
     headerParameters['Content-Type'] = 'application/json'
 
-    // const response = await this.request({
-    //     path: `/Features`,
-    //     method: 'POST',
-    //     headers: headerParameters,
-    //     query: queryParameters,
-    //     body: FeatureToJSON(requestParameters.feature),
-    // }, initOverrides);
+    const response = await this.request(
+      {
+        path: `/Features`,
+        method: 'POST',
+        headers: headerParameters,
+        query: queryParameters,
+        body: CreateFeatureInputToJSON(requestParameters.createFeatureInput),
+      },
+      initOverrides
+    )
 
-    const url = new URL(`http://localhost:5000/Feature`)
-    console.log(`step1`)
-    try {
-      const response = await fetch(
-        url,
-        {
-          method: 'POST',
-          headers: headerParameters,
-          body: FeatureToJSON({
-            featureName: 'BBBB',
-            companyID: 1,
-          }),
-        }
-        //   initOverrides
-      )
-      console.log(`step2`)
-      return new runtime.JSONApiResponse(response, (jsonValue) =>
-        FeatureFromJSON(jsonValue)
-      )
-    } catch (e) {
-      console.log('error', e)
-    }
-    console.log(`step3`)
-    return 'biatch'
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      FeatureFromJSON(jsonValue)
+    )
   }
 
   /**
@@ -216,17 +208,12 @@ export class FeaturesApi extends runtime.BaseAPI {
   async featuresPost(
     requestParameters: FeaturesPostRequest = {},
     initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ) {
-    console.log('step 4')
-    try {
-      const response = await this.featuresPostRaw(
-        requestParameters,
-        initOverrides
-      )
-    } catch (e) {
-      console.log('e: ', e)
-    }
-    // return await response.value()
+  ): Promise<Feature> {
+    const response = await this.featuresPostRaw(
+      requestParameters,
+      initOverrides
+    )
+    return await response.value()
   }
 
   /**

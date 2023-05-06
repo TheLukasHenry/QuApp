@@ -18,15 +18,15 @@ namespace ServerC.Controllers
     }
 
     [HttpPost]
-    public async Task<ActionResult<Feature>> CreateFeature([FromBody] Feature feature)
+    public async Task<ActionResult<Feature>> CreateFeature([FromBody] CreateFeatureInput input)
     {
 
-      if (string.IsNullOrEmpty(feature.FeatureName) || feature.CompanyID <= 0)
+      if (string.IsNullOrEmpty(input.FeatureName) || input.CompanyID <= 0)
       {
         return BadRequest("FeatureName cannot be empty and CompanyID must be valid.");
       }
 
-      Feature createdFeature = await _featuresService.CreateFeatureAsync(feature);
+      Feature createdFeature = await _featuresService.CreateFeatureAsync(input);
       if (createdFeature == null)
       {
         return StatusCode(500, "An error occurred while creating the feature.");
@@ -40,6 +40,13 @@ namespace ServerC.Controllers
     {
       IEnumerable<Feature> features = await _featuresService.GetAllFeaturesAsync();
       return Ok(features);
+    }
+
+    [HttpGet("{companyId}")]
+    public async Task<ActionResult<IEnumerable<Feature>>> GetFeaturesByCompany(string companyId)
+    {
+      return Ok();
+
     }
 
     [HttpGet("company/{companyId}")]

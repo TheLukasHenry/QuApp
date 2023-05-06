@@ -7,6 +7,7 @@ import { Feature } from '../../generated-api/models/Feature'
 // import { useState } from 'react'
 // import { useRouter } from 'next/navigation'
 import CreateFeature from './CreateFeature'
+import FeatureComponent from './Feature'
 
 const featuresClient = new FeaturesApi()
 // Use the API client to make a request
@@ -14,6 +15,17 @@ async function getFeatures() {
   const response = await featuresClient.featuresGet()
   console.log(response)
   return response
+}
+
+async function getBlob() {
+  const res = await fetch(
+    'http://localhost:5000/features',
+
+    { cache: 'no-store' }
+  )
+  const data = await res.json()
+  console.log('data: ', data)
+  return data as any[]
 }
 
 async function getFeaturesByCompanyId(companyId: number) {
@@ -24,10 +36,10 @@ async function getFeaturesByCompanyId(companyId: number) {
   return response
 }
 
-// Delete feature by featureId
-async function deleteFeatureById(featureId: number) {
-  await featuresClient.featuresFeatureIdDelete({ featureId })
-  console.log('Feature deleted:', featureId)
+// Delete feature by featureID
+async function deleteFeatureById(featureID: number) {
+  await featuresClient.featuresFeatureIdDelete({ featureId: featureID })
+  console.log('Feature deleted:', featureID)
 }
 
 // Post a feature
@@ -39,19 +51,8 @@ async function putFeature(feature: Feature) {
   return response
 }
 
-async function getBlob() {
-  const res = await fetch(
-    'https://jsonplaceholder.typicode.com/todos?_limit=10',
-
-    { cache: 'no-store' }
-  )
-  const data = await res.json()
-  return data as any[]
-}
-
-export default async function Todos() {
-  const todos = await getBlob()
-  const features = await getFeatures()
+export default async function Features() {
+  const features = await getBlob()
   // const router = useRouter()
 
   // const [featureName, setFeatureName] = useState('')
@@ -59,34 +60,10 @@ export default async function Todos() {
     <div>
       Features
       {features.map((feature) => {
-        return <Feature key={feature.featureID} feature={feature} />
+        return <FeatureComponent key={feature.featureID} feature={feature} />
       })}
       <h3>Create a new Feature</h3>
-      <CreateFeature />
+      <CreateFeature count={features.length} />
     </div>
-  )
-}
-
-function Todo({ todo }: any) {
-  const { id, title, userId } = todo || {}
-  return (
-    <Link href={`/todos/${id}`}>
-      <div>
-        <div>
-          {title}, {userId}
-        </div>
-      </div>
-    </Link>
-  )
-}
-
-function Feature({ feature }: any) {
-  const { featureId, featureName } = feature || {}
-  return (
-    <Link href={`/todos/${featureId}`}>
-      <div>
-        <div>{featureName}</div>
-      </div>
-    </Link>
   )
 }

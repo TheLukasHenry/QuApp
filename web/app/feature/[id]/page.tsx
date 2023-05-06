@@ -1,18 +1,17 @@
-async function getNote(todoId: string) {
-  const res = await fetch(
-    `https://jsonplaceholder.typicode.com/todos/${todoId}`,
-    { next: { revalidate: 10 } }
-  )
+async function getNote(featureId: string) {
+  const res = await fetch(`http://localhost:5000/features/${featureId || ''}`, {
+    next: { revalidate: 10 },
+  })
   const data = await res.json()
   return data
 }
 
 export default async function Todos({ params }: any) {
-  const todo = await getNote(params.id)
+  const todo = await getNote(params.featureId)
   return (
     <div>
-      Single Todo page
-      <div>{todo.title}</div>
+      Single Feature page
+      <div>{todo.featureId}</div>
     </div>
   )
 }
