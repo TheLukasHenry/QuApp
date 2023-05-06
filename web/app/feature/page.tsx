@@ -53,6 +53,8 @@ async function putFeature(feature: Feature) {
 
 export default async function Features() {
   const features = await getBlob()
+  const featuresByCompanyId = await getFeaturesByCompanyId(2)
+  console.log('featuresByCompanyId: ', featuresByCompanyId)
   // const router = useRouter()
 
   // const [featureName, setFeatureName] = useState('')

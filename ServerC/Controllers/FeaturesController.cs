@@ -42,10 +42,16 @@ namespace ServerC.Controllers
       return Ok(features);
     }
 
-    [HttpGet("{companyId}")]
-    public async Task<ActionResult<IEnumerable<Feature>>> GetFeaturesByCompany(string companyId)
+    [HttpGet("{featureId}")]
+    public ActionResult<Feature> GetFeaturesByCompany(string featureId)
     {
-      return Ok();
+      return Ok(
+       new Feature
+       {
+         FeatureID = 1,
+         FeatureName = "Feature 1",
+         CompanyID = 1
+       });
 
     }
 

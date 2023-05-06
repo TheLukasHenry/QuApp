@@ -19,30 +19,17 @@ export default function CreateFeature({ count = 1 }) {
   const router = useRouter()
 
   async function createFeature() {
-    try {
-      const response = await featuresClient.featuresPost({
-        createFeatureInput: { featureName, companyID: companyID ?? 0 },
-      })
-      console.log('response: ', response)
-      setFeatureName(new Date().toISOString())
-      setCompanyID(1)
-      router.refresh()
-    } catch (e) {
-      console.log('e: ', e)
-    }
-    console.log('count: ', count)
-    // await featuresClient.featuresPostRaw({
-    //   createFeatureInput: { featureName, companyID: companyID ?? 0 },
-    // })
+    const response = await featuresClient.featuresPost({
+      createFeatureInput: { featureName, companyID: companyID ?? 0 },
+    })
 
-    // return response
+    setFeatureName(new Date().toISOString())
+    setCompanyID(1)
+    router.refresh()
   }
 
   return (
-    <form
-
-    // onSubmit={createFeature}
-    >
+    <form>
       <h3>Create a new Feature</h3>
       <p>count: {count}</p>
       <input
@@ -64,53 +51,3 @@ export default function CreateFeature({ count = 1 }) {
     </form>
   )
 }
-
-// async function createFeature(feature: Feature) {
-//   const response = await featuresClient.featuresPost({ feature })
-//   const [featureName, setFeatureName] = useState('')
-//   console.log('Feature posted:', response)
-//   setFeatureName('')
-
-//   router.refresh()
-//   return response
-// }
-
-// 'use client'
-
-// import { useState } from 'react'
-// import { useRouter } from 'next/navigation'
-
-// export default function CreateNote() {
-//   const [title, setTitle] = useState('')
-
-//   const router = useRouter()
-
-// const create = async () => {
-// await fetch('https://jsonplaceholder.typicode.com/todos', {
-//   method: 'POST',
-//   headers: {
-//     'Content-Type': 'application/json',
-//   },
-//   body: JSON.stringify({
-//     title,
-//     completed: false,
-//   }),
-// })
-//   setTitle('')
-
-//   router.refresh()
-// }
-
-//   return (
-//     <form onSubmit={create}>
-//       <h3>Create a new Note</h3>
-//       <input
-//         type="text"
-//         placeholder="Title"
-//         value={title}
-//         onChange={(e) => setTitle(e.target.value)}
-//       />
-//       <button type="submit">Create note</button>
-//     </form>
-//   )
-// }

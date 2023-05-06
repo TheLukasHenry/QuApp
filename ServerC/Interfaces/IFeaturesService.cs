@@ -8,7 +8,7 @@ namespace ServerC.Interfaces
   {
     Task<Feature> CreateFeatureAsync(CreateFeatureInput createFeatureInput);
     Task<IEnumerable<Feature>> GetAllFeaturesAsync();
-    Task<IEnumerable<Feature>> GetFeaturesByCompanyAsync(int companyId);
+    Task<IEnumerable<Feature>> GetFeaturesByCompanyAsync(int featureId);
     Task<Feature> UpdateFeatureAsync(Feature feature);
     Task<bool> DeleteFeatureAsync(int featureId);
   }
