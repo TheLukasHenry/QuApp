@@ -39,6 +39,18 @@ namespace ServerC.Services
       }
     }
 
+    public async Task<Feature> GetFeatureByIdAsync(int featureId)
+    {
+      using (var connection = _databaseHelper.GetConnection())
+      {
+        DynamicParameters parameters = new DynamicParameters();
+        parameters.Add("@FeatureID", featureId);
+
+        Feature feature = await connection.QuerySingleOrDefaultAsync<Feature>("dbo.GetFeatureById", parameters, commandType: CommandType.StoredProcedure);
+        return feature;
+      }
+    }
+
     public async Task<IEnumerable<Feature>> GetFeaturesByCompanyAsync(int companyId)
     {
       using (var connection = _databaseHelper.GetConnection())

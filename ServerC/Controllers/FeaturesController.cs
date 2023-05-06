@@ -43,17 +43,32 @@ namespace ServerC.Controllers
     }
 
     [HttpGet("{featureId}")]
-    public ActionResult<Feature> GetFeaturesByCompany(string featureId)
+    public async Task<ActionResult<Feature>> GetFeatureById(int featureId)
     {
-      return Ok(
-       new Feature
-       {
-         FeatureID = 1,
-         FeatureName = "Feature 1",
-         CompanyID = 1
-       });
+      if (featureId <= 0)
+      {
+        return BadRequest("FeatureID must be valid.");
+      }
 
+      Feature feature = await _featuresService.GetFeatureByIdAsync(featureId);
+      if (feature == null)
+      {
+        return NotFound();
+      }
+
+      return Ok(feature);
     }
+    // public ActionResult<Feature> GetFeaturesByCompany(string featureId)
+    // {
+    //   return Ok(
+    //    new Feature
+    //    {
+    //      FeatureID = 1,
+    //      FeatureName = "Feature 1",
+    //      CompanyID = 1
+    //    });
+
+    // }
 
     [HttpGet("company/{companyId}")]
     public async Task<ActionResult<IEnumerable<Feature>>> GetFeaturesByCompany(int companyId)
