@@ -53,8 +53,6 @@
 //   )
 // }
 
-'use client'
-
 // export default function Test() {
 //   return (
 //     <div>
@@ -62,24 +60,17 @@
 //     </div>
 //   );
 // }
+'use client'
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 export default function CreateNote() {
   const [title, setTitle] = useState('')
-  // const [content, setContent] = useState('')
 
   const router = useRouter()
 
   const create = async () => {
-    // const db = new PocketBase('http://127.0.0.1:8090');
-
-    // await db.records.create('notes', {
-    //   title,
-    //   content,
-    // });
-
     await fetch('https://jsonplaceholder.typicode.com/todos', {
       method: 'POST',
       headers: {
@@ -88,11 +79,8 @@ export default function CreateNote() {
       body: JSON.stringify({
         title,
         completed: false,
-        // content,
       }),
     })
-
-    // setContent('')
     setTitle('')
 
     router.refresh()
@@ -107,11 +95,6 @@ export default function CreateNote() {
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
-      {/* <textarea
-        placeholder="Content"
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-      /> */}
       <button type="submit">Create note</button>
     </form>
   )
