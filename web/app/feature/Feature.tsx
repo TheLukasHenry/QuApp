@@ -1,7 +1,12 @@
-'use client'
+// 'use client'
+import { Feature } from '@/generated-api'
 import Link from 'next/link'
 
-export default function Feature({ feature }: any) {
+interface FeatureComponentProps {
+  feature: Feature
+}
+
+export default function FeatureComponent({ feature }: FeatureComponentProps) {
   const { featureID, featureName } = feature || {}
   return (
     <Link href={`/feature/${featureID || ''}`}>

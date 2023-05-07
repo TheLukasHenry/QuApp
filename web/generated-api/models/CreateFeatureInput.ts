@@ -24,13 +24,13 @@ export interface CreateFeatureInput {
      * @type {string}
      * @memberof CreateFeatureInput
      */
-    featureName: string;
+    featureName?: string | null;
     /**
      * 
      * @type {number}
      * @memberof CreateFeatureInput
      */
-    companyID: number;
+    companyID?: number;
 }
 
 /**
@@ -38,8 +38,6 @@ export interface CreateFeatureInput {
  */
 export function instanceOfCreateFeatureInput(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "featureName" in value;
-    isInstance = isInstance && "companyID" in value;
 
     return isInstance;
 }
@@ -54,8 +52,8 @@ export function CreateFeatureInputFromJSONTyped(json: any, ignoreDiscriminator: 
     }
     return {
         
-        'featureName': json['featureName'],
-        'companyID': json['companyID'],
+        'featureName': !exists(json, 'featureName') ? undefined : json['featureName'],
+        'companyID': !exists(json, 'companyID') ? undefined : json['companyID'],
     };
 }
 

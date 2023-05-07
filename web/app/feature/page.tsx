@@ -11,20 +11,13 @@ import FeatureComponent from './Feature'
 
 const featuresClient = new FeaturesApi()
 // Use the API client to make a request
-async function getFeatures() {
-  const response = await featuresClient.featuresGet()
-  console.log(response)
-  return response
-}
 
 async function getBlob() {
-  const res = await fetch(
-    'http://localhost:5000/features',
-
-    { cache: 'no-store' }
-  )
+  const res = await fetch('http://localhost:5000/features', {
+    cache: 'no-store',
+  })
   const data = await res.json()
-  console.log('data: ', data)
+  // console.log('data: ', data)
   return data as any[]
 }
 
@@ -51,10 +44,16 @@ async function putFeature(feature: Feature) {
   return response
 }
 
+async function getFeatures() {
+  const response = await featuresClient.featuresGet()
+  console.log(response)
+  return response
+}
+
 export default async function Features() {
-  const features = await getBlob()
-  const featuresByCompanyId = await getFeaturesByCompanyId(2)
-  console.log('featuresByCompanyId: ', featuresByCompanyId)
+  // const features = await getBlob()
+  const features = await getFeatures()
+  // console.log('features: ', features)
   // const router = useRouter()
 
   // const [featureName, setFeatureName] = useState('')
