@@ -3,13 +3,13 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Feature } from '@/generated-api/models/Feature'
-import { CreateFeatureInput } from '@/generated-api/models/CreateFeatureInput'
 import { FeaturesApi } from '@/generated-api/apis/FeaturesApi'
 
 export default function CreateFeature({ count = 1 }) {
   const [companyID, setCompanyID] = useState<Feature['companyID'] | undefined>(
     1
   )
+
   const [featureName, setFeatureName] = useState<Feature['featureName']>(
     new Date().toISOString()
   )
@@ -24,8 +24,14 @@ export default function CreateFeature({ count = 1 }) {
     })
 
     setFeatureName(new Date().toISOString())
-    setCompanyID(1)
+    setCompanyID(0)
     router.refresh()
+  }
+
+  async function putFeature(feature: Feature) {
+    const response = await featuresClient.featuresPut({ feature })
+    console.log('Feature updated:', response)
+    return response
   }
 
   return (
