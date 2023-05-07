@@ -14,7 +14,8 @@ const featuresClient = new FeaturesApi()
 
 async function getBlob() {
   const res = await fetch('http://localhost:5000/features', {
-    cache: 'no-store',
+    // cache: 'no-store',
+    next: { revalidate: 10 },
   })
   const data = await res.json()
   // console.log('data: ', data)
@@ -45,7 +46,9 @@ async function putFeature(feature: Feature) {
 }
 
 async function getFeatures() {
-  const response = await featuresClient.featuresGet()
+  const response = await featuresClient.featuresGet({
+    // ...{ cache: 'no-store' },
+  })
   console.log(response)
   return response
 }
