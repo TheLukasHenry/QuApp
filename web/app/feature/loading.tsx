@@ -1,4 +1,4 @@
-'use client'
+// 'use client'
 // 'use-server'
 
 export default function loading() {

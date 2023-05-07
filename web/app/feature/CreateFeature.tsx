@@ -7,12 +7,10 @@ import { FeaturesApi } from '@/generated-api/apis/FeaturesApi'
 
 export default function CreateFeature({ count = 1 }) {
   const [companyID, setCompanyID] = useState<Feature['companyID'] | undefined>(
-    1
+    0
   )
 
-  const [featureName, setFeatureName] = useState<Feature['featureName']>(
-    new Date().toISOString()
-  )
+  const [featureName, setFeatureName] = useState<Feature['featureName']>('')
 
   const featuresClient = new FeaturesApi()
 
@@ -23,15 +21,9 @@ export default function CreateFeature({ count = 1 }) {
       createFeatureInput: { featureName, companyID: companyID ?? 0 },
     })
 
-    setFeatureName(new Date().toISOString())
+    setFeatureName('')
     setCompanyID(0)
     router.refresh()
-  }
-
-  async function putFeature(feature: Feature) {
-    const response = await featuresClient.featuresPut({ feature })
-    console.log('Feature updated:', response)
-    return response
   }
 
   return (

@@ -1,4 +1,5 @@
 import { FeaturesApi } from '../../../generated-api/apis/FeaturesApi'
+import UpdateFeature from './UpdateFeature'
 
 const featuresClient = new FeaturesApi()
 
@@ -22,6 +23,7 @@ export default async function Page({ params }: any) {
     <div>
       Single Feature page
       <div>feature name: {feature.featureName}</div>
+      <UpdateFeature feature={feature} />
     </div>
   )
 }
