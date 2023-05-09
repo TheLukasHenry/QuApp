@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { Feature } from '@/generated-api/models/Feature'
 import { FeaturesApi } from '@/generated-api/apis/FeaturesApi'
+import React from 'react'
 
 type UpdateFeatureProps = {
   feature: Feature
@@ -10,7 +11,8 @@ type UpdateFeatureProps = {
 
 export default function UpdateFeature({ feature }: UpdateFeatureProps) {
   const { featureID, featureName, companyID } = feature || {}
-
+  const [currentFeatureName, setCurrentFeatureName] =
+    React.useState(featureName)
   const featuresClient = new FeaturesApi()
 
   const router = useRouter()
@@ -24,17 +26,17 @@ export default function UpdateFeature({ feature }: UpdateFeatureProps) {
       companyID: Number(formData.get('companyID')),
       featureID,
     }
-    console.log('body: ', body)
     const response = await featuresClient.featuresPut({ feature: body })
+    setCurrentFeatureName(body.featureName)
     console.log('Feature updated:', response)
     router.refresh()
-    return response
   }
 
   return (
     <div>
-      <h2>Edit Your Profile</h2>
+      Single Feature page
       <form onSubmit={putFeature}>
+        <div>feature name: {currentFeatureName}</div>
         <label htmlFor="featureName">Name</label>
         <input
           type="text"

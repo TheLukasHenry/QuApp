@@ -1,29 +1,33 @@
+import { Feature } from '@/generated-api/models/Feature'
 import { FeaturesApi } from '../../../generated-api/apis/FeaturesApi'
 import UpdateFeature from './UpdateFeature'
+import UpdateFeatureActions from './UpdateFeatureActions'
+import { revalidatePath } from 'next/cache'
+
+interface Props {
+  params: { id: string }
+}
 
 const featuresClient = new FeaturesApi()
 
-async function getFeatureById(featureId: any) {
-  console.log('New get featureId: ', featureId)
+async function getFeatureById(id: string) {
   const response = await featuresClient.featuresFeatureIdGet({
-    featureId,
+    featureId: +id,
     ...{ cache: 'no-store' },
   })
-  console.log(response)
-
   return response
 }
 
-export default async function Page({ params }: any) {
-  console.log('params.id: ', params.id)
+export default async function Page({ params }: Props) {
+  console.log('New get params.id: ', params.id)
+
   const feature = await getFeatureById(params.id)
 
   console.log('feature: ', feature)
   return (
     <div>
-      Single Feature page
-      <div>feature name: {feature.featureName}</div>
       <UpdateFeature feature={feature} />
+      {/* <UpdateFeatureActions feature={feature} putFeature={putFeature} /> */}
     </div>
   )
 }

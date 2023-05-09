@@ -15,7 +15,7 @@ export default async function Todos() {
   const todos = await getBlob()
 
   return (
-    <div>
+    <div className="pt-16">
       Todo page
       <CreateTodo />
       {todos.map((todo) => {
