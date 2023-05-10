@@ -1,8 +1,6 @@
-import { Feature } from '@/generated-api/models/Feature'
 import { FeaturesApi } from '../../../generated-api/apis/FeaturesApi'
 import UpdateFeature from './UpdateFeature'
 import UpdateFeatureActions from './UpdateFeatureActions'
-import { revalidatePath } from 'next/cache'
 
 interface Props {
   params: { id: string }
@@ -11,10 +9,20 @@ interface Props {
 const featuresClient = new FeaturesApi()
 
 async function getFeatureById(id: string) {
-  const response = await featuresClient.featuresFeatureIdGet({
-    featureId: +id,
-    ...{ cache: 'no-store' },
-  })
+  const response = await featuresClient.featuresFeatureIdGet(
+    {
+      featureId: +id,
+    },
+    // ,
+
+    // {
+    //   next: {
+    //     revalidate: 0,
+    //   },
+    // }
+    { cache: 'no-store' }
+  )
+  console.log('response: ', response)
   return response
 }
 
