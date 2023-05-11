@@ -1,18 +1,15 @@
-// ITestCasesService.cs
 using ServerC.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+
 
 
 namespace ServerC.Interfaces
 {
   public interface ITestCasesService
   {
-    Task<TestCase> CreateTestCaseAsync(TestCase testCase);
+    Task<TestCase> CreateTestCaseAsync(CreateTestCaseInput createTestCaseInput);
     Task<IEnumerable<TestCase>> GetAllTestCasesAsync();
-    Task<TestCase> GetTestCaseByIdAsync(int testCaseId);
-    // Task<int> UpdateTestCaseAsync(TestCase testCase);
+    Task<TestCase> GetTestCaseByIdAsync(int id);
     Task<TestCase> UpdateTestCaseAsync(TestCase testCase);
-    Task<int> DeleteTestCaseAsync(int testCaseId);
+    Task<int> DeleteTestCaseAsync(int id);
   }
 }

@@ -1,10 +1,7 @@
-
 using Dapper;
 using ServerC.Interfaces;
 using ServerC.Models;
 using System.Data;
-
-
 
 namespace ServerC.Services
 {
@@ -27,29 +24,24 @@ namespace ServerC.Services
       }
     }
 
-
-    public async Task<Company> CreateCompanyAsync(string companyName)
+    public async Task<Company> CreateCompanyAsync(string name)
     {
       using (var connection = _databaseHelper.GetConnection())
       {
         DynamicParameters parameters = new DynamicParameters();
-        parameters.Add("@CompanyName", companyName, DbType.String);
+        parameters.Add("@Name", name, DbType.String); // Change @CompanyName to @Name
 
         Company company = await connection.QueryFirstOrDefaultAsync<Company>("dbo.CreateCompany", parameters, commandType: CommandType.StoredProcedure);
         return company;
       }
     }
 
-
-
     public async Task<Company> GetCompanyByIdAsync(int id)
     {
       using (var connection = _databaseHelper.GetConnection())
-
-
       {
         DynamicParameters parameters = new DynamicParameters();
-        parameters.Add("@CompanyID", id);
+        parameters.Add("@Id", id); // Change @CompanyID to @Id
         Company company = await connection.QuerySingleOrDefaultAsync<Company>("dbo.GetCompanyById", parameters, commandType: CommandType.StoredProcedure);
         return company;
       }
@@ -59,37 +51,21 @@ namespace ServerC.Services
     {
       using (var connection = _databaseHelper.GetConnection())
       {
-        //    update the company in the database and return the updated company object!!! copilot do this for me
         DynamicParameters parameters = new DynamicParameters();
-        parameters.Add("@CompanyID", company.CompanyID, DbType.Int32);
-        parameters.Add("@CompanyName", company.CompanyName, DbType.String);
+        parameters.Add("@Id", company.id, DbType.Int32); // Change @CompanyID to @Id
+        parameters.Add("@Name", company.name, DbType.String); // Change @CompanyName to @Name
 
         Company updatedCompany = await connection.QuerySingleOrDefaultAsync<Company>("dbo.UpdateCompany", parameters, commandType: CommandType.StoredProcedure);
         return updatedCompany;
-
-
       }
     }
 
-
-
-
-
-
-
-
-    // return await connection.ExecuteAsync("UpdateCompany",
-    //     new { CompanyID = company.CompanyID, CompanyName = company.CompanyName },
-    //     commandType: CommandType.StoredProcedure);
-    //   }
-    // }
-
-    public async Task<bool> DeleteCompanyAsync(int companyId)
+    public async Task<bool> DeleteCompanyAsync(int id)
     {
       using (var connection = _databaseHelper.GetConnection())
       {
         DynamicParameters parameters = new DynamicParameters();
-        parameters.Add("@CompanyID", companyId, DbType.Int32);
+        parameters.Add("@Id", id, DbType.Int32); // Change @CompanyID to @Id
 
         int affectedRows = await connection.ExecuteAsync("dbo.DeleteCompany", parameters, commandType: CommandType.StoredProcedure);
         return affectedRows > 0;

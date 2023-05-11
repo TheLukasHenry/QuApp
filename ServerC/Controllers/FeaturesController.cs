@@ -20,10 +20,9 @@ namespace ServerC.Controllers
     [HttpPost]
     public async Task<ActionResult<Feature>> CreateFeature([FromBody] CreateFeatureInput input)
     {
-
-      if (string.IsNullOrEmpty(input.FeatureName) || input.CompanyID <= 0)
+      if (string.IsNullOrEmpty(input.name) || input.companyId <= 0)
       {
-        return BadRequest("FeatureName cannot be empty and CompanyID must be valid.");
+        return BadRequest("Feature name cannot be empty and companyId must be valid.");
       }
 
       Feature createdFeature = await _featuresService.CreateFeatureAsync(input);
@@ -42,15 +41,15 @@ namespace ServerC.Controllers
       return Ok(features);
     }
 
-    [HttpGet("{featureId}")]
-    public async Task<ActionResult<Feature>> GetFeatureById(int featureId)
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Feature>> GetFeatureById(int id)
     {
-      if (featureId <= 0)
+      if (id <= 0)
       {
-        return BadRequest("FeatureID must be valid.");
+        return BadRequest("Feature Id must be valid.");
       }
 
-      Feature feature = await _featuresService.GetFeatureByIdAsync(featureId);
+      Feature feature = await _featuresService.GetFeatureByIdAsync(id);
       if (feature == null)
       {
         return NotFound();
@@ -58,31 +57,20 @@ namespace ServerC.Controllers
 
       return Ok(feature);
     }
-    // public ActionResult<Feature> GetFeaturesByCompany(string featureId)
-    // {
-    //   return Ok(
-    //    new Feature
-    //    {
-    //      FeatureID = 1,
-    //      FeatureName = "Feature 1",
-    //      CompanyID = 1
-    //    });
-
-    // }
 
     [HttpGet("company/{companyId}")]
     public async Task<ActionResult<IEnumerable<Feature>>> GetFeaturesByCompany(int companyId)
     {
-      IEnumerable<Feature> features = await _featuresService.GetFeaturesByCompanyAsync(companyId);
+      IEnumerable<Feature> features = await _featuresService.GetFeaturesByCompanyIdAsync(companyId);
       return Ok(features);
     }
 
     [HttpPut]
     public async Task<ActionResult<Feature>> UpdateFeature([FromBody] Feature feature)
     {
-      if (feature.FeatureID <= 0 || string.IsNullOrEmpty(feature.FeatureName) || feature.CompanyID <= 0)
+      if (feature.id <= 0 || string.IsNullOrEmpty(feature.name) || feature.companyId <= 0)
       {
-        return BadRequest("FeatureID, FeatureName, and CompanyID must be valid.");
+        return BadRequest("Feature Id, name, and companyId must be valid.");
       }
 
       Feature updatedFeature = await _featuresService.UpdateFeatureAsync(feature);
@@ -94,15 +82,15 @@ namespace ServerC.Controllers
       return Ok(updatedFeature);
     }
 
-    [HttpDelete("{featureId}")]
-    public async Task<IActionResult> DeleteFeature(int featureId)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteFeature(int id)
     {
-      if (featureId <= 0)
+      if (id <= 0)
       {
-        return BadRequest("FeatureID must be valid.");
+        return BadRequest("Feature Id must be valid.");
       }
 
-      bool result = await _featuresService.DeleteFeatureAsync(featureId);
+      bool result = await _featuresService.DeleteFeatureAsync(id);
       if (!result)
       {
         return StatusCode(500, "An error occurred while deleting the feature.");

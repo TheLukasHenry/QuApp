@@ -1,13 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace ServerC.Models
 {
   public class Company
   {
-    public int CompanyID { get; set; }
-    public string CompanyName { get; set; }
+    public int id { get; set; } // Changed from CompanyID to Id
+    public string name { get; set; } // Changed from CompanyName to Name
   }
 }

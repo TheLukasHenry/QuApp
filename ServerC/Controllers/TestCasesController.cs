@@ -4,8 +4,6 @@ using ServerC.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-
-
 namespace ServerC.Controllers
 {
   [Route("[controller]")]
@@ -20,16 +18,20 @@ namespace ServerC.Controllers
     }
 
     [HttpPost]
-    public async Task<ActionResult<TestCase>> CreateTestCase([FromBody] TestCase testCase)
+    public async Task<ActionResult<TestCase>> CreateTestCase([FromBody] CreateTestCaseInput input)
     {
-      if (!ModelState.IsValid)
-        return BadRequest(ModelState);
+      if (string.IsNullOrEmpty(input.name) || input.featureId <= 0)
+      {
+        return BadRequest("TestCase Id, name, and featureId must be valid.");
+      }
 
-      TestCase result = await _testCasesService.CreateTestCaseAsync(testCase);
-      if (result == null)
-        return StatusCode(500);
+      TestCase createdTestCase = await _testCasesService.CreateTestCaseAsync(input);
+      if (createdTestCase == null)
+      {
+        return StatusCode(500, "An error occurred while creating the TestCase.");
+      }
 
-      return CreatedAtAction(nameof(GetTestCaseById), new { id = testCase.TestCaseID }, testCase);
+      return Ok(createdTestCase);
     }
 
     [HttpGet]
@@ -42,30 +44,35 @@ namespace ServerC.Controllers
     [HttpGet("{id}")]
     public async Task<ActionResult<TestCase>> GetTestCaseById(int id)
     {
+      if (id <= 0)
+      {
+        return BadRequest("TestCase Id must be valid.");
+      }
+
       TestCase testCase = await _testCasesService.GetTestCaseByIdAsync(id);
       if (testCase == null)
+      {
         return NotFound();
+      }
 
       return Ok(testCase);
     }
 
-    // write a method to update a test case, return 404 if not found, 500 if error, 204 with the testCase if successful
     [HttpPut("{id}")]
     public async Task<ActionResult<TestCase>> UpdateTestCase(int id, [FromBody] TestCase testCase)
     {
-      if (!ModelState.IsValid)
-        return BadRequest(ModelState);
-
-      if (id != testCase.TestCaseID)
-        return BadRequest();
+      if (id != testCase.id || string.IsNullOrEmpty(testCase.name) || testCase.featureId <= 0)
+      {
+        return BadRequest("TestCase Id, name, and featureId must be valid.");
+      }
 
       TestCase updatedTestCase = await _testCasesService.UpdateTestCaseAsync(testCase);
       if (updatedTestCase == null)
-        return StatusCode(500);
+      {
+        return StatusCode(500, "An error occurred while updating the TestCase.");
+      }
 
-      return NoContent();
-
-
+      return Ok(updatedTestCase);
     }
 
 

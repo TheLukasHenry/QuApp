@@ -1,15 +1,12 @@
 using Dapper;
-using Microsoft.Data.SqlClient;
 using ServerC.Interfaces;
 using ServerC.Models;
 using System.Data;
-
 
 namespace ServerC.Services
 {
   public class TestCasesService : ITestCasesService
   {
-
     private readonly IDatabaseHelper _databaseHelper;
 
     public TestCasesService(IDatabaseHelper databaseHelper)
@@ -17,58 +14,43 @@ namespace ServerC.Services
       _databaseHelper = databaseHelper;
     }
 
-    public async Task<TestCase> CreateTestCaseAsync(TestCase testCase)
+    public async Task<TestCase> CreateTestCaseAsync(CreateTestCaseInput input)
     {
       using (var connection = _databaseHelper.GetConnection())
-
       {
         DynamicParameters parameters = new DynamicParameters();
-        parameters.Add("@FeatureID", testCase.FeatureID, DbType.Int32);
-        parameters.Add("@TestCaseName", testCase.TestCaseName, DbType.String);
-        parameters.Add("@TestCaseOrder", testCase.TestCaseOrder, DbType.Int32);
+        parameters.Add("@featureId", input.featureId, DbType.Int32);
+        parameters.Add("@name", input.name, DbType.String);
+        parameters.Add("@sortOrder", input.sortOrder, DbType.Int32);
+        parameters.Add("@offset", input.offset, DbType.Int32);
 
-        testCase.TestCaseID = await connection.QuerySingleOrDefaultAsync<int>("CreateTestCase", parameters, commandType: CommandType.StoredProcedure);
-        return testCase;
+        TestCase createdTestCase = await connection.QuerySingleOrDefaultAsync<TestCase>("dbo.CreateTestCase", parameters, commandType: CommandType.StoredProcedure);
+        return createdTestCase;
       }
     }
 
     public async Task<IEnumerable<TestCase>> GetAllTestCasesAsync()
     {
       using (var connection = _databaseHelper.GetConnection())
-
       {
         return await connection.QueryAsync<TestCase>("GetAllTestCases", commandType: CommandType.StoredProcedure);
       }
     }
 
-    public async Task<TestCase> GetTestCaseByIdAsync(int testCaseId)
+    public async Task<TestCase> GetTestCaseByIdAsync(int id)
     {
       using (var connection = _databaseHelper.GetConnection())
-
       {
-        return await connection.QuerySingleOrDefaultAsync<TestCase>("GetTestCaseById", new { TestCaseID = testCaseId }, commandType: CommandType.StoredProcedure);
+        return await connection.QuerySingleOrDefaultAsync<TestCase>("GetTestCaseById", new { id }, commandType: CommandType.StoredProcedure);
       }
     }
 
-    // public async Task<int> UpdateTestCaseAsync(TestCase testCase)
-    // {
-    //             using (var connection = _databaseHelper.GetConnection())
-
-    //     {
-    //         return await connection.ExecuteAsync("UpdateTestCase",
-    //             new { TestCaseID = testCase.TestCaseID, FeatureID = testCase.FeatureID, TestCaseName = testCase.TestCaseName, TestCaseOrder = testCase.TestCaseOrder },
-    //             commandType: CommandType.StoredProcedure);
-    //     }
-    // }
-
-    // write the UpdateTestCaseAsync method here, return the updated TestCase object
     public async Task<TestCase> UpdateTestCaseAsync(TestCase testCase)
     {
       using (var connection = _databaseHelper.GetConnection())
-
       {
         int rowsAffected = await connection.ExecuteAsync("UpdateTestCase",
-            new { TestCaseID = testCase.TestCaseID, FeatureID = testCase.FeatureID, TestCaseName = testCase.TestCaseName, TestCaseOrder = testCase.TestCaseOrder },
+            new { id = testCase.id, FeatureId = testCase.featureId, name = testCase.name, sortOrder = testCase.sortOrder },
             commandType: CommandType.StoredProcedure);
 
         if (rowsAffected > 0)
@@ -82,19 +64,12 @@ namespace ServerC.Services
       }
     }
 
-
-
-    public async Task<int> DeleteTestCaseAsync(int testCaseId)
+    public async Task<int> DeleteTestCaseAsync(int id)
     {
       using (var connection = _databaseHelper.GetConnection())
-
       {
-        return await connection.ExecuteAsync("DeleteTestCase", new { TestCaseID = testCaseId }, commandType: CommandType.StoredProcedure);
+        return await connection.ExecuteAsync("DeleteTestCase", new { id }, commandType: CommandType.StoredProcedure);
       }
     }
-    // Implement the methods from ITestCasesService here
-    // (same code as provided in the previous answer)
   }
-
-
 }

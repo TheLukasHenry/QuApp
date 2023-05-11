@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+
 using ServerC.Models;
 
 namespace ServerC.Interfaces
@@ -11,7 +11,6 @@ namespace ServerC.Interfaces
     Task<IEnumerable<TestRun>> GetAllTestRunsAsync();
     Task<TestRun> UpdateTestRunAsync(int testRunId, CreateTestRunInput input);
     Task<bool> DeleteTestRunAsync(int testRunId);
-    //   TestRun UpdateTestRun(TestRun testRun);
-    //   void DeleteTestRun(int testRunId);
+
   }
 }

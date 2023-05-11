@@ -1,12 +1,20 @@
-
 namespace ServerC.Models
 {
   public class TestCase
   {
-    public int TestCaseID { get; set; }
-    public int FeatureID { get; set; }
-    // public Feature Feature { get; set; }
-    public string TestCaseName { get; set; }
-    public int TestCaseOrder { get; set; }
+    public int id { get; set; }
+    public int featureId { get; set; }
+    public string name { get; set; }
+    public int offset { get; set; }
+
+    public int sortOrder { get; set; }
+  }
+  public class CreateTestCaseInput
+  {
+    public int featureId { get; set; }
+    public string name { get; set; }
+    public int? offset { get; set; }
+
+    public int? sortOrder { get; set; }
   }
 }

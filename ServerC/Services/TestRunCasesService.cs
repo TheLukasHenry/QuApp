@@ -14,30 +14,29 @@ namespace ServerC.Services
       _databaseHelper = databaseHelper;
     }
 
-    public async Task<TestRunCase> CreateTestRunCaseAsync(TestRunCase testRunCase)
+    public async Task<TestRunCase> CreateTestRunCaseAsync(CreateTestRunCaseInput input)
     {
       using (var connection = _databaseHelper.GetConnection())
-      {
-        int testRunCaseID = await connection.ExecuteScalarAsync<int>("CreateTestRunCase",
-            new
-            {
-              TestRunID = testRunCase.TestRunID,
-              TestCaseID = testRunCase.TestCaseID,
-              TestCaseStatus = testRunCase.TestCaseStatus,
-              TestCaseComment = testRunCase.TestCaseComment
-            },
-            commandType: CommandType.StoredProcedure);
 
-        testRunCase.TestRunCaseID = testRunCaseID;
-        return testRunCase;
+
+      {
+        DynamicParameters parameters = new DynamicParameters();
+        parameters.Add("@testRunId", input.testRunId, DbType.Int32);
+        parameters.Add("@testCaseComment", input.testCaseComment, DbType.String);
+        parameters.Add("@testCaseId", input.testCaseId, DbType.Int32);
+        parameters.Add("@testCaseStatus", input.testCaseStatus, DbType.Int32);
+
+        TestRunCase createdTestRunCase = await connection.QuerySingleOrDefaultAsync<TestRunCase>("dbo.CreateTestRunCase", parameters, commandType: CommandType.StoredProcedure);
+        return createdTestRunCase;
+        // return await connection.QuerySingleOrDefaultAsync<TestRunCase>("dbo.CreateTestRunCase", parameters, commandType: CommandType.StoredProcedure);
       }
     }
 
-    public async Task<IEnumerable<TestRunCase>> GetTestRunCasesByTestRunIDAsync(int testRunID)
+    public async Task<IEnumerable<TestRunCase>> GetTestRunCasesByTestRunIdAsync(int testRunId)
     {
       using (var connection = _databaseHelper.GetConnection())
       {
-        return await connection.QueryAsync<TestRunCase>("GetTestRunCasesByTestRunID", new { TestRunID = testRunID }, commandType: CommandType.StoredProcedure);
+        return await connection.QueryAsync<TestRunCase>("GetTestRunCasesByTestRunId", new { TestRunId = testRunId }, commandType: CommandType.StoredProcedure);
       }
     }
 
@@ -48,11 +47,11 @@ namespace ServerC.Services
         int rowsAffected = await connection.ExecuteAsync("UpdateTestRunCase",
             new
             {
-              TestRunCaseID = testRunCase.TestRunCaseID,
-              TestRunID = testRunCase.TestRunID,
-              TestCaseID = testRunCase.TestCaseID,
-              TestCaseStatus = testRunCase.TestCaseStatus,
-              TestCaseComment = testRunCase.TestCaseComment
+              id = testRunCase.id,
+              testRunId = testRunCase.testRunId,
+              testCaseId = testRunCase.testCaseId,
+              testCaseStatus = testRunCase.testCaseStatus,
+              testCaseComment = testRunCase.testCaseComment
             },
             commandType: CommandType.StoredProcedure);
 
@@ -60,21 +59,25 @@ namespace ServerC.Services
       }
     }
 
-    public async Task<bool> DeleteTestRunCaseAsync(int testRunCaseID)
+    public async Task<bool> DeleteTestRunCaseAsync(int id)
     {
       using (var connection = _databaseHelper.GetConnection())
       {
-        int rowsAffected = await connection.ExecuteAsync("DeleteTestRunCase", new { TestRunCaseID = testRunCaseID }, commandType: CommandType.StoredProcedure);
+        int rowsAffected = await connection.ExecuteAsync("DeleteTestRunCase", new { Id = id }, commandType: CommandType.StoredProcedure);
         return rowsAffected > 0;
       }
     }
 
-    public async Task<TestRunCase> GetTestRunCaseByIdAsync(int testRunCaseId)
+    public async Task<TestRunCase> GetTestRunCaseByIdAsync(int id)
     {
       using (var connection = _databaseHelper.GetConnection())
       {
-        return await connection.QuerySingleOrDefaultAsync<TestRunCase>("GetTestRunCaseById", new { TestRunCaseID = testRunCaseId }, commandType: CommandType.StoredProcedure);
+        return await connection.QuerySingleOrDefaultAsync<TestRunCase>("GetTestRunCaseById", new
+        {
+          id = id
+        }, commandType: CommandType.StoredProcedure);
       }
     }
   }
 }
+

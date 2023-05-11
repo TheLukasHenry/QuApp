@@ -7,7 +7,6 @@ namespace ServerC.Controllers
 {
   [ApiController]
   [Route("[controller]")]
-
   public class CompaniesController : ControllerBase
   {
     private readonly ICompaniesService _companiesService;
@@ -26,7 +25,7 @@ namespace ServerC.Controllers
 
     [HttpGet("{id}")]
     [Authorize]
-    public async Task<ActionResult<Company>> GetCompany(int id)
+    public async Task<ActionResult<Company>> GetCompany(int id) // Changed from GetCompanyById to GetCompany
     {
       Company company = await _companiesService.GetCompanyByIdAsync(id);
       if (company == null)
@@ -37,16 +36,15 @@ namespace ServerC.Controllers
       return company;
     }
 
-
     [HttpPost]
     public async Task<ActionResult<Company>> CreateCompany([FromBody] Company company)
     {
-      if (string.IsNullOrEmpty(company.CompanyName))
+      if (string.IsNullOrEmpty(company.name)) // Changed from CompanyName to Name
       {
-        return BadRequest("CompanyName cannot be empty.");
+        return BadRequest("Name cannot be empty."); // Changed from CompanyName to Name
       }
 
-      Company createdCompany = await _companiesService.CreateCompanyAsync(company.CompanyName);
+      Company createdCompany = await _companiesService.CreateCompanyAsync(company.name); // Changed from CompanyName to Name
       if (createdCompany == null)
       {
         return StatusCode(500, "An error occurred while creating the company.");
@@ -56,13 +54,13 @@ namespace ServerC.Controllers
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateCompany(int id, [FromBody] Company company)
+    public async Task<IActionResult> UpdateCompany(int id, [FromBody] Company company) // Changed from UpdateCompanyById to UpdateCompany
     {
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
-      if (id != company.CompanyID)
+      if (id != company.id) // Changed from CompanyID to Id
       {
-        return BadRequest("CompanyID in the URL does not match the CompanyID in the request body.");
+        return BadRequest("Id in the URL does not match the Id in the request body."); // Changed from CompanyID to Id
       }
 
       Company updatedCompany = await _companiesService.UpdateCompanyAsync(company);
@@ -72,13 +70,10 @@ namespace ServerC.Controllers
       }
 
       return Ok(updatedCompany);
-
     }
 
-
-
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteCompany(int id)
+    public async Task<IActionResult> DeleteCompany(int id) // Changed from DeleteCompanyById to DeleteCompany
     {
       bool isDeleted = await _companiesService.DeleteCompanyAsync(id);
       if (!isDeleted)

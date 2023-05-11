@@ -1,12 +1,18 @@
-
 namespace ServerC.Models
 {
   public class TestRunCase
   {
-    public int TestRunCaseID { get; set; }
-    public int TestRunID { get; set; }
-    public int TestCaseID { get; set; }
-    public int TestCaseStatus { get; set; }
-    public string? TestCaseComment { get; set; }
+    public int id { get; set; }
+    public int testRunId { get; set; }
+    public int testCaseId { get; set; }
+    public int testCaseStatus { get; set; }
+    public string? testCaseComment { get; set; }
+  }
+  public class CreateTestRunCaseInput
+  {
+    public int testRunId { get; set; }
+    public int testCaseId { get; set; }
+    public int testCaseStatus { get; set; }
+    public string? testCaseComment { get; set; }
   }
 }

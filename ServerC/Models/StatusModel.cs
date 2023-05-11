@@ -1,12 +1,8 @@
 namespace ServerC.Models
 {
-
-
-
-
   public class Status
   {
-    public int StatusID { get; set; }
-    public string StatusName { get; set; }
+    public int statusID { get; set; }
+    public string statusName { get; set; }
   }
 }

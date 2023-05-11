@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ServerC.Interfaces;
 using ServerC.Models;
@@ -27,7 +25,7 @@ namespace ServerC.Controllers
       if (createdCompanyUser == null)
         return StatusCode(500);
 
-      return CreatedAtAction(nameof(GetCompanyUsersByCompanyId), new { companyId = createdCompanyUser.CompanyID }, createdCompanyUser);
+      return CreatedAtAction(nameof(GetCompanyUsersByCompanyId), new { companyId = createdCompanyUser.companyId }, createdCompanyUser); //Changed from CompanyID to CompanyId
     }
 
     [HttpGet("company/{companyId}")]

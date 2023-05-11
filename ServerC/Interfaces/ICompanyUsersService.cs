@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using ServerC.Models;
 
 namespace ServerC.Interfaces
@@ -7,8 +5,8 @@ namespace ServerC.Interfaces
   public interface ICompanyUsersService
   {
     Task<CompanyUser> AddCompanyUserAsync(CompanyUser companyUser);
-    Task<IEnumerable<CompanyUser>> GetCompanyUsersByCompanyIdAsync(int companyId);
-    Task<IEnumerable<CompanyUser>> GetCompanyUsersByUserIdAsync(int userId);
-    Task<bool> RemoveCompanyUserAsync(int companyId, int userId);
+    Task<IEnumerable<CompanyUser>> GetCompanyUsersByCompanyIdAsync(int companyId); //Changed from GetCompanyUsersByCompanyId to GetCompanyUsersByCompanyIdAsync
+    Task<IEnumerable<CompanyUser>> GetCompanyUsersByUserIdAsync(int userId); //Changed from GetCompanyUsersByUserId to GetCompanyUsersByUserIdAsync
+    Task<bool> RemoveCompanyUserAsync(int companyId, int userId); //Changed from RemoveCompanyUser to RemoveCompanyUserAsync
   }
 }

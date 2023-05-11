@@ -16,17 +16,38 @@ namespace ServerC.Controllers
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateTestRunCase([FromBody] TestRunCase testRunCase)
+    public async Task<ActionResult<TestRunCase>> CreateTestRunCase([FromBody] CreateTestRunCaseInput input)
     {
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 
-      TestRunCase result = await _testRunCasesService.CreateTestRunCaseAsync(testRunCase);
-      if (result == null)
-        return StatusCode(500);
+      TestRunCase createdTestRunCase = await _testRunCasesService.CreateTestRunCaseAsync(input);
+      if (createdTestRunCase == null)
+      {
+        return StatusCode(500, "An error occurred while creating the TestRunCase.");
+      }
 
-      return CreatedAtAction(nameof(GetTestRunCaseById), new { id = testRunCase.TestRunCaseID }, testRunCase);
+      return createdTestRunCase;
+      // if (result == null)
+      //   return StatusCode(500);
+
+      // return CreatedAtAction(nameof(GetTestRunCaseById);
     }
+    // public async Task<ActionResult<TestCase>> CreateTestCase([FromBody] CreateTestCaseInput input)
+    // {
+    //   if (string.IsNullOrEmpty(input.name) || input.featureId <= 0)
+    //   {
+    //     return BadRequest("TestCase Id, name, and featureId must be valid.");
+    //   }
+
+    //   TestCase createdTestCase = await _testCasesService.CreateTestCaseAsync(input);
+    //   if (createdTestCase == null)
+    //   {
+    //     return StatusCode(500, "An error occurred while creating the TestCase.");
+    //   }
+
+    //   return Ok(createdTestCase);
+    // }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetTestRunCaseById(int id)
@@ -38,10 +59,10 @@ namespace ServerC.Controllers
       return Ok(testRunCase);
     }
 
-    [HttpGet("testrun/{testRunID}")]
-    public async Task<IActionResult> GetTestRunCasesByTestRunID(int testRunID)
+    [HttpGet("testrun/{testRunId}")]
+    public async Task<IActionResult> GetTestRunCaseByTestRunID(int testRunId)
     {
-      IEnumerable<TestRunCase> testRunCases = await _testRunCasesService.GetTestRunCasesByTestRunIDAsync(testRunID);
+      IEnumerable<TestRunCase> testRunCases = await _testRunCasesService.GetTestRunCasesByTestRunIdAsync(testRunId);
       return Ok(testRunCases);
     }
 
@@ -51,7 +72,7 @@ namespace ServerC.Controllers
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 
-      if (id != testRunCase.TestRunCaseID)
+      if (id != testRunCase.id)
         return BadRequest();
 
       bool result = await _testRunCasesService.UpdateTestRunCaseAsync(testRunCase);
