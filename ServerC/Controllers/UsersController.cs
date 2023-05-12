@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ServerC.Interfaces;
 using ServerC.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace ServerC.Controllers
 {
@@ -27,11 +25,8 @@ namespace ServerC.Controllers
       if (newUser == null)
         return StatusCode(500);
 
-      return CreatedAtAction(nameof(GetUserById), new { id = newUser.UserID }, newUser);
+      return CreatedAtAction(nameof(GetUserById), new { id = newUser.id }, newUser);
     }
-
-
-
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
@@ -62,7 +57,7 @@ namespace ServerC.Controllers
       if (!ModelState.IsValid)
         return BadRequest(ModelState);
 
-      User user = await _usersService.GetUserByIdAsync(input.UserID);
+      User user = await _usersService.GetUserByIdAsync(input.id);
       if (user == null)
         return NotFound();
 

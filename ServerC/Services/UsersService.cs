@@ -1,4 +1,3 @@
-// UsersService.cs
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
@@ -24,46 +23,40 @@ namespace ServerC.Services
     {
       User user = new User
       {
-        UserName = input.UserName,
-        Email = input.Email,
+        name = input.name,
+        email = input.email,
       };
 
-      user.PasswordHash = System.Text.Encoding.ASCII.GetBytes(_passwordHasher.HashPassword(user, input.Password));
+      user.passwordHash = System.Text.Encoding.ASCII.GetBytes(_passwordHasher.HashPassword(user, input.password));
 
       using (var connection = _databaseHelper.GetConnection())
       {
         await connection.ExecuteAsync("dbo.CreateUser",
-            new { user.UserName, user.Email, user.PasswordHash },
+            new { user.name, user.email, user.passwordHash },
             commandType: CommandType.StoredProcedure);
-        return await GetUserByEmailAsync(user.Email);
-
-
+        return await GetUserByEmailAsync(user.email);
       }
     }
 
-    public async Task<User> GetUserByIdAsync(int userId)
+    public async Task<User> GetUserByIdAsync(int id)
     {
       using (var connection = _databaseHelper.GetConnection())
       {
         return await connection.QuerySingleOrDefaultAsync<User>("dbo.GetUserById",
-            new { UserID = userId },
+            new { id },
             commandType: CommandType.StoredProcedure);
       }
     }
 
     public async Task<IEnumerable<User>> GetAllUsersAsync()
     {
-
-
       using (var connection = _databaseHelper.GetConnection())
       {
         IEnumerable<User> users = await connection.QueryAsync<User>("dbo.GetAllUsers",
             commandType: CommandType.StoredProcedure);
         return users;
-
       }
     }
-
 
     public async Task<User> UpdateUserAsync(UpdateUserInput input)
     {
@@ -71,18 +64,18 @@ namespace ServerC.Services
       {
         using (var connection = _databaseHelper.GetConnection())
         {
-          User user = await GetUserByIdAsync(input.UserID);
-          var PasswordHash = System.Text.Encoding.ASCII.GetBytes(_passwordHasher.HashPassword(user, input.Password));
+          User user = await GetUserByIdAsync(input.id);
+          var passwordHash = System.Text.Encoding.ASCII.GetBytes(_passwordHasher.HashPassword(user, input.password));
 
           using (var command = connection.CreateCommand())
           {
             command.CommandText = "dbo.UpdateUser";
             command.CommandType = CommandType.StoredProcedure;
 
-            command.Parameters.AddWithValue("@UserID", input.UserID);
-            command.Parameters.AddWithValue("@UserName", input.UserName);
-            command.Parameters.AddWithValue("@Email", input.Email);
-            command.Parameters.AddWithValue("@PasswordHash", PasswordHash);
+            command.Parameters.AddWithValue("@id", input.id);
+            command.Parameters.AddWithValue("@name", input.name);
+            command.Parameters.AddWithValue("@email", input.email);
+            command.Parameters.AddWithValue("@passwordHash", passwordHash);
 
             await connection.OpenAsync();
 
@@ -92,10 +85,10 @@ namespace ServerC.Services
               {
                 User updatedUser = new User
                 {
-                  UserID = reader.GetInt32(0),
-                  UserName = reader.GetString(1),
-                  Email = reader.GetString(2),
-                  PasswordHash = (byte[])reader[3]
+                  id = reader.GetInt32(0),
+                  name = reader.GetString(1),
+                  email = reader.GetString(2),
+                  passwordHash = (byte[])reader[3]
                 };
 
                 return updatedUser;
@@ -113,14 +106,12 @@ namespace ServerC.Services
       return null;
     }
 
-
-
-    public async Task<bool> DeleteUserAsync(int userId)
+    public async Task<bool> DeleteUserAsync(int id)
     {
       using (var connection = _databaseHelper.GetConnection())
       {
         int affectedRows = await connection.ExecuteAsync("dbo.DeleteUser",
-            new { UserID = userId },
+            new { id },
             commandType: CommandType.StoredProcedure);
         return affectedRows > 0;
       }
@@ -131,9 +122,12 @@ namespace ServerC.Services
       using (var connection = _databaseHelper.GetConnection())
       {
         return await connection.QuerySingleOrDefaultAsync<User>("dbo.GetUserByEmail",
-            new { Email = email },
+            new { email },
             commandType: CommandType.StoredProcedure);
       }
     }
   }
 }
+
+
+

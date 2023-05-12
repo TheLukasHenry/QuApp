@@ -61,16 +61,16 @@ namespace ServerC.Services
     {
       var createUserInput = new CreateUserInput
       {
-        UserName = newUser.UserName,
-        Email = newUser.Email,
-        Password = password
+        name = newUser.name,
+        email = newUser.email,
+        password = password
       };
 
       var createdUser = await _usersService.CreateUserAsync(createUserInput);
 
       if (createdUser != null)
       {
-        return _jwtTokenHelper.GenerateJwtToken(createdUser.Email, _jwtSettings);
+        return _jwtTokenHelper.GenerateJwtToken(createdUser.email, _jwtSettings);
       }
 
       return null;
