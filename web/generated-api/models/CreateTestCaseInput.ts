@@ -16,61 +16,54 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface TestCase
+ * @interface CreateTestCaseInput
  */
-export interface TestCase {
+export interface CreateTestCaseInput {
     /**
      * 
      * @type {number}
-     * @memberof TestCase
-     */
-    id?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof TestCase
+     * @memberof CreateTestCaseInput
      */
     featureId?: number;
     /**
      * 
      * @type {string}
-     * @memberof TestCase
+     * @memberof CreateTestCaseInput
      */
     name?: string | null;
     /**
      * 
      * @type {number}
-     * @memberof TestCase
+     * @memberof CreateTestCaseInput
      */
-    offset?: number;
+    offset?: number | null;
     /**
      * 
      * @type {number}
-     * @memberof TestCase
+     * @memberof CreateTestCaseInput
      */
-    sortOrder?: number;
+    sortOrder?: number | null;
 }
 
 /**
- * Check if a given object implements the TestCase interface.
+ * Check if a given object implements the CreateTestCaseInput interface.
  */
-export function instanceOfTestCase(value: object): boolean {
+export function instanceOfCreateTestCaseInput(value: object): boolean {
     let isInstance = true;
 
     return isInstance;
 }
 
-export function TestCaseFromJSON(json: any): TestCase {
-    return TestCaseFromJSONTyped(json, false);
+export function CreateTestCaseInputFromJSON(json: any): CreateTestCaseInput {
+    return CreateTestCaseInputFromJSONTyped(json, false);
 }
 
-export function TestCaseFromJSONTyped(json: any, ignoreDiscriminator: boolean): TestCase {
+export function CreateTestCaseInputFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateTestCaseInput {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
         'featureId': !exists(json, 'featureId') ? undefined : json['featureId'],
         'name': !exists(json, 'name') ? undefined : json['name'],
         'offset': !exists(json, 'offset') ? undefined : json['offset'],
@@ -78,7 +71,7 @@ export function TestCaseFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
     };
 }
 
-export function TestCaseToJSON(value?: TestCase | null): any {
+export function CreateTestCaseInputToJSON(value?: CreateTestCaseInput | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -87,7 +80,6 @@ export function TestCaseToJSON(value?: TestCase | null): any {
     }
     return {
         
-        'id': value.id,
         'featureId': value.featureId,
         'name': value.name,
         'offset': value.offset,

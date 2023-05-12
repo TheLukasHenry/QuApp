@@ -12,6 +12,8 @@ index.ts
 models/Company.ts
 models/CompanyUser.ts
 models/CreateFeatureInput.ts
+models/CreateTestCaseInput.ts
+models/CreateTestRunCaseInput.ts
 models/CreateTestRunInput.ts
 models/CreateUserInput.ts
 models/Feature.ts

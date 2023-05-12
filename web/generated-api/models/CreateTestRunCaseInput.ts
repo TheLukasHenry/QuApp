@@ -16,61 +16,54 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface TestRunCase
+ * @interface CreateTestRunCaseInput
  */
-export interface TestRunCase {
+export interface CreateTestRunCaseInput {
     /**
      * 
      * @type {number}
-     * @memberof TestRunCase
-     */
-    id?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof TestRunCase
+     * @memberof CreateTestRunCaseInput
      */
     testRunId?: number;
     /**
      * 
      * @type {number}
-     * @memberof TestRunCase
+     * @memberof CreateTestRunCaseInput
      */
     testCaseId?: number;
     /**
      * 
      * @type {number}
-     * @memberof TestRunCase
+     * @memberof CreateTestRunCaseInput
      */
     testCaseStatus?: number;
     /**
      * 
      * @type {string}
-     * @memberof TestRunCase
+     * @memberof CreateTestRunCaseInput
      */
     testCaseComment?: string | null;
 }
 
 /**
- * Check if a given object implements the TestRunCase interface.
+ * Check if a given object implements the CreateTestRunCaseInput interface.
  */
-export function instanceOfTestRunCase(value: object): boolean {
+export function instanceOfCreateTestRunCaseInput(value: object): boolean {
     let isInstance = true;
 
     return isInstance;
 }
 
-export function TestRunCaseFromJSON(json: any): TestRunCase {
-    return TestRunCaseFromJSONTyped(json, false);
+export function CreateTestRunCaseInputFromJSON(json: any): CreateTestRunCaseInput {
+    return CreateTestRunCaseInputFromJSONTyped(json, false);
 }
 
-export function TestRunCaseFromJSONTyped(json: any, ignoreDiscriminator: boolean): TestRunCase {
+export function CreateTestRunCaseInputFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateTestRunCaseInput {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
         'testRunId': !exists(json, 'testRunId') ? undefined : json['testRunId'],
         'testCaseId': !exists(json, 'testCaseId') ? undefined : json['testCaseId'],
         'testCaseStatus': !exists(json, 'testCaseStatus') ? undefined : json['testCaseStatus'],
@@ -78,7 +71,7 @@ export function TestRunCaseFromJSONTyped(json: any, ignoreDiscriminator: boolean
     };
 }
 
-export function TestRunCaseToJSON(value?: TestRunCase | null): any {
+export function CreateTestRunCaseInputToJSON(value?: CreateTestRunCaseInput | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -87,7 +80,6 @@ export function TestRunCaseToJSON(value?: TestRunCase | null): any {
     }
     return {
         
-        'id': value.id,
         'testRunId': value.testRunId,
         'testCaseId': value.testCaseId,
         'testCaseStatus': value.testCaseStatus,
