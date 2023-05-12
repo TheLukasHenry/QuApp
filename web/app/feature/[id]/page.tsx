@@ -9,9 +9,9 @@ interface Props {
 const featuresClient = new FeaturesApi()
 
 async function getFeatureById(id: string) {
-  const response = await featuresClient.featuresFeatureIdGet(
+  const response = await featuresClient.featuresIdGet(
     {
-      featureId: +id,
+      id: +id,
     },
     // ,
 

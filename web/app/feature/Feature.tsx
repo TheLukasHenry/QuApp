@@ -10,24 +10,24 @@ interface FeatureComponentProps {
   feature: Feature
 }
 
-async function deleteFeatureById(featureID: number) {
-  console.log('Feature deleted:', featureID)
-  return await featuresClient.featuresFeatureIdDelete({ featureId: featureID })
+async function deleteFeatureById(id: number) {
+  console.log('Feature deleted:', id)
+  return await featuresClient.featuresIdDelete({ id: id })
 }
 
 export default function FeatureComponent({ feature }: FeatureComponentProps) {
-  const { featureID, featureName } = feature || {}
+  const { id, name } = feature || {}
   const router = useRouter()
   return (
     <>
-      <Link href={`/feature/${featureID || ''}`}>
+      <Link href={`/feature/${id || ''}`}>
         <div>
-          <div>{featureName}</div>
+          <div>{name}</div>
         </div>
       </Link>
       <button
         onClick={async () => {
-          await deleteFeatureById(featureID!)
+          await deleteFeatureById(id!)
           router.refresh()
         }}
       >

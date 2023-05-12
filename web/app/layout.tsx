@@ -20,7 +20,6 @@ export default function RootLayout({
         {/* <nav>Navbar in root layout</nav> */}
         <div>
           <div className="w-full fixed top-0 flex flex-row items-center justify-between p-4">
-            glkjhlhhhhgkjgkjhfjhgjkhgkjhgkjhgalkjfhgaslkjdfhaldjkchalsdkjhcasldkjcalsdjkchalsdkjchabsdlkjfcbaldkjscbalsdkjcbasdlkjcbasdlkjcbasldckjbadslckjabsdclkajdsbcalksjdcbalkdjsbcaldskjcbadlskjcbasdlkjcbasdclkajsdbclkajsdbcalkjsdbclakjsdcblakdcjbalskdjbalkdsjcbalkjdsbcalskdjcba
             <Link href="/todos">todos</Link>
             <Link href="/feature">feature</Link>
             <Link href="/todos/1">todos/1</Link>

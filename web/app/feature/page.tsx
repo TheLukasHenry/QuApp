@@ -13,6 +13,7 @@ async function getFeatures() {
 
 export default async function Features() {
   const features = await getFeatures()
+  console.log('features: ', features)
 
   return (
     <div>

@@ -10,9 +10,8 @@ type UpdateFeatureProps = {
 }
 
 export default function UpdateFeature({ feature }: UpdateFeatureProps) {
-  const { featureID, featureName, companyID } = feature || {}
-  const [currentFeatureName, setCurrentFeatureName] =
-    React.useState(featureName)
+  const { id, name, companyId } = feature || {}
+  // const [currentFeatureName, setCurrentFeatureName] = React.useState(name)
   const featuresClient = new FeaturesApi()
 
   const router = useRouter()
@@ -22,12 +21,12 @@ export default function UpdateFeature({ feature }: UpdateFeatureProps) {
     const formData = new FormData(e.currentTarget)
 
     const body: Feature = {
-      featureName: formData.get('featureName') as string,
-      companyID: Number(formData.get('companyID')),
-      featureID,
+      name: formData.get('name') as string,
+      companyId: Number(formData.get('companyId')),
+      id,
     }
     const response = await featuresClient.featuresPut({ feature: body })
-    setCurrentFeatureName(body.featureName)
+    // setCurrentFeatureName(body.name)
     console.log('Feature updated:', response)
     router.refresh()
   }
@@ -36,16 +35,12 @@ export default function UpdateFeature({ feature }: UpdateFeatureProps) {
     <div>
       Single Feature page
       <form onSubmit={putFeature}>
-        <div>feature state name: {currentFeatureName}</div>
-        <div>feature name: {featureName}</div>
-        <label htmlFor="featureName">Name</label>
-        <input
-          type="text"
-          name="featureName"
-          defaultValue={featureName ?? ''}
-        />
-        <label htmlFor="companyID">companyID</label>
-        <input type="text" name="companyID" defaultValue={companyID ?? ''} />
+        {/* <div>feature state name: {currentFeatureName}</div> */}
+        <div>feature name: {name}</div>
+        <label htmlFor="name">Name</label>
+        <input type="text" name="name" defaultValue={name ?? ''} />
+        <label htmlFor="companyId">companyId</label>
+        <input type="text" name="companyId" defaultValue={companyId ?? ''} />
 
         <button type="submit">Save</button>
       </form>

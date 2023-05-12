@@ -10,7 +10,7 @@ export default function FeatureList({ features }: FeatureListProps) {
     <div>
       {features.map((feature) => {
         return (
-          <div key={feature.featureID}>
+          <div key={feature.id}>
             <FeatureComponent feature={feature} />
           </div>
         )
