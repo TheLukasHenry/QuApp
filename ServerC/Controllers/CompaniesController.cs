@@ -37,14 +37,14 @@ namespace ServerC.Controllers
     }
 
     [HttpPost]
-    public async Task<ActionResult<Company>> CreateCompany([FromBody] Company company)
+    public async Task<ActionResult<Company>> CreateCompany(string name)
     {
-      if (string.IsNullOrEmpty(company.name)) // Changed from CompanyName to Name
+      if (string.IsNullOrEmpty(name)) // Changed from CompanyName to Name
       {
         return BadRequest("Name cannot be empty."); // Changed from CompanyName to Name
       }
 
-      Company createdCompany = await _companiesService.CreateCompanyAsync(company.name); // Changed from CompanyName to Name
+      Company createdCompany = await _companiesService.CreateCompanyAsync(name); // Changed from CompanyName to Name
       if (createdCompany == null)
       {
         return StatusCode(500, "An error occurred while creating the company.");

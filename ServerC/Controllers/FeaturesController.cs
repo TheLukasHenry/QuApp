@@ -96,7 +96,7 @@ namespace ServerC.Controllers
         return StatusCode(500, "An error occurred while deleting the feature.");
       }
 
-      return NoContent();
+      return Ok();
     }
   }
 }
