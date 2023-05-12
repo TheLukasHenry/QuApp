@@ -20,14 +20,15 @@ namespace ServerC.Controllers
     [HttpPost]
     public async Task<ActionResult<TestRun>> CreateTestRun([FromBody] CreateTestRunInput input)
     {
-      var testRun = await _testRunsService.CreateTestRunAsync(input);
-      return CreatedAtAction(nameof(GetTestRunById), new { testRunId = testRun.TestRunID }, testRun);
+      TestRun testRun = await _testRunsService.CreateTestRunAsync(input);
+      return CreatedAtAction(nameof(GetTestRunById), new { id = testRun.id }, testRun);
+
     }
 
-    [HttpGet("{testRunId}")]
-    public async Task<ActionResult<TestRun>> GetTestRunById(int testRunId)
+    [HttpGet("{id}")]
+    public async Task<ActionResult<TestRun>> GetTestRunById(int id)
     {
-      var testRun = await _testRunsService.GetTestRunByIdAsync(testRunId);
+      TestRun testRun = await _testRunsService.GetTestRunByIdAsync(id);
 
       if (testRun == null)
       {
@@ -44,10 +45,10 @@ namespace ServerC.Controllers
       return Ok(testRuns);
     }
 
-    [HttpPut("{testRunId}")]
-    public async Task<ActionResult<TestRun>> UpdateTestRun(int testRunId, CreateTestRunInput input)
+    [HttpPut("{id}")]
+    public async Task<ActionResult<TestRun>> UpdateTestRun(int id, CreateTestRunInput input)
     {
-      var testRun = await _testRunsService.UpdateTestRunAsync(testRunId, input);
+      TestRun testRun = await _testRunsService.UpdateTestRunAsync(id, input);
 
       if (testRun == null)
       {
@@ -57,10 +58,10 @@ namespace ServerC.Controllers
       return testRun;
     }
 
-    [HttpDelete("{testRunId}")]
-    public async Task<IActionResult> DeleteTestRun(int testRunId)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteTestRun(int id)
     {
-      bool isDeleted = await _testRunsService.DeleteTestRunAsync(testRunId);
+      bool isDeleted = await _testRunsService.DeleteTestRunAsync(id);
 
       if (!isDeleted)
       {

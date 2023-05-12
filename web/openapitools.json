@@ -6,6 +6,7 @@
       "output": "generated-api",
       "additionalProperties": {
         "basePath": "http://localhost:5000",
+        "baseUrl": "http://localhost:5000",
         "server": "http://localhost:5000"
       }
     }
