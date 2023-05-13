@@ -25,8 +25,8 @@ export default async function RootLayout({
         Cient side rendered features
         {features.map((feature) => {
           return (
-            <div key={feature.featureID}>
-              <div>{feature.featureName}</div>
+            <div key={feature.id}>
+              <div>{feature.name}</div>
               <button
                 className="p-4 bg-blue-500 text-white rounded"
                 // onClick={() => setModalOpen(true)}
