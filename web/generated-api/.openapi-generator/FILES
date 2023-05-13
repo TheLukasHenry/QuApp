@@ -22,6 +22,7 @@ models/LoginRequest.ts
 models/TestCase.ts
 models/TestRun.ts
 models/TestRunCase.ts
+models/UpdateTestCaseInput.ts
 models/UpdateUserInput.ts
 models/User.ts
 models/WeatherForecast.ts

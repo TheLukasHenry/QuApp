@@ -17,4 +17,16 @@ namespace ServerC.Models
 
     public int? sortOrder { get; set; }
   }
+
+  public class UpdateTestCaseInput
+  {
+    public int id { get; set; }
+
+    public int? featureId { get; set; }
+    public string? name { get; set; }
+    public int? offset { get; set; }
+
+    public int? sortOrder { get; set; }
+
+  }
 }

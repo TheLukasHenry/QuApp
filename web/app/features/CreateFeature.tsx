@@ -6,11 +6,11 @@ import { Feature } from '@/generated-api/models/Feature'
 import { FeaturesApi } from '@/generated-api/apis/FeaturesApi'
 
 export default function CreateFeature({ count = 1 }) {
-  const [companyID, setCompanyID] = useState<Feature['companyID'] | undefined>(
+  const [companyId, setCompanyId] = useState<Feature['companyId'] | undefined>(
     0
   )
 
-  const [featureName, setFeatureName] = useState<Feature['featureName']>('')
+  const [name, setName] = useState<Feature['name']>('')
 
   const featuresClient = new FeaturesApi()
 
@@ -18,11 +18,11 @@ export default function CreateFeature({ count = 1 }) {
 
   async function createFeature() {
     const response = await featuresClient.featuresPost({
-      createFeatureInput: { featureName, companyID: companyID ?? 0 },
+      createFeatureInput: { name, companyId: companyId ?? 0 },
     })
 
-    setFeatureName('')
-    setCompanyID(0)
+    setName('')
+    setCompanyId(0)
     router.refresh()
   }
 
@@ -32,14 +32,14 @@ export default function CreateFeature({ count = 1 }) {
       <p>count: {count}</p>
       <input
         type="text"
-        value={featureName}
-        onChange={(e) => setFeatureName(e.target.value)}
+        value={name ?? ''}
+        onChange={(e) => setName(e.target.value)}
         placeholder="Feature name"
       />
       <input
         type="number"
-        value={companyID !== undefined ? companyID : ''}
-        onChange={(e) => setCompanyID(+e.target.value || 1)}
+        value={companyId !== undefined ? companyId : ''}
+        onChange={(e) => setCompanyId(+e.target.value || 1)}
         placeholder="Company id"
       />
 

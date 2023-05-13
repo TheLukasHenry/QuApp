@@ -58,15 +58,15 @@ namespace ServerC.Controllers
       return Ok(testCase);
     }
 
-    [HttpPut("{id}")]
-    public async Task<ActionResult<TestCase>> UpdateTestCase(int id, [FromBody] TestCase testCase)
+    [HttpPut]
+    public async Task<ActionResult<TestCase>> UpdateTestCase([FromBody] UpdateTestCaseInput input)
     {
-      if (id != testCase.id || string.IsNullOrEmpty(testCase.name) || testCase.featureId <= 0)
+      if (input.id <= 0)
       {
         return BadRequest("TestCase Id, name, and featureId must be valid.");
       }
 
-      TestCase updatedTestCase = await _testCasesService.UpdateTestCaseAsync(testCase);
+      TestCase updatedTestCase = await _testCasesService.UpdateTestCaseAsync(input);
       if (updatedTestCase == null)
       {
         return StatusCode(500, "An error occurred while updating the TestCase.");

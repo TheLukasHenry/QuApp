@@ -17,12 +17,15 @@ import * as runtime from '../runtime';
 import type {
   CreateTestCaseInput,
   TestCase,
+  UpdateTestCaseInput,
 } from '../models';
 import {
     CreateTestCaseInputFromJSON,
     CreateTestCaseInputToJSON,
     TestCaseFromJSON,
     TestCaseToJSON,
+    UpdateTestCaseInputFromJSON,
+    UpdateTestCaseInputToJSON,
 } from '../models';
 
 export interface TestCasesIdDeleteRequest {
@@ -33,13 +36,12 @@ export interface TestCasesIdGetRequest {
     id: number;
 }
 
-export interface TestCasesIdPutRequest {
-    id: number;
-    testCase?: TestCase;
-}
-
 export interface TestCasesPostRequest {
     createTestCaseInput?: CreateTestCaseInput;
+}
+
+export interface TestCasesPutRequest {
+    updateTestCaseInput?: UpdateTestCaseInput;
 }
 
 /**
@@ -128,37 +130,6 @@ export class TestCasesApi extends runtime.BaseAPI {
 
     /**
      */
-    async testCasesIdPutRaw(requestParameters: TestCasesIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TestCase>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling testCasesIdPut.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/TestCases/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-            body: TestCaseToJSON(requestParameters.testCase),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => TestCaseFromJSON(jsonValue));
-    }
-
-    /**
-     */
-    async testCasesIdPut(requestParameters: TestCasesIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TestCase> {
-        const response = await this.testCasesIdPutRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     */
     async testCasesPostRaw(requestParameters: TestCasesPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TestCase>> {
         const queryParameters: any = {};
 
@@ -181,6 +152,33 @@ export class TestCasesApi extends runtime.BaseAPI {
      */
     async testCasesPost(requestParameters: TestCasesPostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TestCase> {
         const response = await this.testCasesPostRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async testCasesPutRaw(requestParameters: TestCasesPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TestCase>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/TestCases`,
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UpdateTestCaseInputToJSON(requestParameters.updateTestCaseInput),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => TestCaseFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async testCasesPut(requestParameters: TestCasesPutRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TestCase> {
+        const response = await this.testCasesPutRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

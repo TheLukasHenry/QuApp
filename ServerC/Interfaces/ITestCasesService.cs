@@ -9,7 +9,7 @@ namespace ServerC.Interfaces
     Task<TestCase> CreateTestCaseAsync(CreateTestCaseInput createTestCaseInput);
     Task<IEnumerable<TestCase>> GetAllTestCasesAsync();
     Task<TestCase> GetTestCaseByIdAsync(int id);
-    Task<TestCase> UpdateTestCaseAsync(TestCase testCase);
+    Task<TestCase> UpdateTestCaseAsync(UpdateTestCaseInput updateTestCaseInput);
     Task<int> DeleteTestCaseAsync(int id);
   }
 }

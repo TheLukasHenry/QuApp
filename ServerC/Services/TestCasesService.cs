@@ -21,8 +21,8 @@ namespace ServerC.Services
         DynamicParameters parameters = new DynamicParameters();
         parameters.Add("@featureId", input.featureId, DbType.Int32);
         parameters.Add("@name", input.name, DbType.String);
-        parameters.Add("@sortOrder", input.sortOrder, DbType.Int32);
-        parameters.Add("@offset", input.offset, DbType.Int32);
+        parameters.Add("@sortOrder", input.sortOrder ?? 0, DbType.Int32);
+        parameters.Add("@offset", input.offset ?? 0, DbType.Int32);
 
         TestCase createdTestCase = await connection.QuerySingleOrDefaultAsync<TestCase>("dbo.CreateTestCase", parameters, commandType: CommandType.StoredProcedure);
         return createdTestCase;
@@ -45,22 +45,21 @@ namespace ServerC.Services
       }
     }
 
-    public async Task<TestCase> UpdateTestCaseAsync(TestCase testCase)
+    public async Task<TestCase> UpdateTestCaseAsync(UpdateTestCaseInput input)
     {
       using (var connection = _databaseHelper.GetConnection())
       {
-        int rowsAffected = await connection.ExecuteAsync("UpdateTestCase",
-            new { id = testCase.id, FeatureId = testCase.featureId, name = testCase.name, sortOrder = testCase.sortOrder },
-            commandType: CommandType.StoredProcedure);
 
-        if (rowsAffected > 0)
-        {
-          return testCase;
-        }
-        else
-        {
-          return null;
-        }
+
+        DynamicParameters parameters = new DynamicParameters();
+        parameters.Add("@id", input.id, DbType.Int32);
+        parameters.Add("@name", input.name, DbType.String);
+        parameters.Add("@sortOrder", input.sortOrder, DbType.Int32);
+        parameters.Add("@offset", input.offset, DbType.Int32);
+        parameters.Add("@featureId", input.featureId, DbType.Int32);
+
+        TestCase updatedTestCase = await connection.QuerySingleOrDefaultAsync<TestCase>("dbo.UpdateTestCase", parameters, commandType: CommandType.StoredProcedure);
+        return updatedTestCase;
       }
     }
 

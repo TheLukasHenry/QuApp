@@ -11,7 +11,6 @@ type UpdateFeatureProps = {
 
 export default function UpdateFeature({ feature }: UpdateFeatureProps) {
   const { id, name, companyId } = feature || {}
-  // const [currentFeatureName, setCurrentFeatureName] = React.useState(name)
   const featuresClient = new FeaturesApi()
 
   const router = useRouter()
@@ -26,7 +25,6 @@ export default function UpdateFeature({ feature }: UpdateFeatureProps) {
       id,
     }
     const response = await featuresClient.featuresPut({ feature: body })
-    // setCurrentFeatureName(body.name)
     console.log('Feature updated:', response)
     router.refresh()
   }
@@ -35,7 +33,6 @@ export default function UpdateFeature({ feature }: UpdateFeatureProps) {
     <div>
       Single Feature page
       <form onSubmit={putFeature}>
-        {/* <div>feature state name: {currentFeatureName}</div> */}
         <div>feature name: {name}</div>
         <label htmlFor="name">Name</label>
         <input type="text" name="name" defaultValue={name ?? ''} />

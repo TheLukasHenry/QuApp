@@ -20,7 +20,7 @@ export default function FeatureComponent({ feature }: FeatureComponentProps) {
   const router = useRouter()
   return (
     <>
-      <Link href={`/feature/${id || ''}`}>
+      <Link href={`/features/${id || ''}`}>
         <div>
           <div>{name}</div>
         </div>

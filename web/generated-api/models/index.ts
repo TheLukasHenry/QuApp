@@ -12,6 +12,7 @@ export * from './LoginRequest';
 export * from './TestCase';
 export * from './TestRun';
 export * from './TestRunCase';
+export * from './UpdateTestCaseInput';
 export * from './UpdateUserInput';
 export * from './User';
 export * from './WeatherForecast';

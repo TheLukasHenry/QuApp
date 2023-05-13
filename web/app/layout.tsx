@@ -21,8 +21,8 @@ export default function RootLayout({
         <div>
           <div className="w-full fixed top-0 flex flex-row items-center justify-between p-4">
             <Link href="/todos">todos</Link>
-            <Link href="/feature">feature</Link>
-            <Link href="/todos/1">todos/1</Link>
+            <Link href="/features">features</Link>
+            <Link href="/testCases">testCases</Link>
             <Link href="/todos/2">todos/2</Link>
           </div>
           {children}{' '}
