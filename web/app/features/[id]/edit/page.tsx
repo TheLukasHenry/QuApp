@@ -70,7 +70,6 @@ export default async function page({ params }: { params: { id: string } }) {
         <button type="submit">Save</button>
       </form> */}
       <h2>TestCases</h2>
-
       <form action={moveTestCases}>
         <label htmlFor="testCaseIdsList">testCaseIdsList</label>
         <input type="text" name="testCaseIdsList" defaultValue={''} />
