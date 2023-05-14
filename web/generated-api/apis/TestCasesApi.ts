@@ -40,12 +40,22 @@ export interface TestCasesIdGetRequest {
     id: number;
 }
 
+export interface TestCasesMovePostRequest {
+    testCaseIdsList?: string;
+    amountOfRowsToMove?: number;
+}
+
 export interface TestCasesPostRequest {
     createTestCaseInput?: CreateTestCaseInput;
 }
 
 export interface TestCasesPutRequest {
     updateTestCaseInput?: UpdateTestCaseInput;
+}
+
+export interface TestCasesUpdateOffsetPostRequest {
+    operation?: string;
+    testCaseIdList?: string;
 }
 
 /**
@@ -162,6 +172,37 @@ export class TestCasesApi extends runtime.BaseAPI {
 
     /**
      */
+    async testCasesMovePostRaw(requestParameters: TestCasesMovePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const queryParameters: any = {};
+
+        if (requestParameters.testCaseIdsList !== undefined) {
+            queryParameters['testCaseIdsList'] = requestParameters.testCaseIdsList;
+        }
+
+        if (requestParameters.amountOfRowsToMove !== undefined) {
+            queryParameters['amountOfRowsToMove'] = requestParameters.amountOfRowsToMove;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/TestCases/move`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     */
+    async testCasesMovePost(requestParameters: TestCasesMovePostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.testCasesMovePostRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     */
     async testCasesPostRaw(requestParameters: TestCasesPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TestCase>> {
         const queryParameters: any = {};
 
@@ -212,6 +253,37 @@ export class TestCasesApi extends runtime.BaseAPI {
     async testCasesPut(requestParameters: TestCasesPutRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TestCase> {
         const response = await this.testCasesPutRaw(requestParameters, initOverrides);
         return await response.value();
+    }
+
+    /**
+     */
+    async testCasesUpdateOffsetPostRaw(requestParameters: TestCasesUpdateOffsetPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const queryParameters: any = {};
+
+        if (requestParameters.operation !== undefined) {
+            queryParameters['operation'] = requestParameters.operation;
+        }
+
+        if (requestParameters.testCaseIdList !== undefined) {
+            queryParameters['testCaseIdList'] = requestParameters.testCaseIdList;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/TestCases/updateOffset`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     */
+    async testCasesUpdateOffsetPost(requestParameters: TestCasesUpdateOffsetPostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.testCasesUpdateOffsetPostRaw(requestParameters, initOverrides);
     }
 
 }
