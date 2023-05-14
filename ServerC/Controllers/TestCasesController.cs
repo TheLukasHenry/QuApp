@@ -97,5 +97,19 @@ namespace ServerC.Controllers
 
       return NoContent();
     }
+
+    [HttpPost("move")]
+    public async Task<IActionResult> MoveTestCases(string testCaseIdsList, int amountOfRowsToMove)
+    {
+      await _testCasesService.MoveTestCasesAsync(testCaseIdsList, amountOfRowsToMove);
+      return Ok();
+    }
+
+    [HttpPost("updateOffset")]
+    public async Task<IActionResult> UpdateTestCasesOffset(string operation, string testCaseIdList)
+    {
+      await _testCasesService.UpdateTestCasesOffsetAsync(operation, testCaseIdList);
+      return Ok();
+    }
   }
 }

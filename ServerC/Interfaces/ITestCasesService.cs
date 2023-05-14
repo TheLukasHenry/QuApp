@@ -1,6 +1,6 @@
 using ServerC.Models;
-
-
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ServerC.Interfaces
 {
@@ -12,5 +12,9 @@ namespace ServerC.Interfaces
     Task<TestCase> GetTestCaseByIdAsync(int id);
     Task<TestCase> UpdateTestCaseAsync(UpdateTestCaseInput updateTestCaseInput);
     Task<int> DeleteTestCaseAsync(int id);
+
+    // added methods
+    Task MoveTestCasesAsync(string testCaseIdsList, int amountOfRowsToMove);
+    Task UpdateTestCasesOffsetAsync(string operation, string testCaseIdList);
   }
 }

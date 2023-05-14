@@ -78,5 +78,29 @@ namespace ServerC.Services
         return await connection.ExecuteAsync("DeleteTestCase", new { id }, commandType: CommandType.StoredProcedure);
       }
     }
+
+    public async Task MoveTestCasesAsync(string testCaseIdsList, int amountOfRowsToMove)
+    {
+      using (var connection = _databaseHelper.GetConnection())
+      {
+        DynamicParameters parameters = new DynamicParameters();
+        parameters.Add("@testCaseIdsList", testCaseIdsList, DbType.String);
+        parameters.Add("@amountOfRowsToMove", amountOfRowsToMove, DbType.Int32);
+
+        await connection.ExecuteAsync("dbo.MoveTestcases", parameters, commandType: CommandType.StoredProcedure);
+      }
+    }
+
+    public async Task UpdateTestCasesOffsetAsync(string operation, string testCaseIdList)
+    {
+      using (var connection = _databaseHelper.GetConnection())
+      {
+        DynamicParameters parameters = new DynamicParameters();
+        parameters.Add("@operation", operation, DbType.String);
+        parameters.Add("@testCaseIdList", testCaseIdList, DbType.String);
+
+        await connection.ExecuteAsync("dbo.UpdateTestCasesOffset", parameters, commandType: CommandType.StoredProcedure);
+      }
+    }
   }
 }
