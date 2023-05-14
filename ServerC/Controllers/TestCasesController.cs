@@ -58,6 +58,18 @@ namespace ServerC.Controllers
       return Ok(testCase);
     }
 
+    [HttpGet("feature/{featureId}")]
+    public async Task<ActionResult<IEnumerable<TestCase>>> GetAllTestCasesByFeatureId(int featureId)
+    {
+      if (featureId <= 0)
+      {
+        return BadRequest("Feature Id must be valid.");
+      }
+
+      IEnumerable<TestCase> testCases = await _testCasesService.GetAllTestCasesByFeatureIdAsync(featureId);
+      return Ok(testCases);
+    }
+
     [HttpPut]
     public async Task<ActionResult<TestCase>> UpdateTestCase([FromBody] UpdateTestCaseInput input)
     {

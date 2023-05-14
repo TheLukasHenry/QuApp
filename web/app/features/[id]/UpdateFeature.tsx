@@ -31,7 +31,7 @@ export default function UpdateFeature({ feature }: UpdateFeatureProps) {
 
   return (
     <div>
-      Single Feature page
+      Update feature component
       <form onSubmit={putFeature}>
         <div>feature name: {name}</div>
         <label htmlFor="name">Name</label>

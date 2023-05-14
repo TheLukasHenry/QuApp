@@ -28,6 +28,10 @@ import {
     UpdateTestCaseInputToJSON,
 } from '../models';
 
+export interface TestCasesFeatureFeatureIdGetRequest {
+    featureId: number;
+}
+
 export interface TestCasesIdDeleteRequest {
     id: number;
 }
@@ -48,6 +52,34 @@ export interface TestCasesPutRequest {
  * 
  */
 export class TestCasesApi extends runtime.BaseAPI {
+
+    /**
+     */
+    async testCasesFeatureFeatureIdGetRaw(requestParameters: TestCasesFeatureFeatureIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<TestCase>>> {
+        if (requestParameters.featureId === null || requestParameters.featureId === undefined) {
+            throw new runtime.RequiredError('featureId','Required parameter requestParameters.featureId was null or undefined when calling testCasesFeatureFeatureIdGet.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/TestCases/feature/{featureId}`.replace(`{${"featureId"}}`, encodeURIComponent(String(requestParameters.featureId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(TestCaseFromJSON));
+    }
+
+    /**
+     */
+    async testCasesFeatureFeatureIdGet(requestParameters: TestCasesFeatureFeatureIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<TestCase>> {
+        const response = await this.testCasesFeatureFeatureIdGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
 
     /**
      */

@@ -37,6 +37,14 @@ namespace ServerC.Services
       }
     }
 
+    public async Task<IEnumerable<TestCase>> GetAllTestCasesByFeatureIdAsync(int featureId)
+    {
+      using (var connection = _databaseHelper.GetConnection())
+      {
+        return await connection.QueryAsync<TestCase>("GetAllTestCasesByFeatureId", new { featureId }, commandType: CommandType.StoredProcedure);
+      }
+    }
+
     public async Task<TestCase> GetTestCaseByIdAsync(int id)
     {
       using (var connection = _databaseHelper.GetConnection())
