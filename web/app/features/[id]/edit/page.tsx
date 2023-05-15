@@ -1,6 +1,8 @@
 import { revalidatePath } from 'next/cache'
 import { TestCase } from '@/generated-api'
 import { TestCasesApi } from '@/generated-api/apis/TestCasesApi'
+import React from 'react'
+import { SortableTree } from '@/Tree/SortableTree'
 
 const testCasesClient = new TestCasesApi()
 // File: pages/api/testCases.js
@@ -61,6 +63,7 @@ export default async function page({ params }: { params: { id: string } }) {
   return (
     <div>
       <h2>Actions feature edit</h2>
+      <SortableTree collapsible indicator removable />
       {/* <form action={putFeature}>
         <label htmlFor="name">Name</label>
         <input type="text" name="name" defaultValue={feature?.name} />
@@ -69,34 +72,85 @@ export default async function page({ params }: { params: { id: string } }) {
 
         <button type="submit">Save</button>
       </form> */}
-      <h2>TestCases</h2>
-      <form action={moveTestCases}>
-        <label htmlFor="testCaseIdsList">testCaseIdsList</label>
-        <input type="text" name="testCaseIdsList" defaultValue={''} />
-        <label htmlFor="amountOfRowsToMove">amountOfRowsToMove</label>
-        <input type="text" name="amountOfRowsToMove" defaultValue={0} />
-
-        {/* {testCases.map((testCase) => (
-          // <p key={testCase.id}>hello</p>
-          <>
-            <label htmlFor="name">Name</label>
+      {/* <div className="bg-white p-6 rounded-lg shadow-lg">
+        <h2 className="text-2xl font-bold mb-4">TestCases</h2>
+        <form action={moveTestCases} className="grid grid-cols-2 gap-4"> */}
+      {/* <div>
+            <label htmlFor="testCaseIdsList" className="block text-gray-700">
+              testCaseIdsList
+            </label>
             <input
               type="text"
-              name="name"
-              defaultValue={testCase?.name ?? ''}
+              name="testCaseIdsList"
+              defaultValue={''}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
             />
-            <label htmlFor="featureId">featureId</label>
+          </div>
+          <div>
+            <label htmlFor="amountOfRowsToMove" className="block text-gray-700">
+              amountOfRowsToMove
+            </label>
             <input
               type="text"
-              name="featureId"
-              defaultValue={testCase?.featureId}
+              name="amountOfRowsToMove"
+              defaultValue={0}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
             />
+          </div> */}
+      <div className="bg-white p-6 rounded-lg shadow-lg">
+        <h2 className="text-2xl font-bold mb-4">TestCases</h2>
+        <form action={moveTestCases} className="grid grid-cols-5 gap-4">
+          <h2 className="col-span-5 text-2xl font-bold mb-4">TestCases List</h2>
 
-          </>
-        ))} */}
+          <div className="font-bold text-gray-700">ID</div>
+          <div className="font-bold text-gray-700">Name</div>
+          <div className="font-bold text-gray-700">Feature ID</div>
+          <div className="font-bold text-gray-700">Sort Order</div>
+          <div className="font-bold text-gray-700">Offset</div>
 
-        <button type="submit">Save</button>
-      </form>
+          {testCases.map((testCase) => (
+            <React.Fragment key={testCase.id}>
+              <input
+                type="text"
+                name="id"
+                defaultValue={testCase?.id}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+              />
+              <input
+                type="text"
+                name="name"
+                defaultValue={testCase?.name ?? ''}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+              />
+              <input
+                type="text"
+                name="featureId"
+                defaultValue={testCase?.featureId}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+              />
+              <input
+                type="text"
+                name="sortOrder"
+                defaultValue={testCase?.sortOrder}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+              />
+              <input
+                type="text"
+                name="offset"
+                defaultValue={testCase?.offset}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+              />
+            </React.Fragment>
+          ))}
+
+          <button
+            type="submit"
+            className="col-span-5 bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Save
+          </button>
+        </form>
+      </div>
     </div>
   )
 }
