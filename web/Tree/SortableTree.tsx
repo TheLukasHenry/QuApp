@@ -38,48 +38,6 @@ import { sortableTreeKeyboardCoordinates } from './keyboardCoordinates'
 import { SortableTreeItem } from './components'
 import { TestCase } from '@/generated-api/models/TestCase'
 
-const initialItems: TreeItems = [
-  {
-    id: 'Course',
-    children: [
-      {
-        id: 'Module',
-        children: [
-          { id: 'Lesson', children: [{ id: 'Learning Object', children: [] }] },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'Course 1',
-    children: [
-      {
-        id: 'Module 1',
-        children: [
-          {
-            id: 'Lesson 1',
-            children: [{ id: 'Learning Object 1', children: [] }],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'Course 2',
-    children: [
-      {
-        id: 'Module 2',
-        children: [
-          {
-            id: 'Lesson 2',
-            children: [{ id: 'Learning Object 2', children: [] }],
-          },
-        ],
-      },
-    ],
-  },
-]
-
 const measuring = {
   droppable: {
     strategy: MeasuringStrategy.Always,
@@ -91,10 +49,40 @@ const dropAnimation: DropAnimation = {
   dragSourceOpacity: 0.5,
 }
 function convertToTreeItems(testCases: TestCase[]): TreeItems {
-  return testCases.map((testCase) => ({
-    id: testCase.name ?? 'Unnamed',
-    children: [],
-  }))
+  const treeItems: TreeItems = []
+  const sortedTestCases = testCases.sort(
+    (a, b) => (a.offset ?? 0) - (b.offset ?? 0)
+  )
+
+  const map = new Map()
+
+  for (const testCase of sortedTestCases) {
+    // Ensure offset is defined, otherwise use a default value (like 0)
+    const offset = testCase.offset ?? 0
+
+    const treeItem = {
+      id: testCase.id!, // use testCase.id instead of testCase.name and assert it to be non-null
+      children: [],
+      depth: offset,
+    }
+    map.set(testCase.id!, { ...treeItem }) // assert testCase.id to be non-null
+
+    if (offset === 0) {
+      treeItems.push(treeItem)
+    } else {
+      const parentTestCase = sortedTestCases.find(
+        (tc) => (tc.offset ?? 0) === offset - 1
+      )
+      if (parentTestCase && parentTestCase.id) {
+        const parentTreeItem = map.get(parentTestCase.id)
+        if (parentTreeItem) {
+          parentTreeItem.children.push(treeItem)
+        }
+      }
+    }
+  }
+
+  return treeItems
 }
 
 interface Props {
@@ -219,6 +207,7 @@ export function SortableTree({
             onRemove={removable ? () => handleRemove(id) : undefined}
           />
         ))}
+
         {createPortal(
           <DragOverlay
             dropAnimation={dropAnimation}
@@ -283,6 +272,29 @@ export function SortableTree({
       const newItems = buildTree(sortedItems)
 
       setItems(newItems)
+
+      // trigger save action
+      saveToDatabase(newItems)
+    }
+  }
+
+  async function saveToDatabase(newItems: any) {
+    try {
+      const response = await fetch('/api/updateTestCases', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newItems),
+      })
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+    } catch (error) {
+      console.error(
+        'There was a problem with the fetch operation: ' + error.message
+      )
     }
   }
 

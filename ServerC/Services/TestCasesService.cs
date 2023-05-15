@@ -22,7 +22,7 @@ namespace ServerC.Services
         parameters.Add("@featureId", input.featureId, DbType.Int32);
         parameters.Add("@name", input.name, DbType.String);
         parameters.Add("@sortOrder", input.sortOrder ?? 0, DbType.Int32);
-        parameters.Add("@offset", input.offset ?? 0, DbType.Int32);
+        parameters.Add("@parentId", input.parentId ?? 0, DbType.Int32);
 
         TestCase createdTestCase = await connection.QuerySingleOrDefaultAsync<TestCase>("dbo.CreateTestCase", parameters, commandType: CommandType.StoredProcedure);
         return createdTestCase;
@@ -63,13 +63,30 @@ namespace ServerC.Services
         parameters.Add("@id", input.id, DbType.Int32);
         parameters.Add("@name", input.name, DbType.String);
         parameters.Add("@sortOrder", input.sortOrder, DbType.Int32);
-        parameters.Add("@offset", input.offset, DbType.Int32);
+        parameters.Add("@parentId", input.parentId, DbType.Int32);
         parameters.Add("@featureId", input.featureId, DbType.Int32);
 
         TestCase updatedTestCase = await connection.QuerySingleOrDefaultAsync<TestCase>("dbo.UpdateTestCase", parameters, commandType: CommandType.StoredProcedure);
         return updatedTestCase;
       }
     }
+
+    public async Task UpdateTestCasesAsync(List<UpdateTestCaseInput> input)
+    {
+      using (var connection = _databaseHelper.GetConnection())
+      {
+        foreach (var testCase in input)
+        {
+          var parameters = new DynamicParameters();
+          parameters.Add("@id", testCase.id, DbType.Int32);
+          parameters.Add("@parentId", testCase.parentId, DbType.Int32);
+          parameters.Add("@sortOrder", testCase.sortOrder, DbType.Int32);
+
+          await connection.ExecuteAsync("dbo.updateTestCase", parameters, commandType: CommandType.StoredProcedure);
+        }
+      }
+    }
+
 
     public async Task<int> DeleteTestCaseAsync(int id)
     {

@@ -97,7 +97,7 @@ export default async function page({ params }: { params: { id: string } }) {
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div> */}
-      <div className="bg-white p-6 rounded-lg shadow-lg">
+      {/* <div className="bg-white p-6 rounded-lg shadow-lg">
         <h2 className="text-2xl font-bold mb-4">TestCases</h2>
         <form action={moveTestCases} className="grid grid-cols-5 gap-4">
           <h2 className="col-span-5 text-2xl font-bold mb-4">TestCases List</h2>
@@ -150,7 +150,7 @@ export default async function page({ params }: { params: { id: string } }) {
             Save
           </button>
         </form>
-      </div>
+      </div> */}
     </div>
   )
 }
