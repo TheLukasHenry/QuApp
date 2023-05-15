@@ -63,7 +63,7 @@ export default async function page({ params }: { params: { id: string } }) {
   return (
     <div>
       <h2>Actions feature edit</h2>
-      <SortableTree collapsible indicator removable />
+      <SortableTree collapsible indicator removable testCases={testCases} />
       {/* <form action={putFeature}>
         <label htmlFor="name">Name</label>
         <input type="text" name="name" defaultValue={feature?.name} />

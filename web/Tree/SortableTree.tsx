@@ -36,6 +36,7 @@ import {
 import type { FlattenedItem, SensorContext, TreeItems } from './types'
 import { sortableTreeKeyboardCoordinates } from './keyboardCoordinates'
 import { SortableTreeItem } from './components'
+import { TestCase } from '@/generated-api/models/TestCase'
 
 const initialItems: TreeItems = [
   {
@@ -89,23 +90,29 @@ const dropAnimation: DropAnimation = {
   ...defaultDropAnimation,
   dragSourceOpacity: 0.5,
 }
+function convertToTreeItems(testCases: TestCase[]): TreeItems {
+  return testCases.map((testCase) => ({
+    id: testCase.name ?? 'Unnamed',
+    children: [],
+  }))
+}
 
 interface Props {
+  testCases: TestCase[]
   collapsible?: boolean
-  defaultItems?: TreeItems
   indentationWidth?: number
   indicator?: boolean
   removable?: boolean
 }
 
 export function SortableTree({
+  testCases,
   collapsible,
-  defaultItems = initialItems,
   indicator,
   indentationWidth = 20,
   removable,
 }: Props) {
-  const [items, setItems] = useState(() => defaultItems)
+  const [items, setItems] = useState(() => convertToTreeItems(testCases))
   console.log({ items })
   const [activeId, setActiveId] = useState<string | null>(null)
   const [overId, setOverId] = useState<string | null>(null)
