@@ -37,6 +37,10 @@ import type { FlattenedItem, SensorContext, TreeItems } from './types'
 import { sortableTreeKeyboardCoordinates } from './keyboardCoordinates'
 import { SortableTreeItem } from './components'
 import { TestCase } from '@/generated-api/models/TestCase'
+import { UpdateTestCaseInput } from '@/generated-api/models/UpdateTestCaseInput'
+import { TestCasesApi } from '@/generated-api/apis/TestCasesApi'
+
+const testCasesClient = new TestCasesApi()
 
 const measuring = {
   droppable: {
@@ -50,36 +54,28 @@ const dropAnimation: DropAnimation = {
 }
 function convertToTreeItems(testCases: TestCase[]): TreeItems {
   const treeItems: TreeItems = []
-  const sortedTestCases = testCases.sort(
-    (a, b) => (a.offset ?? 0) - (b.offset ?? 0)
-  )
+  const sortedTestCases = testCases.sort((a, b) => a.sortOrder - b.sortOrder)
 
   const map = new Map()
 
   for (const testCase of sortedTestCases) {
-    // Ensure offset is defined, otherwise use a default value (like 0)
-    const offset = testCase.offset ?? 0
-
     const treeItem = {
-      id: testCase.id!, // use testCase.id instead of testCase.name and assert it to be non-null
+      id: String(testCase.id!),
       children: [],
-      depth: offset,
+      depth: 0,
     }
-    map.set(testCase.id!, { ...treeItem }) // assert testCase.id to be non-null
 
-    if (offset === 0) {
+    if (testCase.parentId === 0) {
       treeItems.push(treeItem)
     } else {
-      const parentTestCase = sortedTestCases.find(
-        (tc) => (tc.offset ?? 0) === offset - 1
-      )
-      if (parentTestCase && parentTestCase.id) {
-        const parentTreeItem = map.get(parentTestCase.id)
-        if (parentTreeItem) {
-          parentTreeItem.children.push(treeItem)
-        }
+      const parentTreeItem = map.get(testCase.parentId)
+      if (parentTreeItem) {
+        parentTreeItem.children.push(treeItem)
+        treeItem.depth = parentTreeItem.depth + 1
       }
     }
+
+    map.set(testCase.id!, { ...treeItem })
   }
 
   return treeItems
@@ -280,16 +276,19 @@ export function SortableTree({
 
   async function saveToDatabase(newItems: any) {
     try {
-      const response = await fetch('/api/updateTestCases', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newItems),
-      })
+      const flattenedItems = flattenTree(newItems)
+      const updateTestCaseInputs = flattenedItems.map(
+        (item: FlattenedItem, index: number) => {
+          return {
+            id: Number(item.id),
+            sortOrder: index, // Assign sortOrder based on the index in the flattened array
+            parentId: item.parentId ? Number(item.parentId) : null,
+          } as UpdateTestCaseInput
+        }
+      )
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+      for (let input of updateTestCaseInputs) {
+        await testCasesClient.testCasesPut({ updateTestCaseInput: input })
       }
     } catch (error) {
       console.error(
