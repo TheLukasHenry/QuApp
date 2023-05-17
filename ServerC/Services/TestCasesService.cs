@@ -21,13 +21,24 @@ namespace ServerC.Services
         DynamicParameters parameters = new DynamicParameters();
         parameters.Add("@featureId", input.featureId, DbType.Int32);
         parameters.Add("@name", input.name, DbType.String);
-        parameters.Add("@sortOrder", input.sortOrder ?? 0, DbType.Int32);
-        parameters.Add("@parentId", input.parentId ?? 0, DbType.Int32);
+
+        // Add parameters conditionally
+        if (input.sortOrder.HasValue)
+        {
+          parameters.Add("@sortOrder", input.sortOrder.Value, DbType.Int32);
+        }
+
+        if (input.parentId.HasValue)
+        {
+          parameters.Add("@parentId", input.parentId.Value, DbType.Int32);
+        }
 
         TestCase createdTestCase = await connection.QuerySingleOrDefaultAsync<TestCase>("dbo.CreateTestCase", parameters, commandType: CommandType.StoredProcedure);
         return createdTestCase;
       }
     }
+
+
 
     public async Task<IEnumerable<TestCase>> GetAllTestCasesAsync()
     {

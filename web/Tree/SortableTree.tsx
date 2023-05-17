@@ -50,17 +50,29 @@ const measuring = {
 
 const dropAnimation: DropAnimation = {
   ...defaultDropAnimation,
-  dragSourceOpacity: 0.5,
 }
+
 function convertToTreeItems(testCases: TestCase[]): TreeItems {
   const treeItems: TreeItems = []
-  const sortedTestCases = testCases.sort((a, b) => a.sortOrder - b.sortOrder)
+  const sortedTestCases = testCases.sort(
+    (a, b) => (a.sortOrder || 0) - (b.sortOrder || 0)
+  )
 
   const map = new Map()
 
   for (const testCase of sortedTestCases) {
+    const uniqueIdentifier = testCase.id!
+    let id: string
+    if (typeof uniqueIdentifier === 'number') {
+      id = uniqueIdentifier.toString()
+    } else {
+      id = uniqueIdentifier
+    }
+
+    const name = testCase.name || ''
     const treeItem = {
-      id: String(testCase.id!),
+      id: id,
+      name: name,
       children: [],
       depth: 0,
     }
@@ -186,11 +198,11 @@ export function SortableTree({
       onDragCancel={handleDragCancel}
     >
       <SortableContext items={sortedIds} strategy={verticalListSortingStrategy}>
-        {flattenedItems.map(({ id, children, collapsed, depth }) => (
+        {flattenedItems.map(({ id, name, children, collapsed, depth }) => (
           <SortableTreeItem
             key={id}
             id={id}
-            value={id}
+            name={name}
             depth={id === activeId && projected ? projected.depth : depth}
             indentationWidth={indentationWidth}
             indicator={indicator}
@@ -227,15 +239,16 @@ export function SortableTree({
   )
 
   function handleDragStart({ active: { id: activeId } }: DragStartEvent) {
-    setActiveId(activeId)
-    setOverId(activeId)
+    setActiveId(String(activeId))
+
+    setOverId(String(activeId))
 
     const activeItem = flattenedItems.find(({ id }) => id === activeId)
 
     if (activeItem) {
       setCurrentPosition({
         parentId: activeItem.parentId,
-        overId: activeId,
+        overId: String(activeId),
       })
     }
 
@@ -247,7 +260,7 @@ export function SortableTree({
   }
 
   function handleDragOver({ over }: DragOverEvent) {
-    setOverId(over?.id ?? null)
+    setOverId(String(over?.id) ?? null)
   }
 
   function handleDragEnd({ active, over }: DragEndEvent) {
@@ -281,7 +294,7 @@ export function SortableTree({
         (item: FlattenedItem, index: number) => {
           return {
             id: Number(item.id),
-            sortOrder: index, // Assign sortOrder based on the index in the flattened array
+            sortOrder: index,
             parentId: item.parentId ? Number(item.parentId) : null,
           } as UpdateTestCaseInput
         }
