@@ -87,6 +87,23 @@ namespace ServerC.Controllers
       return Ok(updatedTestCase);
     }
 
+    [HttpPut("updateTestCases")]
+    public async Task<IActionResult> UpdateTestCases([FromBody] List<UpdateTestCaseInput> input)
+    {
+      try
+      {
+        await _testCasesService.UpdateTestCasesAsync(input);
+        return Ok();
+      }
+      catch (Exception ex)
+      {
+        return StatusCode(500, $"Internal server error: {ex}");
+      }
+    }
+
+
+
+
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteTestCase(int id)

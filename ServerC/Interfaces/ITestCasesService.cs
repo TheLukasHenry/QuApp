@@ -13,7 +13,7 @@ namespace ServerC.Interfaces
     Task<TestCase> UpdateTestCaseAsync(UpdateTestCaseInput updateTestCaseInput);
     Task<int> DeleteTestCaseAsync(int id);
 
-    // added methods
+    Task UpdateTestCasesAsync(List<UpdateTestCaseInput> updateTestCasesInput);
     Task MoveTestCasesAsync(string testCaseIdsList, int amountOfRowsToMove);
     Task UpdateTestCasesOffsetAsync(string operation, string testCaseIdList);
   }

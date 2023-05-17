@@ -1,49 +1,54 @@
 'use client'
-
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+// import { useRouter } from 'next/router'
 import { TestCase } from '@/generated-api/models/TestCase'
 import { TestCasesApi } from '@/generated-api/apis/TestCasesApi'
+// import { revalidatePath } from 'next/cache'
 
-export default function CreatetestCase({ count = 1 }) {
-  const [featureId, setFeatureId] = useState<TestCase['featureId'] | undefined>(
-    0
-  )
+interface CreateTestCaseProps {
+  featureId: number
+}
 
+export default function CreateTestCase({ featureId }: CreateTestCaseProps) {
   const [name, setName] = useState<TestCase['name']>('')
-
   const testCasesClient = new TestCasesApi()
+  // const router = useRouter()
 
-  const router = useRouter()
+  async function getTestCasesByFeatureId(featureId: number) {
+    try {
+      const response = await testCasesClient.testCasesFeatureFeatureIdGet({
+        featureId,
+      })
+      return response
+    } catch (error) {
+      console.error('Failed to fetch test cases: ', error)
+      return []
+    }
+  }
 
-  async function createtestCase() {
+  async function createTestCase() {
     const response = await testCasesClient.testCasesPost({
-      createTestCaseInput: { name, featureId: featureId ?? 0 },
+      createTestCaseInput: { name, featureId },
     })
 
     setName('')
-    setFeatureId(0)
-    router.refresh()
+    // router.refresh()
+
+    // Call getTestCasesByFeatureId after creating a new testCase
+    // await getTestCasesByFeatureId(featureId)
   }
 
   return (
     <form>
       <h3>Create a new testCase</h3>
-      <p>count: {count}</p>
       <input
         type="text"
         value={name?.toString()}
         onChange={(e) => setName(e.target.value)}
         placeholder="testCase name"
       />
-      <input
-        type="number"
-        value={featureId !== undefined ? featureId : ''}
-        onChange={(e) => setFeatureId(+e.target.value || 1)}
-        placeholder="Company id"
-      />
 
-      <button type="button" onClick={createtestCase}>
+      <button type="button" onClick={createTestCase}>
         Create testCase
       </button>
     </form>

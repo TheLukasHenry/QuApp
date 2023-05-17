@@ -58,6 +58,10 @@ export interface TestCasesUpdateOffsetPostRequest {
     testCaseIdList?: string;
 }
 
+export interface TestCasesUpdateTestCasesPutRequest {
+    updateTestCaseInput?: Array<UpdateTestCaseInput>;
+}
+
 /**
  * 
  */
@@ -284,6 +288,32 @@ export class TestCasesApi extends runtime.BaseAPI {
      */
     async testCasesUpdateOffsetPost(requestParameters: TestCasesUpdateOffsetPostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.testCasesUpdateOffsetPostRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     */
+    async testCasesUpdateTestCasesPutRaw(requestParameters: TestCasesUpdateTestCasesPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/TestCases/updateTestCases`,
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: requestParameters.updateTestCaseInput.map(UpdateTestCaseInputToJSON),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     */
+    async testCasesUpdateTestCasesPut(requestParameters: TestCasesUpdateTestCasesPutRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.testCasesUpdateTestCasesPutRaw(requestParameters, initOverrides);
     }
 
 }

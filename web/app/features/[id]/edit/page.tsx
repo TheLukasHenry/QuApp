@@ -1,6 +1,9 @@
 import { revalidatePath } from 'next/cache'
 import { TestCase } from '@/generated-api'
+import React from 'react'
+import { SortableTree } from '@/Tree/SortableTree'
 import { TestCasesApi } from '@/generated-api/apis/TestCasesApi'
+import CreateTestCase from '@/components-client/CreateTestCase'
 
 const testCasesClient = new TestCasesApi()
 // File: pages/api/testCases.js
@@ -15,8 +18,8 @@ export default async function page({ params }: { params: { id: string } }) {
   const testCasesRes = await fetch(testCasesUrl, { cache: 'no-store' })
   const testCases: TestCase[] = await testCasesRes.json()
 
-  console.log('feature: ', feature)
-  console.log(testCases)
+  // console.log('feature: ', feature)
+  // console.log(testCases)
 
   // const testCaseIdsList = '6, 34'
   // const amountOfRowsToMove = 3
@@ -61,42 +64,8 @@ export default async function page({ params }: { params: { id: string } }) {
   return (
     <div>
       <h2>Actions feature edit</h2>
-      {/* <form action={putFeature}>
-        <label htmlFor="name">Name</label>
-        <input type="text" name="name" defaultValue={feature?.name} />
-        <label htmlFor="companyId">companyId</label>
-        <input type="text" name="companyId" defaultValue={feature?.companyId} />
-
-        <button type="submit">Save</button>
-      </form> */}
-      <h2>TestCases</h2>
-      <form action={moveTestCases}>
-        <label htmlFor="testCaseIdsList">testCaseIdsList</label>
-        <input type="text" name="testCaseIdsList" defaultValue={''} />
-        <label htmlFor="amountOfRowsToMove">amountOfRowsToMove</label>
-        <input type="text" name="amountOfRowsToMove" defaultValue={0} />
-
-        {/* {testCases.map((testCase) => (
-          // <p key={testCase.id}>hello</p>
-          <>
-            <label htmlFor="name">Name</label>
-            <input
-              type="text"
-              name="name"
-              defaultValue={testCase?.name ?? ''}
-            />
-            <label htmlFor="featureId">featureId</label>
-            <input
-              type="text"
-              name="featureId"
-              defaultValue={testCase?.featureId}
-            />
-
-          </>
-        ))} */}
-
-        <button type="submit">Save</button>
-      </form>
+      <SortableTree collapsible indicator removable testCases={testCases} />
+      <CreateTestCase featureId={+params.id} />
     </div>
   )
 }

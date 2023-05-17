@@ -42,13 +42,13 @@ export interface TestCase {
      * @type {number}
      * @memberof TestCase
      */
-    offset?: number;
+    sortOrder?: number;
     /**
      * 
      * @type {number}
      * @memberof TestCase
      */
-    sortOrder?: number;
+    parentId?: number;
 }
 
 /**
@@ -73,8 +73,8 @@ export function TestCaseFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
         'id': !exists(json, 'id') ? undefined : json['id'],
         'featureId': !exists(json, 'featureId') ? undefined : json['featureId'],
         'name': !exists(json, 'name') ? undefined : json['name'],
-        'offset': !exists(json, 'offset') ? undefined : json['offset'],
         'sortOrder': !exists(json, 'sortOrder') ? undefined : json['sortOrder'],
+        'parentId': !exists(json, 'parentId') ? undefined : json['parentId'],
     };
 }
 
@@ -90,8 +90,8 @@ export function TestCaseToJSON(value?: TestCase | null): any {
         'id': value.id,
         'featureId': value.featureId,
         'name': value.name,
-        'offset': value.offset,
         'sortOrder': value.sortOrder,
+        'parentId': value.parentId,
     };
 }
 

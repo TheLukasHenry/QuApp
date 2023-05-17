@@ -42,13 +42,13 @@ export interface UpdateTestCaseInput {
      * @type {number}
      * @memberof UpdateTestCaseInput
      */
-    offset?: number | null;
+    sortOrder?: number | null;
     /**
      * 
      * @type {number}
      * @memberof UpdateTestCaseInput
      */
-    sortOrder?: number | null;
+    parentId?: number | null;
 }
 
 /**
@@ -73,8 +73,8 @@ export function UpdateTestCaseInputFromJSONTyped(json: any, ignoreDiscriminator:
         'id': !exists(json, 'id') ? undefined : json['id'],
         'featureId': !exists(json, 'featureId') ? undefined : json['featureId'],
         'name': !exists(json, 'name') ? undefined : json['name'],
-        'offset': !exists(json, 'offset') ? undefined : json['offset'],
         'sortOrder': !exists(json, 'sortOrder') ? undefined : json['sortOrder'],
+        'parentId': !exists(json, 'parentId') ? undefined : json['parentId'],
     };
 }
 
@@ -90,8 +90,8 @@ export function UpdateTestCaseInputToJSON(value?: UpdateTestCaseInput | null): a
         'id': value.id,
         'featureId': value.featureId,
         'name': value.name,
-        'offset': value.offset,
         'sortOrder': value.sortOrder,
+        'parentId': value.parentId,
     };
 }
 

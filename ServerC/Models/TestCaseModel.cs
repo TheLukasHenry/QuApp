@@ -5,17 +5,19 @@ namespace ServerC.Models
     public int id { get; set; }
     public int featureId { get; set; }
     public string name { get; set; }
-    public int offset { get; set; }
 
     public int sortOrder { get; set; }
+    public int parentId { get; set; }
+
   }
   public class CreateTestCaseInput
   {
     public int featureId { get; set; }
     public string name { get; set; }
-    public int? offset { get; set; }
 
     public int? sortOrder { get; set; }
+    public int? parentId { get; set; }
+
   }
 
   public class UpdateTestCaseInput
@@ -24,9 +26,10 @@ namespace ServerC.Models
 
     public int? featureId { get; set; }
     public string? name { get; set; }
-    public int? offset { get; set; }
 
     public int? sortOrder { get; set; }
+    public int? parentId { get; set; }
+
 
   }
 }
