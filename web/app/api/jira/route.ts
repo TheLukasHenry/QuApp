@@ -1,113 +1,98 @@
-// rewrite this data so I can just paste it as JSON format
-// const data = {
-//   "fields": {
-//     "project":
-//     {
-//       "key": "QUAAP"
-//     },
-//     "summary": "Test case summary",
-//     "description": "Test case description",
-//     "issuetype": {
-//       "name": "Epic"
-//     }
-//   }
-// }
+import JiraApi from 'jira-client'
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '../auth/[...nextauth]/route'
+import url from 'url'
 
-const data = {
-  fields: {
-    project: {
-      key: 'QUAAP',
-    },
-    summary: 'Test case summary',
-    description: 'Test case description',
-    issuetype: {
-      name: 'Epic',
-    },
-  },
-}
-
-// export async function POST(request: NextRequest) {
-//   // const session = await getServerSession(authOptions)
-//   // ATATT3xFfGF0onPlwcpUxA5B_y4EgLtMR_luyb3Y2mpzE-RGeiakwPunByhSFfTxyb_taz_kYXVpoShdHJlChDDkgFHA-BkrL_vhoduVEDYRnCh03eq-WjK-auHP-gPEySRkDgaMPgR7ZwpmKiwj4lnasWasIoKfqCvyz3pt9kOQmDBhx4aJqYU=FC760976
-//   console.log('Jira called')
-//   const url = request.nextUrl
-
-//   const req = new NextRequest(
-//     'https://quaapp.atlassian.net/rest/api/2/issue/',
-//     {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//         Authorization: `Basic ${process.env.JIRA_API_KEY}`,
-//         // Add your credentials here
-//       },
-//       body: JSON.stringify({
-//         data,
-//       }),
-//     }
-//   )
-//   console.error()
-//   // console.trace('tracing req: ', req)
-//   // console.log('reqiiii: ', req)
-
-//   return NextResponse.json({ req })
-// }
-
-// // POST(req)
-// const handler = { POST }
-// export default handler
+const jira = new JiraApi({
+  protocol: 'https',
+  host: 'quaapp.atlassian.net',
+  username: 'lherajt@gmail.com',
+  password: process.env.JIRA_API_KEY,
+  apiVersion: '3',
+})
 
 export async function POST(request: NextRequest) {
   console.log('Jira called')
+  const requestBody = await request.json()
+  const { summary, description, issuetype } = requestBody
 
-  const req = new NextRequest(
-    'https://quaapp.atlassian.net/rest/api/2/issue/',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Basic ${process.env.JIRA_API_KEY}`,
+  const newIssue = await jira.addNewIssue({
+    fields: {
+      project: {
+        key: 'QUAAP',
       },
-      body: JSON.stringify(data),
-    }
-  )
+      summary: summary,
+      description: {
+        type: 'doc',
+        version: 1,
+        content: [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                text: description,
+                type: 'text',
+              },
+            ],
+          },
+        ],
+      },
+      issuetype: {
+        name: issuetype,
+      },
+    },
+  })
 
-  // Send the request to Jira
-  const res = await fetch(req)
-
-  // Get the response data
-  const resData = await res.json()
-
-  // Return the response data
-  return NextResponse.json(resData)
+  // Return the new issue data
+  return NextResponse.json(newIssue)
 }
 
 export async function GET(request: NextRequest) {
   console.log('Jira called')
+  const { searchParams } = new URL(request.url)
+  const issueKey = searchParams.get('issueKey')
 
-  const req = new NextRequest(
-    'https://quaapp.atlassian.net/rest/api/2/issue/QUAAP-1',
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Basic ${process.env.JIRA_API_KEY}`,
-      },
-    }
-  )
+  if (issueKey === null) {
+    return NextResponse.json({ error: 'IssueKey is required' })
+  }
 
-  // Send the request to Jira
-  const res = await fetch(req)
+  // Get the issue from Jira
+  const issue = await jira.findIssue(issueKey)
 
-  // Get the response data
-  const resData = await res.json()
-
-  // Return the response data
-  return NextResponse.json(resData)
+  // Return the issue data
+  return NextResponse.json(issue)
 }
 
-const handler = { GET, POST }
+export async function DELETE(request: NextRequest) {
+  console.log('Jira called')
+  const { searchParams } = new URL(request.url)
+  const issueKey = searchParams.get('issueKey')
+
+  if (issueKey === null) {
+    return NextResponse.json({ error: 'IssueKey is required' })
+  }
+
+  // Delete the issue in Jira
+  const response = await jira.deleteIssue(issueKey)
+
+  // Return the response from Jira
+  return NextResponse.json({ issueKey })
+}
+
+export async function PUT(request: NextRequest) {
+  console.log('Jira called')
+  const requestBody = await request.json()
+  const { issueId, issueUpdate } = requestBody
+
+  if (issueId === null) {
+    return NextResponse.json({ error: 'IssueId is required' })
+  }
+
+  // Update the issue in Jira
+  const updatedIssue = await jira.updateIssue(issueId, issueUpdate)
+
+  // Return the updated issue data
+  return NextResponse.json({ issueId, issueUpdate })
+}
+
+const handler = { GET, POST, DELETE, PUT }
 export default handler
