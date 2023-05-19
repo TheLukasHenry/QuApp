@@ -1,10 +1,10 @@
 import Link from 'next/link'
 import './globals.css'
-import { Inter } from 'next/font/google'
 import AuthProvider from './AuthProvider'
 import NavMenu from './NavMenu'
+// import { Inter } from 'next/font/google'
 
-const inter = Inter({ subsets: ['latin'] })
+// const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
   title: 'Create Next App',
@@ -19,7 +19,9 @@ export default function RootLayout({
   return (
     <AuthProvider>
       <html lang="en">
-        <body className={inter.className}>
+        <body
+        //  className={inter.className}
+        >
           <NavMenu />
 
           {/* <nav>Navbar in root layout</nav> */}

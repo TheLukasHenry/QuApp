@@ -18,7 +18,7 @@ export default async function TestCases() {
     <div className="pt-32">
       TestCases Page
       <TestCasesList testCases={testCases} />
-      <CreateTestCase featureId={2} />
+      {/* <CreateTestCase featureId={2} /> */}
     </div>
   )
 }
