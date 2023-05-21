@@ -39,8 +39,12 @@ import { SortableTreeItem } from './components'
 import { TestCase } from '@/generated-api/models/TestCase'
 import { UpdateTestCaseInput } from '@/generated-api/models/UpdateTestCaseInput'
 import { TestCasesApi } from '@/generated-api/apis/TestCasesApi'
+import { TestResultsApi } from '@/generated-api/apis/TestResultsApi'
+import { useRouter } from 'next/navigation'
+import { CreateTestResultInput } from '@/generated-api/models/CreateTestResultInput'
 
 const testCasesClient = new TestCasesApi()
+const testResultClient = new TestResultsApi()
 
 const measuring = {
   droppable: {
@@ -51,14 +55,28 @@ const measuring = {
 const dropAnimation: DropAnimation = {
   ...defaultDropAnimation,
 }
-
-function convertToTreeItems(testCases: TestCase[]): TreeItems {
+function convertToTreeItems(testCases: TestCase[], testResults: []): TreeItems {
   const treeItems: TreeItems = []
   const sortedTestCases = testCases.sort(
     (a, b) => (a.sortOrder || 0) - (b.sortOrder || 0)
   )
 
   const map = new Map()
+  const resultsMap = new Map()
+
+  // Parse resultsJson and group test results by testCaseId
+  for (const testResult of testResults) {
+    const parsedResults = JSON.parse(
+      testResult.resultsJson.replace('-- resultsJson\n', '')
+    )
+    for (const result of parsedResults) {
+      const testCaseId = result.testCaseId
+      if (!resultsMap.has(testCaseId)) {
+        resultsMap.set(testCaseId, [])
+      }
+      resultsMap.get(testCaseId).push(result)
+    }
+  }
 
   for (const testCase of sortedTestCases) {
     const uniqueIdentifier = testCase.id!
@@ -75,6 +93,7 @@ function convertToTreeItems(testCases: TestCase[]): TreeItems {
       name: name,
       children: [],
       depth: 0,
+      testResults: resultsMap.get(uniqueIdentifier) || [], // Add test results here
     }
 
     if (testCase.parentId === 0) {
@@ -95,6 +114,7 @@ function convertToTreeItems(testCases: TestCase[]): TreeItems {
 
 interface Props {
   testCases: TestCase[]
+  testResults: []
   collapsible?: boolean
   indentationWidth?: number
   indicator?: boolean
@@ -103,12 +123,15 @@ interface Props {
 
 export function SortableTree({
   testCases,
+  testResults,
   collapsible,
   indicator,
   indentationWidth = 20,
   removable,
 }: Props) {
-  const [items, setItems] = useState(() => convertToTreeItems(testCases))
+  const [items, setItems] = useState(() =>
+    convertToTreeItems(testCases, testResults)
+  )
   console.log({ items })
   const [activeId, setActiveId] = useState<string | null>(null)
   const [overId, setOverId] = useState<string | null>(null)
