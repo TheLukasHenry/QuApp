@@ -1,4 +1,5 @@
 'use client'
+
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import {
@@ -33,7 +34,12 @@ import {
   removeChildrenOf,
   setProperty,
 } from './utilities'
-import type { FlattenedItem, SensorContext, TreeItems } from './types'
+import type {
+  FlattenedItem,
+  SensorContext,
+  TestResult,
+  TreeItems,
+} from './types'
 import { sortableTreeKeyboardCoordinates } from './keyboardCoordinates'
 import { SortableTreeItem } from './components'
 import { TestCase } from '@/generated-api/models/TestCase'
@@ -108,7 +114,7 @@ function convertToTreeItems(testCases: TestCase[], testResults: []): TreeItems {
 
     map.set(testCase.id!, { ...treeItem })
   }
-
+  console.log('treeItems in convert function: ', treeItems)
   return treeItems
 }
 
@@ -132,7 +138,7 @@ export function SortableTree({
   const [items, setItems] = useState(() =>
     convertToTreeItems(testCases, testResults)
   )
-  console.log({ items })
+
   const [activeId, setActiveId] = useState<string | null>(null)
   const [overId, setOverId] = useState<string | null>(null)
   const [offsetLeft, setOffsetLeft] = useState(0)
@@ -208,6 +214,10 @@ export function SortableTree({
     },
   }
 
+  console.log('flattenedItems: ', flattenedItems)
+
+  console.log('items: ', items)
+
   return (
     <DndContext
       announcements={announcements}
@@ -221,23 +231,29 @@ export function SortableTree({
       onDragCancel={handleDragCancel}
     >
       <SortableContext items={sortedIds} strategy={verticalListSortingStrategy}>
-        {flattenedItems.map(({ id, name, children, collapsed, depth }) => (
-          <SortableTreeItem
-            key={id}
-            id={id}
-            name={name}
-            depth={id === activeId && projected ? projected.depth : depth}
-            indentationWidth={indentationWidth}
-            indicator={indicator}
-            collapsed={Boolean(collapsed && children.length)}
-            onCollapse={
-              collapsible && children.length
-                ? () => handleCollapse(id)
-                : undefined
-            }
-            onRemove={removable ? () => handleRemove(id) : undefined}
-          />
-        ))}
+        {flattenedItems.map(
+          ({ id, name, children, collapsed, depth, testResults }) => (
+            <SortableTreeItem
+              key={id}
+              id={id}
+              name={name}
+              depth={id === activeId && projected ? projected.depth : depth}
+              indentationWidth={indentationWidth}
+              indicator={indicator}
+              collapsed={Boolean(collapsed && children.length)}
+              onCollapse={
+                collapsible && children.length
+                  ? () => handleCollapse(id)
+                  : undefined
+              }
+              onRemove={removable ? () => handleRemove(id) : undefined}
+              singleResults={testResults?.map(
+                (testResult: TestResult) => testResult.singleResult
+              )}
+              testResults={testResults}
+            />
+          )
+        )}
 
         {createPortal(
           <DragOverlay

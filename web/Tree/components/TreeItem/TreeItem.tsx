@@ -8,6 +8,7 @@ import styles from './TreeItem.module.css'
 import { TestCase } from '@/generated-api/models/TestCase'
 import { UpdateTestCaseInput } from '@/generated-api/models/UpdateTestCaseInput'
 import { TestCasesApi } from '@/generated-api/apis/TestCasesApi'
+import { TestResult } from '../../types'
 
 const testCasesClient = new TestCasesApi()
 
@@ -33,7 +34,9 @@ export interface Props extends HTMLAttributes<HTMLLIElement> {
   handleProps?: any
   indicator?: boolean
   indentationWidth: number
-  id: number // Changed id prop type to number
+  id: number
+  testResults?: TestResult[]
+  singleResults?: string[]
   onCollapse?(): void
   onRemove?(id: number): void
   wrapperRef?(node: HTMLLIElement): void
@@ -58,12 +61,16 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
       style,
       wrapperRef,
       id,
+      singleResults,
+      testResults,
       ...props
     },
     ref
   ) => {
     const [name, setName] = useState(initialName)
-
+    console.log('🚀 ~ file: TreeItem.tsx:70 ~ testResults:', testResults)
+    // console.log('singleResults in TreeItem.tsx: ', singleResults)
+    // console.trace(`TreeItem.tsx:71: ${singleResults}`)
     const handleDelete = async () => {
       await deleteTestCase(id)
       onRemove && onRemove(id) // Notify parent to remove item from state
@@ -114,6 +121,9 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
           {!clone && <Remove onClick={handleDelete} />}
           {clone && childCount && childCount > 1 ? (
             <span className={styles.Count}>{childCount}</span>
+          ) : null}
+          {testResults && testResults.length > 0 ? (
+            <div>{testResults[0].singleResult}</div>
           ) : null}
         </div>
       </li>

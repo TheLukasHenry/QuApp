@@ -3,6 +3,7 @@ import type { MutableRefObject } from 'react'
 export interface TreeItem {
   id: number
   name: string
+  testResults: TestResult[]
   children: TreeItem[]
   collapsed?: boolean
 }
@@ -19,3 +20,10 @@ export type SensorContext = MutableRefObject<{
   items: FlattenedItem[]
   offset: number
 }>
+
+export interface TestResult {
+  singleResult: string
+  comment?: string
+  testCaseId: number
+  // Include other properties of testResult here
+}

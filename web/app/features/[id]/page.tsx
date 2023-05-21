@@ -39,13 +39,8 @@ async function getFeatureById(id: string) {
 }
 
 export default async function Page({ params }: Props) {
-  // console.log('New get params.id: ', params.id)
-
   const feature = await getFeatureById(params.id)
   const testCases = await getTestCasesByFeatureId(params.id)
-  // console.log('testCases: ', testCases)
-
-  // console.log('feature: ', feature)
   return (
     <div>
       <p>features id page</p>
