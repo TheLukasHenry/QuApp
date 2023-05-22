@@ -118,13 +118,17 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
               })
             }
           />
-          {!clone && <Remove onClick={handleDelete} />}
           {clone && childCount && childCount > 1 ? (
             <span className={styles.Count}>{childCount}</span>
           ) : null}
-          {testResults && testResults.length > 0 ? (
-            <div>{testResults[0].singleResult}</div>
-          ) : null}
+          {testResults && testResults.length > 0
+            ? testResults.map((testResult, index) => (
+                <div key={index}>
+                  {testResult.singleResult === 'pass' ? '✅' : '❌'}
+                </div>
+              ))
+            : null}
+          {!clone && <Remove onClick={handleDelete} />}
         </div>
       </li>
     )
