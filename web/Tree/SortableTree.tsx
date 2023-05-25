@@ -61,11 +61,7 @@ const measuring = {
 const dropAnimation: DropAnimation = {
   ...defaultDropAnimation,
 }
-
-function convertToTreeItems(
-  testCases: TestCase[],
-  testResults: TestResult[]
-): TreeItems {
+function convertToTreeItems(testCases: TestCase[], testResults: []): TreeItems {
   const treeItems: TreeItems = []
   const sortedTestCases = testCases.sort(
     (a, b) => (a.sortOrder || 0) - (b.sortOrder || 0)
@@ -73,6 +69,32 @@ function convertToTreeItems(
 
   const map = new Map()
   const resultsMap = new Map()
+
+  // Helper function to remove duplicates based on testResultId
+  const removeDuplicates = (results: TestResult[]): TestResult[] => {
+    const uniqueResults = Array.from(
+      new Set(results.map((result) => result.testResultId))
+    ).map((testResultId) => {
+      return results.find((result) => result.testResultId === testResultId)
+    })
+
+    // Create a set of all testResultId values
+    const allTestResultIds = new Set(
+      testResults.map((result) => result.testResultId)
+    )
+
+    // Add an object with the missing testResultId to uniqueResults if it's not already present
+    for (const testResultId of allTestResultIds) {
+      if (
+        !uniqueResults.some((result) => result.testResultId === testResultId)
+      ) {
+        uniqueResults.push({ testResultId: testResultId })
+      }
+    }
+
+    console.log('uniqueResults: ', uniqueResults)
+    return uniqueResults as TestResult[]
+  }
 
   // Parse resultsJson and group test results by testCaseId
   for (const testResult of testResults) {
@@ -100,12 +122,17 @@ function convertToTreeItems(
     }
 
     const name = testCase.name || ''
+    let testResultsForTestCase = resultsMap.get(uniqueIdentifier) || []
+
+    // Remove duplicates from testResultsForTestCase
+    testResultsForTestCase = removeDuplicates(testResultsForTestCase)
+
     const treeItem = {
       id: id,
       name: name,
       children: [],
       depth: 0,
-      testResults: resultsMap.get(uniqueIdentifier) || [], // Add test results here
+      testResults: testResultsForTestCase,
     }
 
     if (testCase.parentId === 0) {

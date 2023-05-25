@@ -23,8 +23,8 @@ export type SensorContext = MutableRefObject<{
 }>
 
 export interface TestResult {
-  singleResult: string
+  singleResult?: string
   comment?: string
-  testCaseId: number
+  testCaseId?: number
   testResultId: number
 }

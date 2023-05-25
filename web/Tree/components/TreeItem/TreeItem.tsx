@@ -198,31 +198,20 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
               <button onClick={() => setShowModal(false)}>X</button>
             </div>
           )}
-          {testResults && testResults.length > 0
+          {testResults
             ? testResults.map((testResult, index) => (
                 <button
                   onClick={() => handleButtonClick(testResult)}
                   key={index}
                 >
-                  {testResult.singleResult === 'pass' ? '✅' : '❌'}
+                  {testResult.singleResult
+                    ? testResult.singleResult === 'pass'
+                      ? '✅'
+                      : '❌'
+                    : '+'}
                 </button>
               ))
             : null}
-
-          {testResults && testResults.length < resultsLength && (
-            <button
-              onClick={() =>
-                handleButtonClick({
-                  testResultId: 0,
-                  testCaseId: 0,
-                  comment: '',
-                  singleResult: 'pass',
-                })
-              }
-            >
-              +
-            </button>
-          )}
 
           {!clone && <Remove onClick={handleDelete} />}
         </div>
