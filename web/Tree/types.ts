@@ -4,6 +4,7 @@ export interface TreeItem {
   id: number
   name: string
   testResults: TestResult[]
+  resultsLength: number
   children: TreeItem[]
   collapsed?: boolean
 }
@@ -25,5 +26,5 @@ export interface TestResult {
   singleResult: string
   comment?: string
   testCaseId: number
-  // Include other properties of testResult here
+  testResultId: number
 }

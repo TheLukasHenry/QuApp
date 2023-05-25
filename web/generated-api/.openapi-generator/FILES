@@ -25,7 +25,9 @@ models/TestCase.ts
 models/TestResult.ts
 models/TestRun.ts
 models/TestRunCase.ts
+models/UpdateSingleTestResultInput.ts
 models/UpdateTestCaseInput.ts
+models/UpdateTestResultInput.ts
 models/UpdateUserInput.ts
 models/User.ts
 models/WeatherForecast.ts

@@ -7,5 +7,8 @@ namespace ServerC.Interfaces
     Task<TestResult> CreateTestResultAsync(CreateTestResultInput createTestResultInput);
     Task<IEnumerable<TestResult>> GetAllTestResultsAsync();
     Task<IEnumerable<TestResult>> GetTestResultsByFeatureIdAsync(int featureId);
+    Task<TestResult> UpdateTestResultAsync(UpdateTestResultInput updateTestResultInput);
+
+    Task<TestResult> UpdateSingleTestResultAsync(UpdateSingleTestResultInput updateSingleTestResultInput);
   }
 }

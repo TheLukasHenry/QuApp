@@ -17,12 +17,18 @@ import * as runtime from '../runtime';
 import type {
   CreateTestResultInput,
   TestResult,
+  UpdateSingleTestResultInput,
+  UpdateTestResultInput,
 } from '../models';
 import {
     CreateTestResultInputFromJSON,
     CreateTestResultInputToJSON,
     TestResultFromJSON,
     TestResultToJSON,
+    UpdateSingleTestResultInputFromJSON,
+    UpdateSingleTestResultInputToJSON,
+    UpdateTestResultInputFromJSON,
+    UpdateTestResultInputToJSON,
 } from '../models';
 
 export interface TestResultsIdGetRequest {
@@ -31,6 +37,14 @@ export interface TestResultsIdGetRequest {
 
 export interface TestResultsPostRequest {
     createTestResultInput?: CreateTestResultInput;
+}
+
+export interface TestResultsPutRequest {
+    updateTestResultInput?: UpdateTestResultInput;
+}
+
+export interface TestResultsUpdateSingleTestResultPutRequest {
+    updateSingleTestResultInput?: UpdateSingleTestResultInput;
 }
 
 /**
@@ -114,6 +128,60 @@ export class TestResultsApi extends runtime.BaseAPI {
      */
     async testResultsPost(requestParameters: TestResultsPostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TestResult> {
         const response = await this.testResultsPostRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async testResultsPutRaw(requestParameters: TestResultsPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TestResult>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/TestResults`,
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UpdateTestResultInputToJSON(requestParameters.updateTestResultInput),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => TestResultFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async testResultsPut(requestParameters: TestResultsPutRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TestResult> {
+        const response = await this.testResultsPutRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async testResultsUpdateSingleTestResultPutRaw(requestParameters: TestResultsUpdateSingleTestResultPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TestResult>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/TestResults/UpdateSingleTestResult`,
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UpdateSingleTestResultInputToJSON(requestParameters.updateSingleTestResultInput),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => TestResultFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async testResultsUpdateSingleTestResultPut(requestParameters: TestResultsUpdateSingleTestResultPutRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TestResult> {
+        const response = await this.testResultsUpdateSingleTestResultPutRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

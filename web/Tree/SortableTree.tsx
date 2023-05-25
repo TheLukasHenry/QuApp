@@ -61,7 +61,11 @@ const measuring = {
 const dropAnimation: DropAnimation = {
   ...defaultDropAnimation,
 }
-function convertToTreeItems(testCases: TestCase[], testResults: []): TreeItems {
+
+function convertToTreeItems(
+  testCases: TestCase[],
+  testResults: TestResult[]
+): TreeItems {
   const treeItems: TreeItems = []
   const sortedTestCases = testCases.sort(
     (a, b) => (a.sortOrder || 0) - (b.sortOrder || 0)
@@ -80,6 +84,8 @@ function convertToTreeItems(testCases: TestCase[], testResults: []): TreeItems {
       if (!resultsMap.has(testCaseId)) {
         resultsMap.set(testCaseId, [])
       }
+      // Add testResultId to the result object
+      result.testResultId = testResult.testResultId
       resultsMap.get(testCaseId).push(result)
     }
   }
@@ -146,6 +152,10 @@ export function SortableTree({
     parentId: string | null
     overId: string
   } | null>(null)
+
+  const [resultLength, setResultLength] = useState<number>(testResults.length)
+  console.log('resultLength: ', resultLength)
+  console.log('testResults: ', testResults)
 
   const flattenedItems = useMemo(() => {
     const flattenedTree = flattenTree(items)
@@ -230,6 +240,7 @@ export function SortableTree({
       onDragEnd={handleDragEnd}
       onDragCancel={handleDragCancel}
     >
+      <button>create test results column</button>
       <SortableContext items={sortedIds} strategy={verticalListSortingStrategy}>
         {flattenedItems.map(
           ({ id, name, children, collapsed, depth, testResults }) => (
@@ -251,6 +262,7 @@ export function SortableTree({
                 (testResult: TestResult) => testResult.singleResult
               )}
               testResults={testResults}
+              resultsLength={resultLength}
             />
           )
         )}

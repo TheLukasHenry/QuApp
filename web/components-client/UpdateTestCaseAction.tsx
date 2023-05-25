@@ -14,7 +14,7 @@ export default function UpdateFeatureActions({
   feature,
   putFeature,
 }: UpdateFeatureActionsProps) {
-  const { featureID, featureName, companyID } = feature || {}
+  const { id, name, companyId } = feature || {}
 
   const featuresClient = new FeaturesApi()
 
@@ -56,13 +56,9 @@ export default function UpdateFeatureActions({
       <h2>Actions edit</h2>
       <form action={putFeature}>
         <label htmlFor="featureName">Name</label>
-        <input
-          type="text"
-          name="featureName"
-          defaultValue={featureName ?? ''}
-        />
+        <input type="text" name="featureName" defaultValue={name ?? ''} />
         <label htmlFor="companyID">companyID</label>
-        <input type="text" name="companyID" defaultValue={companyID ?? ''} />
+        <input type="text" name="companyID" defaultValue={companyId ?? ''} />
 
         <button type="submit">Save</button>
       </form>

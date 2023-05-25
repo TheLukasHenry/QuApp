@@ -56,6 +56,35 @@ namespace ServerC.Controllers
       return Ok(testResult);
     }
 
+
+    [HttpPut]
+    public async Task<ActionResult<TestResult>> UpdateTestResult([FromBody] UpdateTestResultInput input)
+    {
+      if (input.testResultId <= 0 || input.featureId <= 0 || input.userId <= 0 || string.IsNullOrEmpty(input.resultsJson))
+      {
+        return BadRequest("TestResult testResultId, featureId, userId, and resultsJson must be valid.");
+      }
+
+      TestResult updatedTestResult = await _testResultsService.UpdateTestResultAsync(input);
+      if (updatedTestResult == null)
+      {
+        return StatusCode(500, "An error occurred while updating the TestResult.");
+      }
+
+      return Ok(updatedTestResult);
+    }
+
+    [HttpPut("UpdateSingleTestResult")]
+    public async Task<ActionResult<TestResult>> UpdateSingleTestResult([FromBody] UpdateSingleTestResultInput input)
+    {
+      if (string.IsNullOrEmpty(input.singleResultJson))
+      {
+        return BadRequest("TestResult testResultId, featureId, userId, and resultsJson must be valid.");
+      }
+
+      TestResult updatedTestResult = await _testResultsService.UpdateSingleTestResultAsync(input);
+      return Ok(updatedTestResult);
+    }
     // Add other methods here...
   }
 }

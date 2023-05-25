@@ -24,7 +24,7 @@ export default async function page({ params }: { params: { id: string } }) {
   const testCases: TestCase[] = await testCasesRes.json()
   const testResultsRes = await fetch(testResultsUrl, { cache: 'no-store' })
   const testResults = await testResultsRes.json()
-  console.log('testResults: ', testResults)
+  // console.log('testResults: ', testResults)
 
   return (
     <div>

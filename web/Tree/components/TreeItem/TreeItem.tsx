@@ -1,3 +1,4 @@
+'use client'
 import React, { forwardRef, HTMLAttributes, useState } from 'react'
 import classNames from 'classnames'
 
@@ -9,8 +10,28 @@ import { TestCase } from '@/generated-api/models/TestCase'
 import { UpdateTestCaseInput } from '@/generated-api/models/UpdateTestCaseInput'
 import { TestCasesApi } from '@/generated-api/apis/TestCasesApi'
 import { TestResult } from '../../types'
+import { TestResultsApi } from '@/generated-api/apis/TestResultsApi'
+import { CreateTestResultInput } from '@/generated-api/models/CreateTestResultInput'
+import { UpdateTestResultInput } from '@/generated-api/models/UpdateTestResultInput'
+import { UpdateSingleTestResultInput } from '@/generated-api/models/UpdateSingleTestResultInput'
 
 const testCasesClient = new TestCasesApi()
+const testResultClient = new TestResultsApi()
+
+async function createTestResult(input: CreateTestResultInput) {
+  const response = await testResultClient.testResultsPost({
+    createTestResultInput: input,
+  })
+  console.log('TestResult created:', response)
+}
+
+async function updateTestResult(input: UpdateSingleTestResultInput) {
+  const response = await testResultClient.testResultsUpdateSingleTestResultPut({
+    updateSingleTestResultInput: input,
+  })
+  console.log('TestResult updated:', response)
+  console.log('input in updatedTestResult: ', input)
+}
 
 async function updateTestCase(updateTestCaseInput: UpdateTestCaseInput) {
   const response = await testCasesClient.testCasesPut({ updateTestCaseInput })
@@ -37,6 +58,7 @@ export interface Props extends HTMLAttributes<HTMLLIElement> {
   id: number
   testResults?: TestResult[]
   singleResults?: string[]
+  resultsLength: number
   onCollapse?(): void
   onRemove?(id: number): void
   wrapperRef?(node: HTMLLIElement): void
@@ -63,12 +85,36 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
       id,
       singleResults,
       testResults,
+      resultsLength,
       ...props
     },
     ref
   ) => {
     const [name, setName] = useState(initialName)
-    console.log('🚀 ~ file: TreeItem.tsx:70 ~ testResults:', testResults)
+    const [showModal, setShowModal] = useState(false)
+    const [currentComment, setCurrentComment] = useState('')
+    const [currentResult, setCurrentResult] = useState('')
+    const [currentTestResult, setCurrentTestResult] =
+      useState<TestResult | null>(null)
+
+    const handleButtonClick = (testResult: TestResult) => {
+      setCurrentTestResult(testResult)
+      setCurrentComment(testResult.comment || '')
+      setCurrentResult(testResult.singleResult)
+      setShowModal(true)
+    }
+
+    updateTestResult({
+      testResultId: currentTestResult?.testResultId,
+      singleResultJson: JSON.stringify({
+        testCaseId: currentTestResult?.testCaseId,
+        comment: currentComment,
+        singleResult: currentResult,
+      }),
+      // setShowModal(false)
+    })
+
+    console.log('🚀 ~ file: TreeItem.tsx:70 ~ single testResults:', testResults)
     // console.log('singleResults in TreeItem.tsx: ', singleResults)
     // console.trace(`TreeItem.tsx:71: ${singleResults}`)
     const handleDelete = async () => {
@@ -121,13 +167,63 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
           {clone && childCount && childCount > 1 ? (
             <span className={styles.Count}>{childCount}</span>
           ) : null}
+          {showModal && (
+            <div className="modal">
+              <textarea
+                value={currentComment}
+                onChange={(e) => setCurrentComment(e.target.value)}
+              />
+              <select
+                value={currentResult}
+                onChange={(e) => setCurrentResult(e.target.value)}
+              >
+                <option value="pass">Pass</option>
+                <option value="fail">Fail</option>
+              </select>
+              <button
+                onClick={() => {
+                  updateTestResult({
+                    testResultId: currentTestResult?.testResultId,
+                    singleResultJson: JSON.stringify({
+                      testCaseId: currentTestResult?.testCaseId,
+                      comment: currentComment,
+                      singleResult: currentResult,
+                    }),
+                  })
+                  setShowModal(false)
+                }}
+              >
+                Save
+              </button>
+              <button onClick={() => setShowModal(false)}>X</button>
+            </div>
+          )}
           {testResults && testResults.length > 0
             ? testResults.map((testResult, index) => (
-                <div key={index}>
+                <button
+                  onClick={() => handleButtonClick(testResult)}
+                  key={index}
+                >
                   {testResult.singleResult === 'pass' ? '✅' : '❌'}
-                </div>
+                </button>
               ))
             : null}
+
+          {testResults && testResults.length < resultsLength && (
+            <button
+              onClick={() =>
+                handleButtonClick({
+                  testResultId: 0,
+                  testCaseId: 0,
+                  comment: '',
+                  singleResult: 'pass',
+                })
+              }
+            >
+              +
+            </button>
+          )}
+
           {!clone && <Remove onClick={handleDelete} />}
         </div>
       </li>

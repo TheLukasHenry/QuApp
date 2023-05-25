@@ -44,6 +44,35 @@ namespace ServerC.Services
         return await connection.QueryAsync<TestResult>("GetTestResultsByFeatureId", new { featureId }, commandType: CommandType.StoredProcedure);
       }
     }
-    // Implement other methods here...
+
+    public async Task<TestResult> UpdateTestResultAsync(UpdateTestResultInput input)
+    {
+      using (var connection = _databaseHelper.GetConnection())
+      {
+        DynamicParameters parameters = new DynamicParameters();
+        parameters.Add("@testResultId", input.testResultId, DbType.Int32);
+        parameters.Add("@featureId", input.featureId, DbType.Int32);
+        parameters.Add("@resultsJson", input.resultsJson, DbType.String);
+        parameters.Add("@userId", input.userId, DbType.Int32);
+        parameters.Add("@date", input.date, DbType.Date);
+
+        TestResult updatedTestResult = await connection.QuerySingleOrDefaultAsync<TestResult>("dbo.UpdateTestResults", parameters, commandType: CommandType.StoredProcedure);
+        return updatedTestResult;
+      }
+    }
+
+    public async Task<TestResult> UpdateSingleTestResultAsync(UpdateSingleTestResultInput input)
+    {
+      using (var connection = _databaseHelper.GetConnection())
+      {
+        DynamicParameters parameters = new DynamicParameters();
+        parameters.Add("@testResultId", input.testResultId, DbType.Int32);
+        parameters.Add("@singleResultJson", input.singleResultJson, DbType.String);
+
+
+        TestResult updatedTestResult = await connection.QuerySingleOrDefaultAsync<TestResult>("dbo.UpdateSingleTestResult", parameters, commandType: CommandType.StoredProcedure);
+        return updatedTestResult;
+      }
+    }
   }
 }
