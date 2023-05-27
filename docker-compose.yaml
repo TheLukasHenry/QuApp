@@ -34,11 +34,13 @@ services:
   #     - 8086:8086 k
 
   mssql:
-    image: mcr.microsoft.com/mssql/server:2019-latest
+    build: .
     ports:
       - 1433:1433
     volumes:
       - ~/GitHub/Data/mssql:/var/opt/mssql/data
+      - ./restore-db.sh:/var/opt/mssql/scripts/restore-db.sh
+    command: /bin/bash /var/opt/mssql/scripts/restore-db.sh
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=mssql1Ipw
