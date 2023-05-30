@@ -238,7 +238,7 @@ export function SortableTree({
       return `Picked up ${id}.`
     },
     onDragMove(id, overId) {
-      return getMovementAnnouncement('onDragMove', id, overId)
+      return getMovementAnnouncement('˚onDragMove', id, overId)
     },
     onDragOver(id, overId) {
       return getMovementAnnouncement('onDragOver', id, overId)
