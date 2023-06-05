@@ -1,8 +1,0 @@
-import { Create{{properCase name}}Input } from './{{snakeCase name}}_create'
-import { InputType, Field, PartialType, Int } from '@nestjs/graphql'
-
-@InputType()
-export class Update{{properCase name}}Input extends PartialType(Create{{properCase name}}Input) {
-  @Field(() => Int)
-  id: number
-}

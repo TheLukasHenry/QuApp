@@ -165,7 +165,7 @@ CREATE TABLE main.dbo.testRunCases (
 
 
 
-CREATE PROCEDURE AddCompanyUser_new
+CREATE PROCEDURE AddCompanyUser
 @companyId INT,
 @userId INT
 AS
@@ -173,6 +173,7 @@ BEGIN
 INSERT INTO companyUsers (companyId, userId)
 VALUES (@companyId, @userId)
 END;
+GO
 
 CREATE PROCEDURE AddResult
     @testResultId INT,
@@ -209,6 +210,7 @@ BEGIN
         WHERE testResultId = @testResultId
     END
 END;
+GO
 
 CREATE PROCEDURE dbo.createCompany
     @name NVARCHAR(50)
@@ -227,6 +229,7 @@ BEGIN
     SELECT id, name
     FROM @insertedCompanies;
 END;
+GO
 
 CREATE PROCEDURE dbo.createFeature
     @name VARCHAR(50),
@@ -246,6 +249,7 @@ BEGIN
     SELECT id, name, companyId
     FROM @createdFeature;
 END;
+GO
 
 CREATE PROCEDURE dbo.CreateStatus
     @name VARCHAR(50)
@@ -254,6 +258,7 @@ BEGIN
     INSERT INTO statuses (name)
     VALUES (@name)
 END;
+GO
 
 CREATE  PROCEDURE dbo.createTestCase
     @featureId INT,
@@ -266,6 +271,7 @@ BEGIN
     OUTPUT inserted.id, inserted.featureId, inserted.name, inserted.parentId, inserted.sortOrder
     VALUES (@featureId, @name, @parentId, @sortOrder)
 END;
+GO
 
 CREATE PROCEDURE CreateTestResults
     @featureId INT,
@@ -277,6 +283,7 @@ BEGIN
     INSERT INTO main.dbo.testResults (featureId, userId, date, resultsJson)
     VALUES (@featureId, @userId, @date, @resultsJson);
 END;
+GO
 
 --SELECT * FROM testRuns tr  ;
 
@@ -298,6 +305,7 @@ BEGIN
 
     SELECT * FROM testRuns WHERE id = SCOPE_IDENTITY();
 END;
+GO
 
 --SELECT * FROM testRunCases trc  ;
 
@@ -321,6 +329,7 @@ SET @NewTestRunCaseId = SCOPE_IDENTITY();
 
 SELECT * FROM testRunCases WHERE id = @NewTestRunCaseId;
 END;
+GO
 
 CREATE PROCEDURE dbo.CreateUser
     @name VARCHAR(50),
@@ -331,6 +340,7 @@ BEGIN
     INSERT INTO users (name, email, passwordHash)
     VALUES (@name, @email, @passwordHash)
 END;
+GO
 
 CREATE PROCEDURE dbo.DeleteCompany
     @id INT
@@ -339,23 +349,26 @@ BEGIN
     DELETE FROM companies
     WHERE id = @id;
 END;
+GO
 
 -- Create new stored procedures with updated names
-CREATE PROCEDURE DeleteFeature_new
+CREATE PROCEDURE DeleteFeature
 @id INT
 AS
 BEGIN
 DELETE FROM features
 WHERE id = @id
 END;
+GO
 
-CREATE PROCEDURE DeleteTestCase_new
+CREATE PROCEDURE DeleteTestCase
 @id int
 AS
 BEGIN
 DELETE FROM dbo.testRunCases WHERE testCaseId = @id;
 DELETE FROM dbo.testCases WHERE id = @id;
 END;
+GO
 
 CREATE PROCEDURE dbo.DeleteTestRun
     @id INT
@@ -364,6 +377,7 @@ BEGIN
     DELETE FROM testRuns
     WHERE id = @id;
 END;
+GO
 
 -- DeleteTestRunCase
 CREATE PROCEDURE dbo.deleteTestRunCase
@@ -372,6 +386,7 @@ AS
 BEGIN
   DELETE FROM dbo.testRunCases WHERE id = @id;
 END;
+GO
 
 CREATE PROCEDURE dbo.DeleteUser
     @id INT
@@ -379,12 +394,14 @@ AS
 BEGIN
     DELETE FROM users WHERE id = @id;
 END;
+GO
 
 CREATE PROCEDURE dbo.GetAllCompanies
 AS
 BEGIN
     SELECT * FROM companies;
 END;
+GO
 
 CREATE PROCEDURE dbo.GetAllFeatures
 AS
@@ -392,12 +409,14 @@ BEGIN
     SELECT *
     FROM features;
 END;
+GO
 
-CREATE PROCEDURE GetAllTestCases_new
+CREATE PROCEDURE GetAllTestCases
 AS
 BEGIN
 SELECT * FROM dbo.testCases;
 END;
+GO
 
 CREATE  PROCEDURE dbo.GetAllTestCasesByFeatureId
     @featureId int
@@ -419,12 +438,14 @@ BEGIN
     ORDER BY
         sortOrder;
 END;
+GO
 
 CREATE PROCEDURE GetAllTestResults
 AS
 BEGIN
     SELECT * FROM main.dbo.testResults;
 END;
+GO
 
 CREATE PROCEDURE dbo.GetAllTestRuns
 AS
@@ -432,12 +453,14 @@ BEGIN
     SELECT *
     FROM testRuns;
 END;
+GO
 
 CREATE PROCEDURE dbo.GetAllUsers
 AS
 BEGIN
     SELECT * FROM users;
 END;
+GO
 
 CREATE PROCEDURE dbo.GetCompanyById
     @id INT
@@ -446,6 +469,7 @@ BEGIN
     SELECT * FROM companies
     WHERE id = @id;
 END;
+GO
 
 CREATE PROCEDURE dbo.GetCompanyUsersByCompanyId
     @companyId INT
@@ -454,6 +478,7 @@ BEGIN
     SELECT * FROM companyUsers
     WHERE companyId = @companyId;
 END;
+GO
 
 CREATE PROCEDURE GetCompanyUsersByUserId
 @userId INT
@@ -462,6 +487,7 @@ BEGIN
 SELECT * FROM companyUsers
 WHERE userId = @userId
 END;
+GO
 
 CREATE PROCEDURE dbo.GetFeatureById 
     @id int
@@ -471,6 +497,7 @@ BEGIN
     FROM features
     WHERE id = @id;
 END;
+GO
 
 CREATE PROCEDURE dbo.GetFeaturesByCompany
     @companyId INT
@@ -479,13 +506,15 @@ BEGIN
     SELECT * FROM features
     WHERE companyId = @companyId;
 END;
+GO
 
-CREATE PROCEDURE GetTestCaseById_new
+CREATE PROCEDURE GetTestCaseById
 @id int
 AS
 BEGIN
 SELECT * FROM dbo.testCases WHERE id = @id;
 END;
+GO
 
 CREATE PROCEDURE GetTestResultsByFeatureId
     @featureId INT
@@ -493,6 +522,7 @@ AS
 BEGIN
     SELECT * FROM main.dbo.testResults WHERE featureId = @featureId;
 END;
+GO
 
 CREATE PROCEDURE dbo.GetTestRunByID
     @id INT
@@ -502,6 +532,7 @@ BEGIN
     FROM testRuns
     WHERE id = @id;
 END;
+GO
 
 CREATE PROCEDURE getTestRunCaseById
     @id INT
@@ -511,13 +542,15 @@ BEGIN
     FROM testRunCases
     WHERE id = @id;
 END;
+GO
 
-CREATE PROCEDURE GetTestRunCasesByTestRunID_new
+CREATE PROCEDURE GetTestRunCasesByTestRunID
 @testRunId INT
 AS
 BEGIN
 SELECT * FROM testRunCases WHERE testRunId = @testRunId;
 END;
+GO
 
 CREATE PROCEDURE dbo.GetUserByEmail
     @email VARCHAR(100)
@@ -526,6 +559,7 @@ BEGIN
     SELECT * FROM users
     WHERE email = @email
 END;
+GO
 
 CREATE PROCEDURE dbo.GetUserById
     @id INT
@@ -533,6 +567,7 @@ AS
 BEGIN
     SELECT * FROM users WHERE id = @id
 END;
+GO
 
 CREATE  PROCEDURE MoveTestcases
     @testCaseIdsList VARCHAR(255),
@@ -585,8 +620,9 @@ BEGIN
     FROM main.dbo.testCases tc
     INNER JOIN cte ON tc.id = cte.id;
 END;
+GO
 
-CREATE PROCEDURE RemoveCompanyUser_new
+CREATE PROCEDURE RemoveCompanyUser
 @companyId INT,
 @userId INT
 AS
@@ -594,6 +630,7 @@ BEGIN
 DELETE FROM companyUsers
 WHERE companyId = @companyId AND userId = @userId
 END;
+GO
 
 CREATE PROCEDURE updateCompany
     @id INT,
@@ -609,6 +646,7 @@ BEGIN
     FROM companies
     WHERE id = @id;
 END;
+GO
 
 CREATE PROCEDURE updateFeature
     @id INT,
@@ -630,6 +668,7 @@ BEGIN
     SELECT id, name, companyId
     FROM @updatedFeature;
 END;
+GO
 
 CREATE  PROCEDURE UpdateSingleTestResult
     @testResultId int,
@@ -667,6 +706,7 @@ BEGIN
     SET resultsJson = @jsonToUpdate
     WHERE testResultId = @testResultId;
 END;
+GO
 
 CREATE PROCEDURE dbo.UpdateSortOrderForDuplicates
     @featureId int
@@ -686,6 +726,7 @@ BEGIN
     FROM testCases
     INNER JOIN CTE ON testCases.id = CTE.id;
 END;
+GO
 
 CREATE  PROCEDURE [dbo].[updateTestCase]
     @id int,
@@ -703,6 +744,7 @@ BEGIN
     OUTPUT inserted.id, inserted.featureId, inserted.name, inserted.parentId, inserted.sortOrder
     WHERE id = @id;
 END;
+GO
 
 --EXEC UpdateTestCasesOffset @operation = 'INCREMENT', @testCaseIdList = '41,32,37';
 
@@ -748,6 +790,7 @@ BEGIN
         RAISERROR('Invalid operation specified. Use INCREMENT or DECREMENT.', 16, 1);
     END
 END;
+GO
 
 CREATE  PROCEDURE UpdateTestResults
     @testResultId int,
@@ -765,6 +808,7 @@ BEGIN
         featureId = ISNULL(@featureId, featureId)
     WHERE testResultId = @testResultId;
 END;
+GO
 
 --SELECT * FROM testRuns tr  ;
 
@@ -791,6 +835,7 @@ BEGIN
         testRunStatus = @testRunStatus
     WHERE id = @id;
 END;
+GO
 
 -- UpdateTestRunCase
 CREATE PROCEDURE dbo.updateTestRunCase
@@ -808,6 +853,7 @@ BEGIN
       testCaseComment = @testCaseComment
   WHERE id = @id;
 END;
+GO
 
 CREATE PROCEDURE dbo.updateUser
     @id INT,
@@ -825,6 +871,7 @@ BEGIN
     -- Return the updated user details
     SELECT * FROM users WHERE id = @id;
 END;
+GO
 
 
 

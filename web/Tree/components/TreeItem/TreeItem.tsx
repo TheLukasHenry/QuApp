@@ -97,24 +97,25 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
     const [currentTestResult, setCurrentTestResult] =
       useState<TestResult | null>(null)
 
-    const handleButtonClick = (testResult: TestResult) => {
+    const handleOpenModal = (testResult: TestResult) => {
       setCurrentTestResult(testResult)
       setCurrentComment(testResult.comment || '')
-      setCurrentResult(testResult.singleResult)
+      setCurrentResult(testResult.singleResult || '')
       setShowModal(true)
     }
 
-    updateTestResult({
-      testResultId: currentTestResult?.testResultId,
-      singleResultJson: JSON.stringify({
-        testCaseId: currentTestResult?.testCaseId,
-        comment: currentComment,
-        singleResult: currentResult,
-      }),
-      // setShowModal(false)
-    })
+    // updateTestResult({
+    //   testResultId: currentTestResult?.testResultId,
+    //   singleResultJson: JSON.stringify({
+    //     testCaseId: currentTestResult?.testCaseId,
+    //     comment: currentComment,
+    //     singleResult: currentResult,
+    //   }),
+    //   // setShowModal(false)
+    // })
 
-    console.log('🚀 ~ file: TreeItem.tsx:70 ~ single testResults:', testResults)
+    // console.log('🚀 ~ file: TreeItem.tsx:70 ~ single testCase testResults:', testResults)
+
     // console.log('singleResults in TreeItem.tsx: ', singleResults)
     // console.trace(`TreeItem.tsx:71: ${singleResults}`)
     const handleDelete = async () => {
@@ -200,10 +201,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
           )}
           {testResults
             ? testResults.map((testResult, index) => (
-                <button
-                  onClick={() => handleButtonClick(testResult)}
-                  key={index}
-                >
+                <button onClick={() => handleOpenModal(testResult)} key={index}>
                   {testResult.singleResult
                     ? testResult.singleResult === 'pass'
                       ? '✅'
