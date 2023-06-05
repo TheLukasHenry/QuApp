@@ -861,10 +861,6 @@ INSERT INTO main.dbo.testCases (featureId, name, sortOrder) VALUES (1, 'Test Cas
 INSERT INTO main.dbo.testCases (featureId, name, sortOrder) VALUES (2, 'Test Case B', 1);
 INSERT INTO main.dbo.testCases (featureId, name, sortOrder) VALUES (3, 'Test Case C', 1);
 
--- Inserting test results for the test cases
-INSERT INTO main.dbo.testResults (featureId, resultsJson, userId, [date]) VALUES (1, '{ "result": "Pass" }', 1, GETDATE());
-INSERT INTO main.dbo.testResults (featureId, resultsJson, userId, [date]) VALUES (2, '{ "result": "Fail" }', 2, GETDATE());
-INSERT INTO main.dbo.testResults (featureId, resultsJson, userId, [date]) VALUES (3, '{ "result": "Pass" }', 3, GETDATE());
 
 -- Inserting test runs
 INSERT INTO main.dbo.testRuns (name, [date], userId, startTime, endTime, testRunStatus) VALUES ('Test Run A', GETDATE(), 1, GETDATE(), DATEADD(HOUR, 1, GETDATE()), 1);
@@ -897,3 +893,84 @@ VALUES
 
 
 
+
+
+
+-- Correct testResults
+-- featureId 1
+INSERT INTO testResults (featureId, resultsJson, userId, date)
+VALUES (
+    1, 
+    '[
+        {"testCaseId": 1, "singleResult": "pass", "comment": "example comment"}, 
+        {"testCaseId": 4, "singleResult": "fail", "comment": "example comment"}, 
+        {"testCaseId": 5, "singleResult": "fail", "comment": "example comment"}, 
+        {"testCaseId": 6, "singleResult": "fail", "comment": "example comment"}, 
+        {"testCaseId": 7, "singleResult": "fail", "comment": "example comment"}, 
+        {"testCaseId": 8, "singleResult": "fail", "comment": "example comment"}, 
+        {"testCaseId": 9, "singleResult": "fail", "comment": "example comment"}, 
+        {"testCaseId": 10, "singleResult": "fail", "comment": "example comment"}, 
+        {"testCaseId": 11, "singleResult": "pass", "comment": "example comment"}, 
+        {"testCaseId": 12, "singleResult": "fail", "comment": "example comment"}
+    ]', 
+    1, 
+    GETDATE()
+);
+
+INSERT INTO testResults (featureId, resultsJson, userId, date)
+VALUES (
+    1, 
+    '[
+        {"testCaseId": 1, "singleResult": "fail", "comment": "example comment"}, 
+        {"testCaseId": 4, "singleResult": "pass", "comment": "example comment"}, 
+        {"testCaseId": 5, "singleResult": "fail", "comment": "example comment"}, 
+        {"testCaseId": 6, "singleResult": "fail", "comment": "example comment"}, 
+        {"testCaseId": 7, "singleResult": "fail", "comment": "example comment"}, 
+        {"testCaseId": 8, "singleResult": "fail", "comment": "example comment"}, 
+        {"testCaseId": 9, "singleResult": "fail", "comment": "example comment"}, 
+        {"testCaseId": 10, "singleResult": "fail", "comment": "example comment"}, 
+        {"testCaseId": 11, "singleResult": "pass", "comment": "example comment"}, 
+        {"testCaseId": 12, "singleResult": "fail", "comment": "example comment"}
+    ]', 
+    1, 
+    GETDATE()
+);
+
+-- featureId 2
+INSERT INTO testResults (featureId, resultsJson, userId, date)
+VALUES (
+    2, 
+    '[
+        {"testCaseId": 2, "singleResult": "pass", "comment": "example comment"}, 
+        {"testCaseId": 14, "singleResult": "fail", "comment": "example comment"}, 
+        {"testCaseId": 15, "singleResult": "fail", "comment": "example comment"}, 
+        {"testCaseId": 16, "singleResult": "fail", "comment": "example comment"}, 
+        {"testCaseId": 17, "singleResult": "fail", "comment": "example comment"}, 
+        {"testCaseId": 18, "singleResult": "fail", "comment": "example comment"}, 
+        {"testCaseId": 19, "singleResult": "fail", "comment": "example comment"}, 
+        {"testCaseId": 20, "singleResult": "fail", "comment": "example comment"}, 
+        {"testCaseId": 21, "singleResult": "pass", "comment": "example comment"}, 
+        {"testCaseId": 22, "singleResult": "fail", "comment": "example comment"}
+    ]', 
+    1, 
+    GETDATE()
+);
+
+INSERT INTO testResults (featureId, resultsJson, userId, date)
+VALUES (
+    2, 
+    '[
+        {"testCaseId": 2, "singleResult": "fail", "comment": "example comment"}, 
+        {"testCaseId": 14, "singleResult": "pass", "comment": "example comment"}, 
+        {"testCaseId": 15, "singleResult": "fail", "comment": "example comment"}, 
+        {"testCaseId": 16, "singleResult": "fail", "comment": "example comment"}, 
+        {"testCaseId": 17, "singleResult": "fail", "comment": "example comment"}, 
+        {"testCaseId": 18, "singleResult": "fail", "comment": "example comment"}, 
+        {"testCaseId": 19, "singleResult": "fail", "comment": "example comment"}, 
+        {"testCaseId": 20, "singleResult": "fail", "comment": "example comment"}, 
+        {"testCaseId": 21, "singleResult": "pass", "comment": "example comment"}, 
+        {"testCaseId": 22, "singleResult": "fail", "comment": "example comment"}
+    ]', 
+    1, 
+    GETDATE()
+);

@@ -18,21 +18,21 @@ export default function UpdateFeatureActions({
 
   const featuresClient = new FeaturesApi()
 
-  // const formData = new FormData(e.currentTarget)
+  const formData = new FormData(e.currentTarget)
 
-  // async function putFeature() {
-  //   'use server'
+  async function putFeature() {
+    'use server'
 
-  //   const body: Feature = {
-  //     featureName: formData.get('featureName') as string,
-  //     companyID: Number(formData.get('companyID')),
-  //     featureID,
-  //   }
-  //   console.log('body: ', body)
-  //   await featuresClient.featuresPut({ feature: body })
+    const body: Feature = {
+      featureName: formData.get('featureName') as string,
+      companyID: Number(formData.get('companyID')),
+      featureID,
+    }
+    console.log('body: ', body)
+    await featuresClient.featuresPut({ feature: body })
 
-  //   revalidatePath(`/feature/${feature.featureID}`)
-  // }
+    revalidatePath(`/feature/${feature.featureID}`)
+  }
 
   // async function putFeature(formData: FormData) {
   //   'use server'
