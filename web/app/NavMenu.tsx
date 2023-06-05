@@ -20,12 +20,6 @@ export default function NavMenu() {
           <Link href={'/features'}>Features</Link>
         </li>
         <li>
-          <Link href={'/testCases'}>TestCases</Link>
-        </li>
-        {/* <li>
-          <Link href={'/users'}>Users</Link>
-        </li> */}
-        <li>
           <SignInButton />
         </li>
 

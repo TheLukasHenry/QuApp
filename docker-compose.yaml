@@ -1,43 +1,15 @@
+# SQL COMMAND TO REBUILD DB
 version: '3'
 
 services:
-  # ui:
-  #   build:
-  #     context: ./
-  #     dockerfile: ./docker/client.Dockerfile.dev
-  #   image: qaproject-ui:development
-  #   platform: linux/x86_64
-  #   volumes:
-  #     - ./ui:/app/ui:delegated
-  #     - /app/ui/node_modules/
-  #   ports:
-  #     - 8085:8085
-  #   environment:
-  #     - PORT=8085
-  #     - HOST=0.0.0.0
-  #     - NODE_ENV=development
-  #   command: npm run --prefix ui start
-
-  # server:
-  #   build:
-  #     context: ./
-  #     dockerfile: ./docker/server.Dockerfile.dev
-  #   image: qaproject-server:development
-  #   platform: linux/x86_64
-  #   depends_on:
-  #     - mssql
-  #   volumes:
-  #     - ./server:/app/server:delegated
-  #     - /app/server/node_modules/
-  #     - ./.env:/app/.env
-  #   ports:
-  #     - 8086:8086 k
-
   mssql:
-    image: mcr.microsoft.com/mssql/server:2019-latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - 1433:1433
     volumes:
+      - ./sql-scripts:/var/opt/mssql/scripts
       - ~/GitHub/Data/mssql:/var/opt/mssql/data
     environment:
       - ACCEPT_EULA=Y

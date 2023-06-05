@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react'
-// import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { TestCase } from '@/generated-api/models/TestCase'
 import { TestCasesApi } from '@/generated-api/apis/TestCasesApi'
 // import { revalidatePath } from 'next/cache'
@@ -12,7 +12,7 @@ interface CreateTestCaseProps {
 export default function CreateTestCase({ featureId }: CreateTestCaseProps) {
   const [name, setName] = useState<TestCase['name']>('')
   const testCasesClient = new TestCasesApi()
-  // const router = useRouter()
+  const router = useRouter()
 
   async function getTestCasesByFeatureId(featureId: number) {
     try {
@@ -32,6 +32,7 @@ export default function CreateTestCase({ featureId }: CreateTestCaseProps) {
     })
 
     setName('')
+    router.refresh()
     // router.refresh()
 
     // Call getTestCasesByFeatureId after creating a new testCase

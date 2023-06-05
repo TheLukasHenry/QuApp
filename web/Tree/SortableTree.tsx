@@ -1,4 +1,5 @@
 'use client'
+
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import {
@@ -33,14 +34,23 @@ import {
   removeChildrenOf,
   setProperty,
 } from './utilities'
-import type { FlattenedItem, SensorContext, TreeItems } from './types'
+import type {
+  FlattenedItem,
+  SensorContext,
+  TestResult,
+  TreeItems,
+} from './types'
 import { sortableTreeKeyboardCoordinates } from './keyboardCoordinates'
 import { SortableTreeItem } from './components'
 import { TestCase } from '@/generated-api/models/TestCase'
 import { UpdateTestCaseInput } from '@/generated-api/models/UpdateTestCaseInput'
 import { TestCasesApi } from '@/generated-api/apis/TestCasesApi'
+import { TestResultsApi } from '@/generated-api/apis/TestResultsApi'
+import { useRouter } from 'next/navigation'
+import { CreateTestResultInput } from '@/generated-api/models/CreateTestResultInput'
 
 const testCasesClient = new TestCasesApi()
+const testResultClient = new TestResultsApi()
 
 const measuring = {
   droppable: {
@@ -51,14 +61,56 @@ const measuring = {
 const dropAnimation: DropAnimation = {
   ...defaultDropAnimation,
 }
-
-function convertToTreeItems(testCases: TestCase[]): TreeItems {
+function convertToTreeItems(testCases: TestCase[], testResults: []): TreeItems {
   const treeItems: TreeItems = []
   const sortedTestCases = testCases.sort(
     (a, b) => (a.sortOrder || 0) - (b.sortOrder || 0)
   )
 
   const map = new Map()
+  const resultsMap = new Map()
+
+  // Helper function to remove duplicates based on testResultId
+  const removeDuplicates = (results: TestResult[]): TestResult[] => {
+    const uniqueResults = Array.from(
+      new Set(results.map((result) => result.testResultId))
+    ).map((testResultId) => {
+      return results.find((result) => result.testResultId === testResultId)
+    })
+
+    // Create a set of all testResultId values
+    const allTestResultIds = new Set(
+      testResults.map((result) => result.testResultId)
+    )
+
+    // Add an object with the missing testResultId to uniqueResults if it's not already present
+    for (const testResultId of allTestResultIds) {
+      if (
+        !uniqueResults.some((result) => result.testResultId === testResultId)
+      ) {
+        uniqueResults.push({ testResultId: testResultId })
+      }
+    }
+
+    console.log('uniqueResults: ', uniqueResults)
+    return uniqueResults as TestResult[]
+  }
+
+  // Parse resultsJson and group test results by testCaseId
+  for (const testResult of testResults) {
+    const parsedResults = JSON.parse(
+      testResult.resultsJson.replace('-- resultsJson\n', '')
+    )
+    for (const result of parsedResults) {
+      const testCaseId = result.testCaseId
+      if (!resultsMap.has(testCaseId)) {
+        resultsMap.set(testCaseId, [])
+      }
+      // Add testResultId to the result object
+      result.testResultId = testResult.testResultId
+      resultsMap.get(testCaseId).push(result)
+    }
+  }
 
   for (const testCase of sortedTestCases) {
     const uniqueIdentifier = testCase.id!
@@ -70,11 +122,17 @@ function convertToTreeItems(testCases: TestCase[]): TreeItems {
     }
 
     const name = testCase.name || ''
+    let testResultsForTestCase = resultsMap.get(uniqueIdentifier) || []
+
+    // Remove duplicates from testResultsForTestCase
+    testResultsForTestCase = removeDuplicates(testResultsForTestCase)
+
     const treeItem = {
       id: id,
       name: name,
       children: [],
       depth: 0,
+      testResults: testResultsForTestCase,
     }
 
     if (testCase.parentId === 0) {
@@ -89,12 +147,13 @@ function convertToTreeItems(testCases: TestCase[]): TreeItems {
 
     map.set(testCase.id!, { ...treeItem })
   }
-
+  console.log('treeItems in convert function: ', treeItems)
   return treeItems
 }
 
 interface Props {
   testCases: TestCase[]
+  testResults: []
   collapsible?: boolean
   indentationWidth?: number
   indicator?: boolean
@@ -103,13 +162,16 @@ interface Props {
 
 export function SortableTree({
   testCases,
+  testResults,
   collapsible,
   indicator,
   indentationWidth = 20,
   removable,
 }: Props) {
-  const [items, setItems] = useState(() => convertToTreeItems(testCases))
-  console.log({ items })
+  const [items, setItems] = useState(() =>
+    convertToTreeItems(testCases, testResults)
+  )
+
   const [activeId, setActiveId] = useState<string | null>(null)
   const [overId, setOverId] = useState<string | null>(null)
   const [offsetLeft, setOffsetLeft] = useState(0)
@@ -117,6 +179,10 @@ export function SortableTree({
     parentId: string | null
     overId: string
   } | null>(null)
+
+  const [resultLength, setResultLength] = useState<number>(testResults.length)
+  console.log('resultLength: ', resultLength)
+  console.log('testResults: ', testResults)
 
   const flattenedItems = useMemo(() => {
     const flattenedTree = flattenTree(items)
@@ -172,7 +238,7 @@ export function SortableTree({
       return `Picked up ${id}.`
     },
     onDragMove(id, overId) {
-      return getMovementAnnouncement('onDragMove', id, overId)
+      return getMovementAnnouncement('˚onDragMove', id, overId)
     },
     onDragOver(id, overId) {
       return getMovementAnnouncement('onDragOver', id, overId)
@@ -184,6 +250,10 @@ export function SortableTree({
       return `Moving was cancelled. ${id} was dropped in its original position.`
     },
   }
+
+  console.log('flattenedItems: ', flattenedItems)
+
+  console.log('items: ', items)
 
   return (
     <DndContext
@@ -197,24 +267,32 @@ export function SortableTree({
       onDragEnd={handleDragEnd}
       onDragCancel={handleDragCancel}
     >
+      <button>create test results column</button>
       <SortableContext items={sortedIds} strategy={verticalListSortingStrategy}>
-        {flattenedItems.map(({ id, name, children, collapsed, depth }) => (
-          <SortableTreeItem
-            key={id}
-            id={id}
-            name={name}
-            depth={id === activeId && projected ? projected.depth : depth}
-            indentationWidth={indentationWidth}
-            indicator={indicator}
-            collapsed={Boolean(collapsed && children.length)}
-            onCollapse={
-              collapsible && children.length
-                ? () => handleCollapse(id)
-                : undefined
-            }
-            onRemove={removable ? () => handleRemove(id) : undefined}
-          />
-        ))}
+        {flattenedItems.map(
+          ({ id, name, children, collapsed, depth, testResults }) => (
+            <SortableTreeItem
+              key={id}
+              id={id}
+              name={name}
+              depth={id === activeId && projected ? projected.depth : depth}
+              indentationWidth={indentationWidth}
+              indicator={indicator}
+              collapsed={Boolean(collapsed && children.length)}
+              onCollapse={
+                collapsible && children.length
+                  ? () => handleCollapse(id)
+                  : undefined
+              }
+              onRemove={removable ? () => handleRemove(id) : undefined}
+              singleResults={testResults?.map(
+                (testResult: TestResult) => testResult.singleResult
+              )}
+              testResults={testResults}
+              resultsLength={resultLength}
+            />
+          )
+        )}
 
         {createPortal(
           <DragOverlay

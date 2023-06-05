@@ -12,7 +12,6 @@ module.exports = {
     lost: {},
     'postcss-pxtorem': {},
     cssnano: {},
-    {
     'postcss-custom-properties': {
       preserve: false,
     },

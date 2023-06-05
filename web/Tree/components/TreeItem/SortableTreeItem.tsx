@@ -1,3 +1,4 @@
+'use client'
 import React, { CSSProperties } from 'react'
 import { AnimateLayoutChanges, useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
@@ -15,7 +16,15 @@ const animateLayoutChanges: AnimateLayoutChanges = ({
   wasDragging,
 }) => (isSorting || wasDragging ? false : true)
 
-export function SortableTreeItem({ id, name, depth, ...props }: Props) {
+export function SortableTreeItem({
+  id,
+  name,
+  depth,
+  singleResults,
+  testResults,
+  resultsLength,
+  ...props
+}: Props) {
   const {
     attributes,
     isDragging,
@@ -42,6 +51,9 @@ export function SortableTreeItem({ id, name, depth, ...props }: Props) {
       depth={depth}
       name={name}
       id={+id}
+      singleResults={singleResults}
+      testResults={testResults}
+      resultsLength={resultsLength}
       ghost={isDragging}
       disableSelection={iOS}
       disableInteraction={isSorting}

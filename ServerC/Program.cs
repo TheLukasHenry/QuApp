@@ -19,6 +19,7 @@ builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddScoped<ITestRunsService, TestRunsService>();
 builder.Services.AddScoped<ICompanyUsersService, CompanyUsersService>();
 builder.Services.AddScoped<ITestRunCasesService, TestRunCasesService>();
+builder.Services.AddScoped<ITestResultsService, TestResultsService>();
 builder.Services.AddScoped<LoginService>();
 builder.Services.AddSingleton<JwtTokenHelper>();
 builder.Services.AddSingleton(builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>());
@@ -90,7 +91,7 @@ app.UseCors();
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication(); // Add this line
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

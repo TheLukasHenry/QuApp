@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ServerC.Interfaces;
 using ServerC.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace ServerC.Controllers
 {

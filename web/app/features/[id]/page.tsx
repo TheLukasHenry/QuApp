@@ -1,57 +1,44 @@
-import { FeaturesApi } from '@/generated-api/apis/FeaturesApi'
-import UpdateFeature from './UpdateFeature'
-// import UpdateFeatureActions from './UpdateFeatureActions'
+import { revalidatePath } from 'next/cache'
+import { TestCase } from '@/generated-api'
+import React from 'react'
+import { SortableTree } from '@/Tree/SortableTree'
 import { TestCasesApi } from '@/generated-api/apis/TestCasesApi'
-// import CreateTestCase from '@/components-client/CreateTestCase'
-import TestCasesList from '@/components-server/TestCasesList'
+import CreateTestCase from '@/components-client/CreateTestCase'
+import { TestResultsApi } from '@/generated-api/apis/TestResultsApi'
+import UpdateFeature from '@/components-server/UpdateFeature'
 
-interface Props {
-  params: { id: string }
-}
+const testResultClient = new TestResultsApi()
 
 const testCasesClient = new TestCasesApi()
-const featuresClient = new FeaturesApi()
-
-async function getTestCasesByFeatureId(id: string) {
-  const response = await testCasesClient.testCasesFeatureFeatureIdGet(
-    {
-      featureId: +id,
-    },
-    // ,
-    { cache: 'no-store' }
-  )
-  return response
+async function getTestResults(id: RequestInit | undefined) {
+  const testResults = await testResultClient.testResultsGet(id)
+  return testResults
 }
 
-async function getFeatureById(id: string) {
-  const response = await featuresClient.featuresIdGet(
-    {
-      id: +id,
-    },
-    // {
-    //   next: {
-    //     revalidate: 0,
-    //   },
-    // }
-    { cache: 'no-store' }
-  )
-  return response
-}
+export default async function page({ params }: { params: { id: string } }) {
+  const featureUrl = `http://localhost:5000/features/${params.id}`
+  const testCasesUrl = `http://localhost:5000/testCases/feature/${params.id}`
+  const testResultsUrl = `http://localhost:5000/testResults/${params.id}`
+  const featureRes = await fetch(featureUrl, { cache: 'no-store' })
+  const feature = await featureRes.json()
+  const testCasesRes = await fetch(testCasesUrl, { cache: 'no-store' })
+  const testCases: TestCase[] = await testCasesRes.json()
+  const testResultsRes = await fetch(testResultsUrl, { cache: 'no-store' })
+  const testResults = await testResultsRes.json()
+  // console.log('testResults: ', testResults)
 
-export default async function Page({ params }: Props) {
-  // console.log('New get params.id: ', params.id)
-
-  const feature = await getFeatureById(params.id)
-  const testCases = await getTestCasesByFeatureId(params.id)
-  // console.log('testCases: ', testCases)
-
-  // console.log('feature: ', feature)
   return (
     <div>
-      <p>features id page</p>
+      <h2>Actions feature edit</h2>
       <UpdateFeature feature={feature} />
-      <TestCasesList testCases={testCases} />
-      {/* <UpdateFeatureActions feature={feature} putFeature={putFeature} /> */}
+      <SortableTree
+        collapsible
+        indicator
+        removable
+        testCases={testCases}
+        testResults={testResults}
+      />
+      <CreateTestCase featureId={+params.id} />
     </div>
   )
 }
