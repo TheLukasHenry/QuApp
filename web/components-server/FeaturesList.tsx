@@ -1,5 +1,5 @@
-import { Feature } from '../../generated-api/models/Feature'
-import FeatureComponent from './Feature'
+import { Feature } from '../generated-api/models/Feature'
+import FeatureComponent from '../components-client/Feature'
 
 type FeatureListProps = {
   features: Feature[]

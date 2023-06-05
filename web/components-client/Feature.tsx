@@ -1,7 +1,7 @@
 'use client'
 import { Feature } from '@/generated-api'
 import Link from 'next/link'
-import { FeaturesApi } from '../../generated-api/apis/FeaturesApi'
+import { FeaturesApi } from '../generated-api/apis/FeaturesApi'
 import { useRouter } from 'next/navigation'
 
 const featuresClient = new FeaturesApi()

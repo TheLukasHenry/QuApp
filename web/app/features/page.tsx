@@ -1,6 +1,6 @@
 import { FeaturesApi } from '../../generated-api/apis/FeaturesApi'
 import CreateFeature from './CreateFeature'
-import FeatureList from './FeaturesList'
+import FeatureList from '../../components-server/FeaturesList'
 
 const featuresClient = new FeaturesApi()
 
